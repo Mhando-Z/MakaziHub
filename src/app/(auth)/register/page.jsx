@@ -3,40 +3,56 @@
 import logo from "../../../../public/Assets/Logo/House.png";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Dots } from "react-activity";
-import Image from "next/image";
+import { Dots, Spinner } from "react-activity";
 import { FiEyeOff } from "react-icons/fi";
 import { BsEye, BsQuote } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import DataContext from "@/context/DataContext";
+import { supabase2 } from "@/Config/Supabase";
+import Link from "next/link";
+import Image from "next/image";
 // import { jwtDecode } from "jwt-decode";
 
 export default function UserRegister() {
+  const { quotes } = useContext(DataContext);
   const [present, setPresent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [show, setShow] = useState(true);
   const route = useRouter();
-  const { quotes } = useContext(DataContext);
   const [val, setVal] = useState(Math.floor(Math.random() * 100) + 1 || 5);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // show password reset page logic
-  const HandleShow = () => {
-    setShow(!show);
-  };
-
   // takes userinput
-  const [Login, setData] = useState({
+  const [userData, setData] = useState({
     email: "",
     password: "",
     password2: "",
   });
+
+  const handleRegister = async () => {
+    if (userData.password !== userData.password2) {
+      setError("Passwords do not match!");
+      setPresent(true);
+      setLoading(false);
+      return;
+    }
+    const { email, password } = userData;
+
+    const { data, error } = await supabase2.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error(error.message);
+    } else {
+      console.error("Check your email for the confirmation link!");
+    }
+  };
 
   // val change after every 5seconds
   useEffect(() => {
@@ -49,31 +65,6 @@ export default function UserRegister() {
     return () => clearInterval(interval);
   }, []);
 
-  // handles user login details submission to database
-  // const loging = async () => {
-  //   setLoading(true);
-  //   const { data, error } = await supabase.auth.signInWithPassword({
-  //     email: Login.email,
-  //     password: Login.password,
-  //   });
-
-  //   if (error) {
-  //     setError(error.message);
-  //     setPresent(true);
-  //   } else {
-  //     // savetoken to local storage if needed
-  //     const { session } = data;
-  //     //savetoken to local storage
-  //     localStorage.setItem("token", session.access_token);
-  //     // const token = localStorage.getItem("token");
-  //     // const user = jwtDecode(token);
-  //     route.push("dashboard/home");
-  //     setPresent(false);
-  //   }
-  //   setLoading(false);
-  // };
-
-  // handles userinput
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -88,10 +79,10 @@ export default function UserRegister() {
   };
 
   // handles simple input validation
-  const handleLogin = () => {
+  const handleUserRegister = () => {
     if (Login.email.length !== 0 && Login.password.length !== 0) {
       setPresent(false);
-      // loging();
+      handleRegister();
     }
   };
 
@@ -124,10 +115,6 @@ export default function UserRegister() {
                 <p className="font-bold text-red-600">{error}</p>
               </div>
             </motion.div>
-          ) : loading ? (
-            <div className="flex items-center justify-center h-20 mt-5">
-              <Dots color="green" size={35} speed={0.7} animating={true} />
-            </div>
           ) : (
             ""
           )}
@@ -264,10 +251,25 @@ export default function UserRegister() {
                 <motion.button
                   whileTap={{ scale: 0.8 }}
                   transition={{ type: "spring", ease: "easeOut" }}
-                  onClick={handleLogin}
-                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={handleUserRegister}
+                  className={`flex w-full  justify-center rounded-md ${
+                    loading
+                      ? "bg-gray-200 cursor-not-allowed "
+                      : "bg-green-600 hover:bg-green-700"
+                  }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
-                  Sign Up
+                  {loading ? (
+                    <div className="flex items-center justify-center cursor-not-allowed">
+                      <Spinner
+                        color="#2C3930"
+                        size={20}
+                        speed={2}
+                        animating={true}
+                      />
+                    </div>
+                  ) : (
+                    <span className="relative z-10">Sign Up</span>
+                  )}
                 </motion.button>
               </motion.div>
             </form>

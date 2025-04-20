@@ -1,7 +1,7 @@
 import "./globals.css";
 import { DataProvider } from "@/context/DataContext";
-import "react-activity/dist/Dots.css";
 import { ToastContainer } from "react-toastify";
+import "react-activity/dist/library.css";
 
 export const metadata = {
   title: "MakaziHub",
