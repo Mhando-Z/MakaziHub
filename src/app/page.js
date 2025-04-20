@@ -9,6 +9,7 @@ import { FiEyeOff } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import PasswordReset from "@/compponents/PassWordReset";
+import Link from "next/link";
 // import { jwtDecode } from "jwt-decode";
 
 export default function UserLogin() {
@@ -82,126 +83,151 @@ export default function UserLogin() {
 
   return (
     <>
-      {show ? (
-        <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Image
-              alt="herveg logo"
-              src={logo}
-              className="w-auto h-24 mx-auto"
-            />
-            <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-green-800">
-              Sign in to your account
-            </h2>
+      <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <Image alt="herveg logo" src={logo} className="w-auto h-24 mx-auto" />
+          <h2 className="mt-10 text-blue-950 text-2xl font-bold leading-9 tracking-tight text-left text-green-800">
+            Sign in
+          </h2>
+        </div>
+        {present ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              type: "spring",
+              ease: "easeOut",
+              duration: 0.5,
+            }}
+            className={`mt-5 h-20 items-center justify-center flex `}
+          >
+            <div className="px-5 rounded-md w-[24rem] bg-red-50 py-7 lg:px-3 ring-2 ring-red-700">
+              <p className="font-bold text-red-600">{error}</p>
+            </div>
+          </motion.div>
+        ) : loading ? (
+          <div className="flex items-center justify-center h-20 mt-5">
+            <Dots color="green" size={35} speed={0.7} animating={true} />
           </div>
-          {present ? (
+        ) : (
+          ""
+        )}
+
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: "spring",
-                ease: "easeOut",
-                duration: 0.5,
-              }}
-              className={`mt-5 h-20 items-center justify-center flex `}
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
             >
-              <div className="px-5 rounded-md w-[24rem] bg-red-50 py-7 lg:px-3 ring-2 ring-red-700">
-                <p className="font-bold text-red-600">{error}</p>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
+              >
+                Email address
+              </label>
+              <div className="mt-2">
+                <motion.input
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "100%" }}
+                  whileFocus={{ width: [0, "100%"] }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeInOut",
+                  }}
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  type="email"
+                  required
+                  autoComplete="email"
+                  className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                />
               </div>
             </motion.div>
-          ) : loading ? (
-            <div className="flex items-center justify-center h-20 mt-5">
-              <Dots color="green" size={35} speed={0.7} animating={true} />
-            </div>
-          ) : (
-            ""
-          )}
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <div className="flex items-center justify-between">
                 <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
                 >
-                  Email address
+                  Password
                 </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    type="email"
-                    required
-                    autoComplete="email"
-                    className="block w-full focus:bg-blue-50 rounded-md border-0 py-2 px-3 scroll-px-3.5 outline-none text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <div className="text-sm">
-                    <div
-                      onClick={HandleShow}
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </div>
-                  </div>
-                </div>
-                <div className="relative mt-2">
-                  <input
-                    id="password"
-                    onChange={handleChange}
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    autoComplete="current-password"
-                    className="block w-full focus:bg-blue-50 rounded-md border-0 py-2 px-3 scroll-px-3.5 outline-none text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
-                  />
-                  <button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute inset-y-0 right-0 flex items-center pr-3"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? (
-                      <FiEyeOff className="w-4 h-4 text-gray-400" />
-                    ) : (
-                      <BsEye className="w-4 h-4 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.8 }}
-                  transition={{ type: "spring", ease: "easeOut" }}
-                  onClick={handleLogin}
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                <Link
+                  href={"/passwordreset"}
+                  className="text-sm font-semibold text-indigo-600 md:text-md hover:text-indigo-500"
                 >
-                  Sign in
-                </motion.button>
+                  Forgot password?
+                </Link>
               </div>
-            </form>
-          </div>
+              <div className="relative mt-2">
+                <motion.input
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "100%" }}
+                  whileFocus={{
+                    width: [0, "100%"],
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeInOut",
+                  }}
+                  id="password"
+                  name="password"
+                  onChange={handleChange}
+                  type={showPassword ? "text" : "password"}
+                  required
+                  autoComplete="current-password"
+                  className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                />
+                <button
+                  type="button"
+                  className="absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <FiEyeOff className="w-4 h-4 text-gray-400" />
+                  ) : (
+                    <BsEye className="w-4 h-4 text-gray-400" />
+                  )}
+                </button>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
+              <motion.button
+                whileTap={{ scale: 0.8 }}
+                transition={{ type: "spring", ease: "easeOut" }}
+                onClick={handleLogin}
+                className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Sign in
+              </motion.button>
+            </motion.div>
+          </form>
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="flex items-start justify-start w-full"
+          >
+            <p className="mt-5 text-sm font-bold text-center text-black dark:text-gray-300">
+              Not a member
+              <button className="ml-2 cursor-pointer font-semibold leading-6 text-gray-400 hover:text-blue-500">
+                Register
+              </button>
+            </p>
+          </motion.div>
         </div>
-      ) : (
-        <>
-          <PasswordReset HandleShow={HandleShow} />
-        </>
-      )}
+      </div>
     </>
   );
 }
