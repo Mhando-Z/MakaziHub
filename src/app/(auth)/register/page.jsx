@@ -3,29 +3,28 @@
 import logo from "../../../../public/Assets/Logo/House.png";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Dots, Spinner } from "react-activity";
-import { FiEyeOff } from "react-icons/fi";
-import { BsEye, BsQuote } from "react-icons/bs";
-import { useRouter } from "next/navigation";
+import { Spinner } from "react-activity";
+import { FiEyeOff, FiRefreshCw } from "react-icons/fi";
+import { BsEye, BsMailbox, BsQuote } from "react-icons/bs";
+import { CheckCircle, Mail, User, RefreshCw } from "lucide-react";
 import DataContext from "@/context/DataContext";
 import { supabase2 } from "@/Config/Supabase";
 import Link from "next/link";
 import Image from "next/image";
-// import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
+
+// notification component
+const MotionCheckCircle = motion(CheckCircle);
 
 export default function UserRegister() {
   const { quotes } = useContext(DataContext);
   const [present, setPresent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showNotification, setNotification] = useState(false);
   const [error, setError] = useState("");
-  const route = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [val, setVal] = useState(Math.floor(Math.random() * 100) + 1 || 5);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   // takes userinput
   const [userData, setData] = useState({
     email: "",
@@ -48,10 +47,15 @@ export default function UserRegister() {
     });
 
     if (error) {
+      toast.error(error.message);
       console.error(error.message);
     } else {
-      console.error("Check your email for the confirmation link!");
+      setNotification(true);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   // val change after every 5seconds
@@ -76,19 +80,31 @@ export default function UserRegister() {
   // handles default actions of login form
   const handleSubmit = (e) => {
     e.preventDefault();
+    setPresent(false);
+    setLoading(true);
+    handleRegister();
   };
 
-  // handles simple input validation
-  const handleUserRegister = () => {
-    if (Login.email.length !== 0 && Login.password.length !== 0) {
-      setPresent(false);
-      handleRegister();
+  // resend verification email
+  const handleClick = async (email) => {
+    setIsLoading(true);
+
+    const { data, error } = await supabase2.auth.signInWithOtp({ email });
+
+    if (error) {
+      toast.error(error.message);
+      setIsLoading(false);
+    } else {
+      toast.success(
+        "Verification email has been resent. Please check your inbox."
+      );
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
+      <div className="flex relative flex-row items-center justify-between flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
         <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
@@ -249,9 +265,9 @@ export default function UserRegister() {
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <motion.button
+                  type="submit"
                   whileTap={{ scale: 0.8 }}
                   transition={{ type: "spring", ease: "easeOut" }}
-                  onClick={handleUserRegister}
                   className={`flex w-full  justify-center rounded-md ${
                     loading
                       ? "bg-gray-200 cursor-not-allowed "
@@ -318,6 +334,77 @@ export default function UserRegister() {
             </div>
           </div>
         </motion.div>
+
+        {/* notification overlay */}
+        {showNotification && (
+          <div className="absolute top-0 right-0 left-0 flex flex-col min-h-screen items-center justify-center bottom-0 bg-white/50 backdrop-blur-lg">
+            <motion.div
+              initial={{ y: -50 }}
+              animate={{ y: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="w-full max-w-md p-8 mx-4 bg-white rounded-lg shadow-2xl "
+            >
+              <div className="flex flex-col items-center text-center">
+                <MotionCheckCircle
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1, rotate: 360 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  className="w-20 h-20 mb-4 text-green-500"
+                />
+                <motion.h2
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="mb-2 text-2xl font-bold text-gray-800"
+                >
+                  Success!
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="mb-6 text-gray-600"
+                >
+                  Your account has been created successfully.
+                </motion.p>
+                <div className="w-full mb-6 space-y-2">
+                  <div className="flex items-center justify-between p-3 bg-gray-100 rounded-md">
+                    <div className="flex items-center space-x-2">
+                      <Mail className="text-gray-500" />
+
+                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                        Email:
+                      </span>
+                    </div>
+                    <span className="text-gray-800">{userData?.email}</span>
+                  </div>
+                </div>
+                <p className="mb-4 text-sm text-gray-600">
+                  Please check your email for the verification link. If you
+                  didnt receive it, you can request a new one.
+                </p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleClick(userData?.email)}
+                  className="flex items-center justify-center px-6 py-2 space-x-2 font-medium text-white transition-colors duration-300 bg-blue-500 rounded-full hover:bg-blue-600"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <FiRefreshCw className="animate-spin" />
+                  ) : (
+                    <>
+                      <div className="flex flex-row items-center gap-x-2">
+                        <Mail className="w-4 h-4" />
+                        <span>Resend Verification</span>
+                      </div>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     </>
   );
