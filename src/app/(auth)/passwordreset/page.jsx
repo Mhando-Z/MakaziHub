@@ -40,7 +40,7 @@ const PasswordReset = () => {
           className="w-auto h-24 mx-auto"
         />
 
-        <h2 className="text-2xl text-blue-950 font-medium text-center">
+        <h2 className="text-2xl font-raleway text-blue-950 font-medium text-center">
           Reset Your Password
         </h2>
 

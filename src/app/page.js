@@ -1,15 +1,16 @@
 "use client";
 
 import logo from "../../public/Assets/Logo/House.png";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Dots } from "react-activity";
 import Image from "next/image";
 import { FiEyeOff } from "react-icons/fi";
-import { BsEye } from "react-icons/bs";
+import { BsEye, BsQuote } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import PasswordReset from "@/compponents/PassWordReset";
 import Link from "next/link";
+import DataContext from "@/context/DataContext";
 // import { jwtDecode } from "jwt-decode";
 
 export default function UserLogin() {
@@ -19,6 +20,8 @@ export default function UserLogin() {
   const [error, setError] = useState("");
   const [show, setShow] = useState(true);
   const route = useRouter();
+  const { quotes } = useContext(DataContext);
+  const [val, setVal] = useState(Math.floor(Math.random() * 100) + 1 || 5);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -81,152 +84,204 @@ export default function UserLogin() {
     }
   };
 
+  // val change after every 5seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newVal = Math.floor(Math.random() * 100) + 1 || 5;
+      setVal(newVal);
+    }, 10000); // 5000ms = 5 seconds
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
-      <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <Image alt="herveg logo" src={logo} className="w-auto h-24 mx-auto" />
-          <h2 className="mt-10 text-blue-950 text-2xl font-bold leading-9 tracking-tight text-left">
-            Sign in
-          </h2>
-        </div>
-        {present ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              type: "spring",
-              ease: "easeOut",
-              duration: 0.5,
-            }}
-            className={`mt-5 h-20 items-center justify-center flex `}
-          >
-            <div className="px-5 rounded-md w-[24rem] bg-red-50 py-7 lg:px-3 ring-2 ring-red-700">
-              <p className="font-bold text-red-600">{error}</p>
-            </div>
-          </motion.div>
-        ) : loading ? (
-          <div className="flex items-center justify-center h-20 mt-5">
-            <Dots color="green" size={35} speed={0.7} animating={true} />
-          </div>
-        ) : (
-          ""
-        )}
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <motion.input
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "100%" }}
-                  whileFocus={{ width: [0, "100%"] }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  id="email"
-                  name="email"
-                  onChange={handleChange}
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 1 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
-                >
-                  Password
-                </label>
-                <Link
-                  href={"/passwordreset"}
-                  className="text-sm font-semibold text-indigo-600 md:text-md hover:text-indigo-500"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <div className="relative mt-2">
-                <motion.input
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "100%" }}
-                  whileFocus={{
-                    width: [0, "100%"],
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  id="password"
-                  name="password"
-                  onChange={handleChange}
-                  type={showPassword ? "text" : "password"}
-                  required
-                  autoComplete="current-password"
-                  className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                />
-                <button
-                  type="button"
-                  className="absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <FiEyeOff className="w-4 h-4 text-gray-400" />
-                  ) : (
-                    <BsEye className="w-4 h-4 text-gray-400" />
-                  )}
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
-              <motion.button
-                whileTap={{ scale: 0.8 }}
-                transition={{ type: "spring", ease: "easeOut" }}
-                onClick={handleLogin}
-                className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </motion.button>
-            </motion.div>
-          </form>
+      <div className="flex flex-row items-center justify-between flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
+        <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="flex items-start justify-start w-full"
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="sm:mx-auto sm:w-full sm:max-w-sm"
           >
-            <p className="mt-5 text-sm font-bold text-center text-black dark:text-gray-300">
-              Not a member
-              <button className="ml-2 cursor-pointer font-semibold leading-6 text-gray-400 hover:text-blue-500">
-                Register
-              </button>
-            </p>
+            <Image
+              alt="herveg logo"
+              src={logo}
+              className="w-auto md:hidden h-24 mx-auto"
+            />
+            <h2 className="mt-10 font-raleway text-blue-950 text-2xl font-bold leading-9 tracking-tight text-left">
+              Sign in
+            </h2>
           </motion.div>
+          {present ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                type: "spring",
+                ease: "easeOut",
+                duration: 0.5,
+              }}
+              className={`mt-5 h-20 items-center justify-center flex `}
+            >
+              <div className="px-5 rounded-md w-[24rem] bg-red-50 py-7 lg:px-3 ring-2 ring-red-700">
+                <p className="font-bold text-red-600">{error}</p>
+              </div>
+            </motion.div>
+          ) : loading ? (
+            <div className="flex items-center justify-center h-20 mt-5">
+              <Dots color="green" size={35} speed={0.7} animating={true} />
+            </div>
+          ) : (
+            ""
+          )}
+
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
+                >
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <motion.input
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "100%" }}
+                    whileFocus={{ width: [0, "100%"] }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut",
+                    }}
+                    id="email"
+                    name="email"
+                    onChange={handleChange}
+                    type="email"
+                    required
+                    autoComplete="email"
+                    className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
+                  >
+                    Password
+                  </label>
+                  <Link
+                    href={"/passwordreset"}
+                    className="text-sm font-semibold text-indigo-600 md:text-md hover:text-indigo-500"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <div className="relative mt-2">
+                  <motion.input
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "100%" }}
+                    whileFocus={{
+                      width: [0, "100%"],
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut",
+                    }}
+                    id="password"
+                    name="password"
+                    onChange={handleChange}
+                    type={showPassword ? "text" : "password"}
+                    required
+                    autoComplete="current-password"
+                    className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  />
+                  <button
+                    type="button"
+                    className="absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff className="w-4 h-4 text-gray-400" />
+                    ) : (
+                      <BsEye className="w-4 h-4 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ type: "spring", ease: "easeOut" }}
+                  onClick={handleLogin}
+                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Sign in
+                </motion.button>
+              </motion.div>
+            </form>
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+              className="flex items-start justify-start w-full"
+            >
+              <p className="mt-5 text-sm font-bold text-center text-black dark:text-gray-300">
+                Not a member
+                <Link href={"/register"}>
+                  <button className="ml-2 cursor-pointer font-semibold leading-6 text-gray-400 hover:text-blue-500">
+                    Register
+                  </button>
+                </Link>
+              </p>
+            </motion.div>
+          </div>
         </div>
+        {/* image and quote section */}
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="w-full hidden md:flex md:flex-col"
+        >
+          <Image
+            alt="herveg logo"
+            src={logo}
+            className="w-auto h-auto opacity-95 mx-auto"
+          />
+          <div className="relative max-w-xl p-6 mx-auto">
+            <BsQuote
+              className="absolute text-orange-600 top-2 left-2"
+              size={48}
+              strokeWidth={1.5}
+            />
+            <div className="pl-12">
+              <h2 className="mb-3 text-lg xl:text-xl italic text-gray-800 ">
+                {quotes[val]?.quote}
+              </h2>
+              <p className="font-semibold text-right text-gray-600 text-md">
+                — {quotes[val]?.author}
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </>
   );
