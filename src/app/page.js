@@ -86,7 +86,7 @@ export default function UserLogin() {
       <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-green-50 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image alt="herveg logo" src={logo} className="w-auto h-24 mx-auto" />
-          <h2 className="mt-10 text-blue-950 text-2xl font-bold leading-9 tracking-tight text-left text-green-800">
+          <h2 className="mt-10 text-blue-950 text-2xl font-bold leading-9 tracking-tight text-left">
             Sign in
           </h2>
         </div>
