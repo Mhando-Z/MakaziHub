@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen overflow-x-hidden">
+      <body className="flex bg-green-50 flex-col min-h-screen overflow-x-hidden">
         <ToastContainer
           position="top-right"
           autoClose={5000}
