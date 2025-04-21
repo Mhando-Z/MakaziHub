@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { CircleUserRound } from "lucide-react";
 import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
+import Select from "react-select";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
@@ -24,6 +25,12 @@ function UserProfile() {
     // setLoading(true);
     // handleRegister();
   };
+
+  const options = [
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+  ];
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
       <div className="flex flex-col w-full container mx-auto p-8 ">
@@ -56,10 +63,10 @@ function UserProfile() {
                 className="w-full"
               >
                 <label
-                  htmlFor="email"
+                  htmlFor="fullname"
                   className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
                 >
-                  Email address
+                  Full Name
                 </label>
                 <div className="mt-2">
                   <motion.input
@@ -70,12 +77,12 @@ function UserProfile() {
                       duration: 0.5,
                       ease: "easeInOut",
                     }}
-                    id="email"
-                    name="email"
+                    id="fullname"
+                    name="fullname"
                     onChange={handleChange}
-                    type="email"
+                    type="text"
                     required
-                    autoComplete="email"
+                    autoComplete="fullname"
                     className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -87,10 +94,10 @@ function UserProfile() {
                 className="w-full"
               >
                 <label
-                  htmlFor="email"
+                  htmlFor="phonenumber"
                   className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
                 >
-                  Email address
+                  Phone Number
                 </label>
                 <div className="mt-2">
                   <motion.input
@@ -101,16 +108,18 @@ function UserProfile() {
                       duration: 0.5,
                       ease: "easeInOut",
                     }}
-                    id="email"
-                    name="email"
+                    id="phonenumber"
+                    placeholder="e.g. +255 123 456 789"
+                    name="phonenumber"
                     onChange={handleChange}
-                    type="email"
+                    type="text"
                     required
-                    autoComplete="email"
+                    autoComplete="phonenumber"
                     className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                   />
                 </div>
               </motion.div>
+
               <motion.div
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 1 }}
@@ -118,28 +127,23 @@ function UserProfile() {
                 className="w-full"
               >
                 <label
-                  htmlFor="email"
+                  htmlFor="gender"
                   className="block text-sm font-medium leading-6 text-gray-900 md:text-md dark:text-gray-400"
                 >
-                  Email address
+                  Gender
                 </label>
                 <div className="mt-2">
-                  <motion.input
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: "100%" }}
-                    whileFocus={{ width: [0, "100%"] }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeInOut",
-                    }}
-                    id="email"
-                    name="email"
+                  <select
+                    id="gender"
+                    name="gender"
                     onChange={handleChange}
-                    type="email"
+                    className="block px-1 w-full py-2 text-gray-400 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                     required
-                    autoComplete="email"
-                    className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  />
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
                 </div>
               </motion.div>
             </div>
