@@ -3,27 +3,26 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import logo from "../../../../public/Assets/Logo/House.png";
+import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // const { error } = await supabase.auth.resetPasswordForEmail(email);
-    // if (error) {
-    //   setMessage(`Error: ${error.message}`);
-    //   toast.error(`Error: ${error.message}`);
-    // } else {
-    //   toast.success("Password reset link has been sent to your email.");
-    //   setMessage("Password reset link has been sent to your email.");
-    // }
-    // setIsSubmitting(false);
+    const { error } = await supabase2.auth.resetPasswordForEmail(email);
+    if (error) {
+      toast.error(`Error: ${error.message}`);
+      setIsSubmitting(false);
+    } else {
+      setIsSubmitting(false);
+      toast.success("Password reset link has been sent to your email.");
+    }
   };
 
   return (
@@ -85,7 +84,7 @@ const PasswordReset = () => {
               type="submit"
               disabled={isSubmitting}
               whileTap={{ scale: 0.95 }}
-              className="w-full px-4 py-1 mb-4 font-bold text-white bg-green-600 rounded-md hover:bg-green-500 disabled:bg-gray-400"
+              className="w-full px-4 py-1 cursor-pointer mb-4 font-bold text-white bg-green-600 rounded-md hover:bg-green-500 disabled:bg-gray-400"
             >
               {isSubmitting ? "Sending..." : "Send Password Reset Link"}
             </motion.button>
@@ -101,17 +100,6 @@ const PasswordReset = () => {
             Log-in
           </Link>
         </motion.div>
-
-        {message && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="mt-4 text-sm text-center text-green-500"
-          >
-            {message}
-          </motion.p>
-        )}
       </motion.div>
     </div>
   );

@@ -3,14 +3,14 @@
 import logo from "../../public/Assets/Logo/House.png";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Dots } from "react-activity";
 import Image from "next/image";
 import { FiEyeOff } from "react-icons/fi";
 import { BsEye, BsQuote } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import PasswordReset from "@/compponents/PassWordReset";
 import Link from "next/link";
 import DataContext from "@/context/DataContext";
+import { supabase2 } from "@/Config/Supabase";
+import { Loader } from "lucide-react";
 // import { jwtDecode } from "jwt-decode";
 
 export default function UserLogin() {
@@ -39,28 +39,27 @@ export default function UserLogin() {
   });
 
   // handles user login details submission to database
-  // const loging = async () => {
-  //   setLoading(true);
-  //   const { data, error } = await supabase.auth.signInWithPassword({
-  //     email: Login.email,
-  //     password: Login.password,
-  //   });
+  const loging = async () => {
+    const { data, error } = await supabase2.auth.signInWithPassword({
+      email: Login.email,
+      password: Login.password,
+    });
 
-  //   if (error) {
-  //     setError(error.message);
-  //     setPresent(true);
-  //   } else {
-  //     // savetoken to local storage if needed
-  //     const { session } = data;
-  //     //savetoken to local storage
-  //     localStorage.setItem("token", session.access_token);
-  //     // const token = localStorage.getItem("token");
-  //     // const user = jwtDecode(token);
-  //     route.push("dashboard/home");
-  //     setPresent(false);
-  //   }
-  //   setLoading(false);
-  // };
+    if (error) {
+      setError(error.message);
+      setPresent(true);
+    } else {
+      // savetoken to local storage if needed
+      const { session } = data;
+      //savetoken to local storage
+      localStorage.setItem("token", session.access_token);
+      // const token = localStorage.getItem("token");
+      // const user = jwtDecode(token);
+      route.push("userprofile");
+      setPresent(false);
+    }
+    setLoading(false);
+  };
 
   // handles userinput
   const handleChange = (e) => {
@@ -74,13 +73,18 @@ export default function UserLogin() {
   // handles default actions of login form
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
+    if (Login.email.length !== 0 && Login.password.length !== 0) {
+      setPresent(false);
+      loging();
+    }
   };
 
   // handles simple input validation
   const handleLogin = () => {
     if (Login.email.length !== 0 && Login.password.length !== 0) {
       setPresent(false);
-      // loging();
+      loging();
     }
   };
 
@@ -129,10 +133,6 @@ export default function UserLogin() {
                 <p className="font-bold text-red-600">{error}</p>
               </div>
             </motion.div>
-          ) : loading ? (
-            <div className="flex items-center justify-center h-20 mt-5">
-              <Dots color="green" size={35} speed={0.7} animating={true} />
-            </div>
           ) : (
             ""
           )}
@@ -228,12 +228,22 @@ export default function UserLogin() {
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <motion.button
+                  type="submit"
                   whileTap={{ scale: 0.8 }}
                   transition={{ type: "spring", ease: "easeOut" }}
-                  onClick={handleLogin}
-                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className={`flex w-full  justify-center rounded-md ${
+                    loading
+                      ? "bg-gray-200 cursor-not-allowed "
+                      : "bg-green-600 hover:bg-green-700"
+                  }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
-                  Sign in
+                  {loading ? (
+                    <div className="flex items-center justify-center cursor-not-allowed">
+                      <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+                    </div>
+                  ) : (
+                    <span className="relative z-10">Sign In</span>
+                  )}
                 </motion.button>
               </motion.div>
             </form>

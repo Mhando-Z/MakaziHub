@@ -3,10 +3,9 @@
 import logo from "../../../../public/Assets/Logo/House.png";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Spinner } from "react-activity";
 import { FiEyeOff, FiRefreshCw } from "react-icons/fi";
 import { BsEye, BsMailbox, BsQuote } from "react-icons/bs";
-import { CheckCircle, Mail, XCircle } from "lucide-react";
+import { CheckCircle, Loader, Mail, XCircle } from "lucide-react";
 import DataContext from "@/context/DataContext";
 import { supabase2 } from "@/Config/Supabase";
 import Link from "next/link";
@@ -288,12 +287,7 @@ export default function UserRegister() {
                 >
                   {loading ? (
                     <div className="flex items-center justify-center cursor-not-allowed">
-                      <Spinner
-                        color="#2C3930"
-                        size={20}
-                        speed={2}
-                        animating={true}
-                      />
+                      <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
                     </div>
                   ) : (
                     <span className="relative z-10">Sign Up</span>
