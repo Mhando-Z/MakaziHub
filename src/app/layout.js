@@ -1,6 +1,7 @@
 import "./globals.css";
 import { DataProvider } from "@/context/DataContext";
 import { ToastContainer } from "react-toastify";
+import { UserProvider } from "@/context/UserContext";
 import "react-activity/dist/library.css";
 
 export const metadata = {
@@ -25,7 +26,9 @@ export default function RootLayout({ children }) {
           pauseOnHover
           theme="colored"
         />
-        <DataProvider>{children}</DataProvider>
+        <UserProvider>
+          <DataProvider>{children}</DataProvider>
+        </UserProvider>
       </body>
     </html>
   );
