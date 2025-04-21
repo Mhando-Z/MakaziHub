@@ -55,7 +55,7 @@ export default function UserLogin() {
       localStorage.setItem("token", session.access_token);
       // const token = localStorage.getItem("token");
       // const user = jwtDecode(token);
-      route.push("userprofile");
+      route.push("loading");
       setPresent(false);
     }
     setLoading(false);
