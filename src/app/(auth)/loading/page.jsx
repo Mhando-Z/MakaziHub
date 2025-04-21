@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 // import image
 import logo from "../../../../public/assets/logo/House.png";
+import UserContext from "@/context/UserContext";
 import { redirect } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function Loading() {
   const [progress, setProgress] = useState(0);
+  const { userData } = useContext(UserContext);
 
   useEffect(() => {
     const duration = 2000; // total duration (ms)
@@ -24,14 +26,18 @@ export default function Loading() {
     }, interval);
 
     const redirectTimer = setTimeout(() => {
-      redirect("/userprofile");
+      if (userData) {
+        redirect("dashboard/home");
+      } else {
+        redirect("/userprofile");
+      }
     }, duration);
 
     return () => {
       clearInterval(progressTimer);
       clearTimeout(redirectTimer);
     };
-  }, []);
+  }, [userData]);
   //
 
   return (

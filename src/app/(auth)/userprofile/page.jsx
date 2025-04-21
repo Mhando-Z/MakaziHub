@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
@@ -40,11 +41,12 @@ function UserProfile() {
       .select();
     if (error) {
       toast.error("Error inserting data:", error.message);
-      console.log("Error inserting data:", error.message);
       setLoading(false);
     } else {
       toast.success("Data inserted successfully");
       setLoading(false);
+      getProfile();
+      redirect("dashboard/home");
     }
   };
 

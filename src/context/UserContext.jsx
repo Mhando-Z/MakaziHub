@@ -6,8 +6,33 @@ import { createContext, useEffect, useState } from "react";
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState([]);
+  const [userData, setUserdata] = useState([]);
 
+  //   filter user profile by id
+  const filterUser = profile.filter((item) => item.id === user.id);
+  //   set user data to profile
+  useEffect(() => {
+    if (filterUser.length > 0) {
+      setUserdata(filterUser[0]);
+    }
+  }, [filterUser]);
+
+  //   get user profiles
+  const getProfile = async (user) => {
+    const { data: profiles, error } = await supabase2
+      .from("profiles")
+      .select("*");
+
+    if (profiles) {
+      setProfile(profiles);
+    } else {
+      console.error("Error getting user:", error.message);
+    }
+  };
+
+  //   get user email and id
   const getUser = async () => {
     const {
       data: { user },
@@ -23,12 +48,13 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     getUser();
+    getProfile();
   }, []);
 
-  console.log(user);
-
   return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user, userData, getProfile }}>
+      {children}
+    </UserContext.Provider>
   );
 }
 
