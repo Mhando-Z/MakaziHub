@@ -1,14 +1,21 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import { CircleUserRound, SendHorizonal } from "lucide-react";
+import { CircleUserRound, Loader, SendHorizonal } from "lucide-react";
 import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
-import Select from "react-select";
+import { supabase2 } from "@/Config/Supabase";
+import { toast } from "react-toastify";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [Userdata, setData] = useState({
+    fullname: "",
+    phonenumber: "",
+    gender: "",
+    role: "landlord",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,18 +25,35 @@ function UserProfile() {
     }));
   };
 
+  const handleProfile = async () => {
+    const { data, error } = await supabase2
+      .from("profiles")
+      .insert([
+        {
+          id: user?.id,
+          full_name: Userdata.fullname,
+          phone_number: Userdata.phonenumber,
+          gender: Userdata.gender,
+          role: "landlord",
+        },
+      ])
+      .select();
+    if (error) {
+      toast.error("Error inserting data:", error.message);
+      console.log("Error inserting data:", error.message);
+      setLoading(false);
+    } else {
+      toast.success("Data inserted successfully");
+      setLoading(false);
+    }
+  };
+
   // handles default actions of login form
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setPresent(false);
-    // setLoading(true);
-    // handleRegister();
+    setLoading(true);
+    handleProfile();
   };
-
-  const options = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-  ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
