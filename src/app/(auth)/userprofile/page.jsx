@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, SendHorizonal } from "lucide-react";
 import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
 import Select from "react-select";
@@ -55,7 +55,7 @@ function UserProfile() {
         {/* user profile form */}
         <div className="w-full mt-10 ">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex w-full flex-row items-center justify-between gap-x-10">
+            <div className="flex w-full flex-col md:flex-row  items-center justify-between gap-x-10">
               <motion.div
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 1 }}
@@ -169,7 +169,10 @@ function UserProfile() {
                     <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
                   </div>
                 ) : (
-                  <span className="relative z-10">Sign Up</span>
+                  <span className="relative flex flex-row items-center gap-2 z-10">
+                    Save Profile
+                    <SendHorizonal size={20} className="text-sm" />
+                  </span>
                 )}
               </motion.button>
             </motion.div>
