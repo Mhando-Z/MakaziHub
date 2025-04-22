@@ -11,27 +11,27 @@ function ProfilePictures() {
   return (
     <>
       <div className="flex flex-row items-center justify-center w-full text-gray-900 md:justify-between md:flex-row gap-y-7 gap-x-3">
-        <div className="items-center justify-center ">
+        <div className="items-center justify-center">
           {/* profile images */}
           {user !== null ? (
             <>
               <motion.img
-                className="object-cover h-16 border-4 border-green-300 rounded-full"
                 src={`https://ui-avatars.com/api/?name=${user?.email}`}
                 alt="User Avatar"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
+                className="object-cover h-16 border-4 border-green-300 rounded-full"
               />
             </>
           ) : (
             ""
           )}
         </div>
-        <div className="flex flex-col flex-grow">
+        <div className="w-full flex flex-col flex-grow">
           {/* data details and status */}
-          <h1 className="font-bold line-clamp-1 ">{userData?.name}</h1>
-          <h1 className="text-sm font-medium text-gray-700 line-clamp-1">
+          <h1 className="font-bold line-clamp-1">{userData?.full_name}</h1>
+          <h1 className="text-sm  font-medium text-gray-700 line-clamp-1">
             {user?.email}
           </h1>
           <div className="flex flex-row items-center w-full gap-x-1">

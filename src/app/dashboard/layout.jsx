@@ -7,8 +7,6 @@ import { IoKeySharp, IoPeople } from "react-icons/io5";
 import { FaHome } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { HiMiniCheckBadge } from "react-icons/hi2";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { GiStairsGoal } from "react-icons/gi";
 import { RiLuggageDepositFill } from "react-icons/ri";
 import Image from "next/image";
 // other imports
@@ -31,16 +29,16 @@ const userRoutes = [
     icon: <FaHome />,
   },
   {
-    sections: "Farmers",
-    path: "/dashboard/farmer",
-    links: "farmer",
-    icon: <IoPeople />,
+    sections: "House",
+    path: "/dashboard/house",
+    links: "house",
+    icon: <RiLuggageDepositFill />,
   },
   {
-    sections: "Packages",
-    path: "/dashboard/package",
-    links: "package",
-    icon: <RiLuggageDepositFill />,
+    sections: "Tenants",
+    path: "/dashboard/tenants",
+    links: "tenants",
+    icon: <IoPeople />,
   },
   {
     sections: "Payments Updates",
@@ -113,7 +111,10 @@ export default function DashboardLayout({ children }) {
       >
         <div className="flex flex-col justify-between min-h-screen p-6">
           <div>
-            <Image src={logo} alt="herveg logo" className="w-[180px] " />
+            <div className="flex  items-center gap-x-3 justify-center">
+              <Image src={logo} alt="herveg logo" className="w-auto h-30 " />
+              {/* <h1>MakaziHub</h1> */}
+            </div>
             <nav className="mt-10">
               <div className="flex flex-col w-full">
                 {userRoutes?.map((dt, index) => {

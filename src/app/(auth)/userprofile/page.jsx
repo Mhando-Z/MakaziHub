@@ -81,7 +81,7 @@ function UserProfile() {
         {/* user profile form */}
         <div className="w-full mt-10 ">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex w-full flex-col md:flex-row  items-center justify-between gap-x-10">
+            <div className="flex w-full flex-col md:flex-row  items-center justify-between md:gap-x-10 gap-5">
               <motion.div
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 1 }}
