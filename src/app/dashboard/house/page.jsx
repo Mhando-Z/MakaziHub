@@ -491,10 +491,10 @@ const HouseItem = ({
     >
       <div className="bg-gray-50 p-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Home className="text-blue-600 mr-2" size={20} />
+          <Home className="text-blue-950 mr-2" size={50} />
           <div>
-            <h3 className="font-bold text-lg">{house.name}</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="font-bold font-roboto text-lg">{house.name}</h3>
+            <p className="text-sm text-gray-600 font-raleway">
               {house.location.region}, {house.location.city} • {house.type}
             </p>
           </div>
@@ -569,8 +569,8 @@ const HouseItem = ({
     </motion.div>
   );
 };
-// Main Dashboard Component
-const Dashboard = () => {
+// Main House Component
+const House = () => {
   const [houses, setHouses] = useState(mockHouses);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -654,10 +654,9 @@ const Dashboard = () => {
   };
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">House Management Dashboard</h1>
+      <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
       <motion.button
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mb-4"
-        whileHover={{ scale: 1.05 }}
+        className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-2 rounded-md mb-4"
         whileTap={{ scale: 0.95 }}
         onClick={handleAddHouse}
       >
@@ -696,5 +695,4 @@ const Dashboard = () => {
     </div>
   );
 };
-export default Dashboard;
-// export default function Dashboard() {
+export default House;
