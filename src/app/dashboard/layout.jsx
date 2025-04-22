@@ -17,10 +17,10 @@ import { useContext, useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-// import { jwtDecode } from "jwt-decode";
 import ProfilePictures from "@/compponents/ProfilePicture";
 import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
+import { toast } from "react-toastify";
 
 // what vano and other supervisors can see
 const userRoutes = [
@@ -53,7 +53,8 @@ const userRoutes = [
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [show, setshow] = useState(false);
-  const { user, userData } = useContext(UserContext);
+  const { user, userData, setUser } = useContext(UserContext);
+  const { setUserdata } = useContext(UserContext);
 
   //pagge navigation
   const pathname = usePathname();
@@ -90,12 +91,16 @@ export default function DashboardLayout({ children }) {
     }
     setshow(!show);
   };
-
-  // logOut function
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    LogOutUser();
-    router.push("/");
+    try {
+      localStorage.removeItem("token");
+      LogOutUser();
+      setUser(null);
+      setUserdata(null);
+      router.push("/");
+    } catch (error) {
+      toast.error("Logout failed:", error);
+    }
   };
 
   return (

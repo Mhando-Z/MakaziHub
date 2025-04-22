@@ -2,19 +2,40 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-// import image
 import logo from "../../../../public/assets/logo/House.png";
 import UserContext from "@/context/UserContext";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function Loading() {
   const [progress, setProgress] = useState(0);
-  const { userData } = useContext(UserContext);
+  const { userData, getUser, getProfile } = useContext(UserContext);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const duration = 2000; // total duration (ms)
-    const interval = 100; // update every 100ms
+    getUser();
+    getProfile();
+  }, [pathname]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!userData) redirect("/userprofile");
+    }, 3000); // wait 3 seconds then fallback
+
+    return () => clearTimeout(timeout);
+  }, [userData]);
+
+  // 🚀 Watch for when userData becomes available and navigate
+  useEffect(() => {
+    if (userData) {
+      redirect("dashboard/home");
+    }
+  }, [userData]);
+
+  // ⏳ Progress bar animation
+  useEffect(() => {
+    const duration = 2000;
+    const interval = 100;
     const steps = duration / interval;
     const increment = 100 / steps;
 
@@ -25,24 +46,11 @@ export default function Loading() {
       });
     }, interval);
 
-    const redirectTimer = setTimeout(() => {
-      if (userData) {
-        redirect("dashboard/home");
-      } else {
-        redirect("/userprofile");
-      }
-    }, duration);
-
-    return () => {
-      clearInterval(progressTimer);
-      clearTimeout(redirectTimer);
-    };
-  }, [userData]);
-  //
+    return () => clearInterval(progressTimer);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      {/* image section */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -51,10 +59,10 @@ export default function Loading() {
         <Image
           src={logo}
           alt="MhdLogo"
-          className="object-cover md:w-[300px] w-[200px]  transition-all"
+          className="object-cover md:w-[300px] w-[200px] transition-all"
         />
       </motion.div>
-      {/* Progress bar container */}
+
       <div className="w-full mt-4 justify-center flex items-center gap-x-2">
         <motion.div
           initial={{ opacity: 0 }}
@@ -67,14 +75,14 @@ export default function Loading() {
             style={{ width: `${progress}%` }}
           />
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className=""
         >
           <h1 className="text-xs font-raleway font-bold text-blue-950/60">
-            {progress} %
+            {Math.round(progress)} %
           </h1>
         </motion.div>
       </div>

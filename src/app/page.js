@@ -1,7 +1,7 @@
 "use client";
 
 import logo from "../../public/Assets/Logo/House.png";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FiEyeOff } from "react-icons/fi";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import DataContext from "@/context/DataContext";
 import { supabase2 } from "@/Config/Supabase";
 import { Loader } from "lucide-react";
+import UserContext from "@/context/UserContext";
 // import { jwtDecode } from "jwt-decode";
 
 export default function UserLogin() {
@@ -19,9 +20,11 @@ export default function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [show, setShow] = useState(true);
-  const route = useRouter();
   const { quotes } = useContext(DataContext);
   const [val, setVal] = useState(Math.floor(Math.random() * 100) + 1 || 5);
+  const { getUser, getProfile } = useContext(UserContext);
+
+  const route = useRouter();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -53,10 +56,11 @@ export default function UserLogin() {
       const { session } = data;
       //savetoken to local storage
       localStorage.setItem("token", session.access_token);
-      // const token = localStorage.getItem("token");
-      // const user = jwtDecode(token);
-      route.push("loading");
+      // redirect to loading
       setPresent(false);
+      getUser();
+      getProfile();
+      route.push("loading");
     }
     setLoading(false);
   };
