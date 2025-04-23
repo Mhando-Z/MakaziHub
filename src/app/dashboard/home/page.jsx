@@ -192,7 +192,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6">
+    <div className="">
       <motion.h1
         className="text-2xl font-bold mb-6"
         initial={{ opacity: 0, y: -10 }}

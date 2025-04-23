@@ -312,7 +312,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
 
   return (
     <motion.form
-      className="bg-white p-6 rounded-lg shadow-lg"
+      className="bg-white p-6 rounded-lg  shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -479,6 +479,11 @@ const HouseItem = ({
   onAddRoom,
   onEditRoom,
   onDeleteRoom,
+  showRoomForm,
+  selectedRoom,
+  handleSaveRoom,
+  handleCancelRoomForm,
+  Id,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -563,12 +568,23 @@ const HouseItem = ({
                 ))}
               </div>
             </div>
+            {showRoomForm && Id === house.id ? (
+              <RoomForm
+                room={selectedRoom}
+                houseId={selectedRoom?.houseId}
+                onSave={handleSaveRoom}
+                onCancel={handleCancelRoomForm}
+              />
+            ) : (
+              ""
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </motion.div>
   );
 };
+
 // Main House Component
 const House = () => {
   const [houses, setHouses] = useState(mockHouses);
@@ -576,6 +592,7 @@ const House = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showHouseForm, setShowHouseForm] = useState(false);
   const [showRoomForm, setShowRoomForm] = useState(false);
+  const [ID, setID] = useState(null);
 
   const handleAddHouse = () => {
     setSelectedHouse(null);
@@ -603,11 +620,13 @@ const House = () => {
   const handleAddRoom = (houseId) => {
     setSelectedRoom(null);
     setShowRoomForm(true);
+    setID(houseId);
   };
 
   const handleEditRoom = (houseId, room) => {
     setSelectedRoom(room);
     setShowRoomForm(true);
+    setID(houseId);
   };
 
   const handleDeleteRoom = (houseId, roomId) => {
@@ -653,7 +672,7 @@ const House = () => {
     setShowRoomForm(false);
   };
   return (
-    <div className="p-6">
+    <div className="relative">
       <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
       <motion.button
         className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-2 rounded-md mb-4"
@@ -672,7 +691,7 @@ const House = () => {
         />
       )}
 
-      {houses.map((house) => (
+      {houses?.map((house) => (
         <HouseItem
           key={house.id}
           house={house}
@@ -681,17 +700,13 @@ const House = () => {
           onAddRoom={handleAddRoom}
           onEditRoom={handleEditRoom}
           onDeleteRoom={handleDeleteRoom}
+          showRoomForm={showRoomForm}
+          selectedRoom={selectedRoom}
+          handleSaveRoom={handleSaveRoom}
+          handleCancelRoomForm={handleCancelRoomForm}
+          Id={ID}
         />
       ))}
-
-      {showRoomForm && (
-        <RoomForm
-          room={selectedRoom}
-          houseId={selectedRoom?.houseId}
-          onSave={handleSaveRoom}
-          onCancel={handleCancelRoomForm}
-        />
-      )}
     </div>
   );
 };
