@@ -12,12 +12,13 @@ import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
+  const route = useRouter();
   const [Userdata, setData] = useState({
     full_name: "",
     phone_number: "",
@@ -64,8 +65,8 @@ function UserProfile() {
       } else {
         toast.success("Data inserted successfully");
         getProfile();
-        redirect("dashboard/home");
         setLoading(false);
+        route.replace("dashboard/home");
       }
     } else if (selectedRole === "tenant") {
       const { data, error } = await supabase2
@@ -89,8 +90,8 @@ function UserProfile() {
       } else {
         toast.success("Data inserted successfully");
         getProfile();
-        redirect("dashboard/home");
         setLoading(false);
+        route.replace("dashboard/home");
       }
     }
   };
