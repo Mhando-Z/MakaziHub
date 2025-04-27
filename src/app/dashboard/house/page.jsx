@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
@@ -13,6 +13,9 @@ import {
   Search,
   Filter,
 } from "lucide-react";
+import UserContext from "@/context/UserContext";
+import { supabase2 } from "@/Config/Supabase";
+import { toast } from "react-toastify";
 
 // Mock data - in a real app this would come from your API
 const mockHouses = [
@@ -144,10 +147,12 @@ const mockHouses = [
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
+  const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     name: house?.name || "",
     region: house?.location?.region || "",
     city: house?.location?.city || "",
+    street: house?.location?.city || "",
     type: house?.type || "apartment",
   });
 
@@ -156,15 +161,45 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave({
-      id: house?.id || Date.now(),
-      name: formData.name,
-      location: { region: formData.region, city: formData.city },
-      type: formData.type,
-      rooms: house?.rooms || [],
-    });
+    if (house) {
+      // Update existing house
+      const { data, error } = await supabase2
+        .from("house")
+        .update({
+          name: house?.name || "",
+          region: house?.region || "",
+          street: house?.city || "",
+          type: house?.type || "apartment",
+        })
+        .select();
+      if (error) {
+        toast.error("Error updating house data");
+        console.log(error);
+      } else {
+        toast.success("House data updated successfully:");
+      }
+    } else {
+      // Insert new house
+      const { data, error } = await supabase2
+        .from("house")
+        .insert([
+          {
+            user_id: user?.id,
+            name: formData?.name || "",
+            region: formData?.region || "",
+            street: formData?.city || "",
+            type: formData?.type || "apartment",
+          },
+        ])
+        .select();
+      if (error) {
+        toast.error("Error saving house data");
+      } else {
+        toast.success("House data saved successfully:");
+      }
+    }
   };
 
   return (
@@ -220,18 +255,18 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         <div>
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="city"
+            htmlFor="street"
           >
-            City
+            street
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="city"
+            className="shadow lowercase appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="street"
             type="text"
-            name="city"
-            value={formData.city}
+            name="street"
+            value={formData.street}
             onChange={handleChange}
-            placeholder="Enter city"
+            placeholder="Enter street"
             required
           />
         </div>
@@ -263,7 +298,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       <div className="flex justify-end gap-2">
         <motion.button
           type="button"
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -272,7 +307,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         </motion.button>
         <motion.button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -383,7 +418,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       <div className="flex justify-end gap-2">
         <motion.button
           type="button"
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -392,7 +427,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         </motion.button>
         <motion.button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -675,7 +710,7 @@ const House = () => {
     <div className="relative">
       <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
       <motion.button
-        className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-2 rounded-md mb-4"
+        className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
         whileTap={{ scale: 0.95 }}
         onClick={handleAddHouse}
       >
