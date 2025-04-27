@@ -19,9 +19,11 @@ function UserProfile() {
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [Userdata, setData] = useState({
-    fullname: "",
-    phonenumber: "",
+    full_name: "",
+    phone_number: "",
     gender: "",
+    lords_id: "",
+    room_id: "",
     role: "",
     national_id: "",
   });
@@ -49,8 +51,8 @@ function UserProfile() {
         .insert([
           {
             id: user?.id,
-            full_name: Userdata.fullname,
-            phone_number: Userdata.phonenumber,
+            full_name: Userdata.full_name,
+            phone_number: Userdata.phone_number,
             gender: Userdata.gender,
             role: "landlord",
           },
@@ -74,8 +76,10 @@ function UserProfile() {
             full_name: Userdata.fullname,
             phone_number: Userdata.phonenumber,
             national_id: Userdata.national_id,
-            room_id: Userdata.roomid,
-            lords_id: Userdata.lordsid,
+            room_id: Userdata.room_id,
+            lords_id: Userdata.lords_id,
+            gender: Userdata.gender,
+            role: "tenant",
           },
         ])
         .select();
