@@ -202,12 +202,12 @@ function UserProfile() {
                             duration: 0.5,
                             ease: "easeInOut",
                           }}
-                          id="fullname"
-                          name="fullname"
+                          id="full_name"
+                          name="full_name"
                           onChange={handleChange}
                           type="text"
                           required
-                          autoComplete="fullname"
+                          autoComplete="full_name"
                           className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                         />
                       </div>

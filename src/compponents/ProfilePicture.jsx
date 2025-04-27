@@ -2,11 +2,14 @@ import React, { useContext, useEffect } from "react";
 import { HiMiniCheckBadge } from "react-icons/hi2";
 import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
+import { usePathname } from "next/navigation";
 
 function ProfilePictures() {
   const { user, userData } = useContext(UserContext);
+  const pathname = usePathname();
+  console.log(userData);
 
-  useEffect(() => {}, [userData, user]);
+  useEffect(() => {}, [userData, user, pathname]);
 
   return (
     <>
