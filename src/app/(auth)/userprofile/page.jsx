@@ -359,7 +359,7 @@ function UserProfile() {
                           htmlFor="lords_id"
                           className="block text-sm font-medium leading-6 text-gray-900 md:text-md  "
                         >
-                          LandLord ID
+                          LandLord ID <span>(optional)</span>
                         </label>
                         <div className="mt-2">
                           <motion.input
@@ -423,7 +423,7 @@ function UserProfile() {
                           htmlFor="room_id"
                           className="block text-sm font-medium leading-6 text-gray-900 md:text-md  "
                         >
-                          Room ID
+                          Room ID <span>(optional)</span>
                         </label>
                         <div className="mt-2">
                           <motion.input
@@ -442,6 +442,33 @@ function UserProfile() {
                             autoComplete="room_id"
                             className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           />
+                        </div>
+                      </motion.div>
+                      {/* tenant gender selection */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 1 }}
+                        transition={{ delay: 0.6, duration: 0.5 }}
+                        className="w-full"
+                      >
+                        <label
+                          htmlFor="gender"
+                          className="block text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                        >
+                          Gender
+                        </label>
+                        <div className="mt-2">
+                          <select
+                            id="gender"
+                            name="gender"
+                            onChange={handleChange}
+                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                            required
+                          >
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                          </select>
                         </div>
                       </motion.div>
                     </div>
