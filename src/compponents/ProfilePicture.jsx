@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 function ProfilePictures() {
   const { user, userData } = useContext(UserContext);
   const pathname = usePathname();
-  console.log(userData);
 
   useEffect(() => {}, [userData, user, pathname]);
 
@@ -37,12 +36,22 @@ function ProfilePictures() {
           <h1 className="text-sm  font-medium text-gray-700 line-clamp-1">
             {user?.email}
           </h1>
-          <div className="flex flex-row items-center w-full gap-x-1">
-            <>
-              <h1 className="text-sm">Admin</h1>
-            </>
-            <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
-          </div>
+          {/* status */}
+          {userData?.role === "landlord" ? (
+            <div className="flex flex-row items-center w-full gap-x-1">
+              <>
+                <h1 className="text-sm">Admin</h1>
+              </>
+              <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
+            </div>
+          ) : (
+            <div className="flex flex-row items-center w-full gap-x-1">
+              <>
+                <h1 className="text-sm">User</h1>
+              </>
+              <HiMiniCheckBadge className="text-green-700 gap-x-10" />
+            </div>
+          )}
         </div>
       </div>
     </>
