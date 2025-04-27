@@ -55,6 +55,9 @@ function UserProfile() {
             full_name: Userdata.full_name,
             phone_number: Userdata.phone_number,
             gender: Userdata.gender,
+            national_id: Userdata.national_id || null,
+            room_id: Userdata.room_id || null,
+            lords_id: Userdata.lords_id || null,
             role: "landlord",
           },
         ])
@@ -63,19 +66,19 @@ function UserProfile() {
         toast.error("Error inserting data:", error.message);
         setLoading(false);
       } else {
+        setLoading(false);
+        route.replace("/loading/");
         toast.success("Data inserted successfully");
         getProfile();
-        setLoading(false);
-        route.replace("dashboard/home");
       }
     } else if (selectedRole === "tenant") {
       const { data, error } = await supabase2
-        .from("tenant")
+        .from("profiles")
         .insert([
           {
             id: user?.id,
-            full_name: Userdata.fullname,
-            phone_number: Userdata.phonenumber,
+            full_name: Userdata.full_name,
+            phone_number: Userdata.phone_number,
             national_id: Userdata.national_id || null,
             room_id: Userdata.room_id || null,
             lords_id: Userdata.lords_id || null,
@@ -88,10 +91,10 @@ function UserProfile() {
         toast.error("Error inserting data:", error.message);
         setLoading(false);
       } else {
+        setLoading(false);
+        route.replace("/loading/");
         toast.success("Data inserted successfully");
         getProfile();
-        setLoading(false);
-        route.replace("dashboard/home");
       }
     }
   };
