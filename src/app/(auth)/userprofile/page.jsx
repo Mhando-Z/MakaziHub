@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
