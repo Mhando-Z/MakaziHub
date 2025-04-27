@@ -63,9 +63,9 @@ function UserProfile() {
         setLoading(false);
       } else {
         toast.success("Data inserted successfully");
-        setLoading(false);
         getProfile();
         redirect("dashboard/home");
+        setLoading(false);
       }
     } else if (selectedRole === "tenant") {
       const { data, error } = await supabase2
@@ -75,9 +75,9 @@ function UserProfile() {
             id: user?.id,
             full_name: Userdata.fullname,
             phone_number: Userdata.phonenumber,
-            national_id: Userdata.national_id,
-            room_id: Userdata.room_id,
-            lords_id: Userdata.lords_id,
+            national_id: Userdata.national_id || null,
+            room_id: Userdata.room_id || null,
+            lords_id: Userdata.lords_id || null,
             gender: Userdata.gender,
             role: "tenant",
           },
@@ -88,9 +88,9 @@ function UserProfile() {
         setLoading(false);
       } else {
         toast.success("Data inserted successfully");
-        setLoading(false);
         getProfile();
         redirect("dashboard/home");
+        setLoading(false);
       }
     }
   };
@@ -101,8 +101,6 @@ function UserProfile() {
     setLoading(true);
     handleProfile();
   };
-
-  console.log(selectedRole);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
@@ -378,7 +376,6 @@ function UserProfile() {
                             name="lords_id"
                             onChange={handleChange}
                             type="text"
-                            required
                             autoComplete="lords_id"
                             className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           />
@@ -409,7 +406,6 @@ function UserProfile() {
                             name="national_id"
                             onChange={handleChange}
                             type="text"
-                            required
                             autoComplete="national_id"
                             className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           />
@@ -442,7 +438,6 @@ function UserProfile() {
                             name="room_id"
                             onChange={handleChange}
                             type="text"
-                            required
                             autoComplete="room_id"
                             className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           />
