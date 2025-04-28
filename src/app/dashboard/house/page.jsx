@@ -531,9 +531,18 @@ const HouseItem = ({
     >
       <div className="bg-gray-50 p-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Home className="text-blue-950 mr-2" size={50} />
+          <Home
+            onClick={() => setExpanded(!expanded)}
+            className="cursor-pointer text-blue-950 mr-2"
+            size={50}
+          />
           <div>
-            <h3 className="font-bold font-roboto text-lg">{house.name}</h3>
+            <h3
+              onClick={() => setExpanded(!expanded)}
+              className="font-bold cursor-pointer font-roboto text-lg"
+            >
+              {house.name}
+            </h3>
             <p className="text-sm text-gray-600 font-raleway">
               {house.location.region}, {house.location.city} • {house.type}
             </p>
@@ -541,6 +550,7 @@ const HouseItem = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* edit button */}
           <motion.button
             className="p-1 hover:bg-gray-200 rounded-full"
             whileHover={{ scale: 1.1 }}
@@ -548,6 +558,7 @@ const HouseItem = ({
           >
             <Edit size={18} className="text-blue-600" />
           </motion.button>
+          {/* delete button */}
           <motion.button
             className="p-1 hover:bg-gray-200 rounded-full"
             whileHover={{ scale: 1.1 }}
@@ -555,6 +566,7 @@ const HouseItem = ({
           >
             <Trash size={18} className="text-red-600" />
           </motion.button>
+          {/* view button */}
           <motion.button
             className="p-1 hover:bg-gray-200 rounded-full"
             whileHover={{ scale: 1.1 }}
