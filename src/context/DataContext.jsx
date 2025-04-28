@@ -2,6 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 import { supabase1, supabase2 } from "@/Config/Supabase";
+import { jwtDecode } from "jwt-decode";
 
 const DataContext = createContext();
 
@@ -30,9 +31,7 @@ export function DataProvider({ children }) {
   }, []);
 
   return (
-    <DataContext.Provider value={{ quotes, houseData }}>
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={{ quotes }}>{children}</DataContext.Provider>
   );
 }
 

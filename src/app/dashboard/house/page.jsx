@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
@@ -17,142 +17,13 @@ import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
 
-// Mock data - in a real app this would come from your API
-const mockHouses = [
-  {
-    id: 1,
-    name: "Sunshine Apartments",
-    location: { region: "Dar es Salaam", city: "Kinondoni" },
-    type: "apartment",
-    rooms: [
-      {
-        id: 101,
-        name: "101",
-        type: "Single",
-        rent: 150000,
-        tenant: "John Doe",
-        status: "occupied",
-        startDate: "2025-01-15",
-        duration: 6,
-      },
-      {
-        id: 102,
-        name: "102",
-        type: "Master",
-        rent: 250000,
-        tenant: null,
-        status: "vacant",
-        startDate: null,
-        duration: null,
-      },
-      {
-        id: 103,
-        name: "103",
-        type: "Single",
-        rent: 150000,
-        tenant: "Sarah Johnson",
-        status: "occupied",
-        startDate: "2025-02-01",
-        duration: 12,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Coastal Villa",
-    location: { region: "Dar es Salaam", city: "Mikocheni" },
-    type: "bungalow",
-    rooms: [
-      {
-        id: 201,
-        name: "Master Bedroom",
-        type: "Master",
-        rent: 350000,
-        tenant: "Michael Brown",
-        status: "occupied",
-        startDate: "2025-03-01",
-        duration: 3,
-      },
-      {
-        id: 202,
-        name: "Guest Room 1",
-        type: "Single",
-        rent: 180000,
-        tenant: null,
-        status: "vacant",
-        startDate: null,
-        duration: null,
-      },
-      {
-        id: 203,
-        name: "Guest Room 2",
-        type: "Single",
-        rent: 180000,
-        tenant: null,
-        status: "vacant",
-        startDate: null,
-        duration: null,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Urban Residency",
-    location: { region: "Arusha", city: "Central" },
-    type: "apartment",
-    rooms: [
-      {
-        id: 301,
-        name: "A1",
-        type: "Single",
-        rent: 120000,
-        tenant: "Emily Davis",
-        status: "occupied",
-        startDate: "2024-12-01",
-        duration: 12,
-      },
-      {
-        id: 302,
-        name: "A2",
-        type: "Single",
-        rent: 120000,
-        tenant: "Daniel Wilson",
-        status: "occupied",
-        startDate: "2025-01-10",
-        duration: 6,
-      },
-      {
-        id: 303,
-        name: "A3",
-        type: "Master",
-        rent: 200000,
-        tenant: "Lisa Moore",
-        status: "occupied",
-        startDate: "2024-11-15",
-        duration: 12,
-      },
-      {
-        id: 304,
-        name: "A4",
-        type: "Single",
-        rent: 120000,
-        tenant: null,
-        status: "vacant",
-        startDate: null,
-        duration: null,
-      },
-    ],
-  },
-];
-
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     name: house?.name || "",
-    region: house?.location?.region || "",
-    city: house?.location?.city || "",
-    street: house?.location?.city || "",
+    region: house?.region || "",
+    street: house?.stret || "",
     type: house?.type || "apartment",
   });
 
@@ -170,13 +41,12 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         .update({
           name: house?.name || "",
           region: house?.region || "",
-          street: house?.city || "",
+          street: house?.street || "",
           type: house?.type || "apartment",
         })
         .select();
       if (error) {
         toast.error("Error updating house data");
-        console.log(error);
       } else {
         toast.success("House data updated successfully:");
       }
@@ -189,7 +59,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             user_id: user?.id,
             name: formData?.name || "",
             region: formData?.region || "",
-            street: formData?.city || "",
+            street: formData?.street || "",
             type: formData?.type || "apartment",
           },
         ])
@@ -202,6 +72,17 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
     }
   };
 
+  // refresh the form data when the house is updated
+  useEffect(() => {
+    if (house) {
+      setFormData({
+        name: house.name,
+        region: house.region,
+        street: house.street,
+        type: house.type,
+      });
+    }
+  }, [house]);
   return (
     <motion.form
       className="bg-white p-6 rounded-lg shadow-lg"
@@ -211,7 +92,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       onSubmit={handleSubmit}
     >
       <h2 className="text-xl font-bold mb-4">
-        {house ? "Edit House" : "Add New House"}
+        {house ? <>Edit {house?.name}</> : "Add New House"}
       </h2>
 
       <div className="mb-4">
@@ -544,7 +425,7 @@ const HouseItem = ({
               {house.name}
             </h3>
             <p className="text-sm text-gray-600 font-raleway">
-              {house.location.region}, {house.location.city} • {house.type}
+              {house.region}, {house.street} • {house.type}
             </p>
           </div>
         </div>
@@ -592,7 +473,7 @@ const HouseItem = ({
           >
             <div className="p-4 border-t">
               <div className="flex justify-between items-center mb-4">
-                <h4 className="font-medium">Rooms ({house.rooms.length})</h4>
+                <h4 className="font-medium">Rooms ({house.length})</h4>
                 <motion.button
                   className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
                   whileHover={{ scale: 1.05 }}
@@ -634,7 +515,7 @@ const HouseItem = ({
 
 // Main House Component
 const House = () => {
-  const [houses, setHouses] = useState(mockHouses);
+  const { houses } = useContext(UserContext);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showHouseForm, setShowHouseForm] = useState(false);

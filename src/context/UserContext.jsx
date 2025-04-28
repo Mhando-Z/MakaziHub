@@ -10,11 +10,22 @@ export function UserProvider({ children }) {
   const [profile, setProfile] = useState([]);
   const [Tprofile, setTprofile] = useState([]);
   const [userData, setUserdata] = useState(null);
+  const [houseData, setHouse] = useState([]);
+  const [houses, setHouseData] = useState([]);
 
+  // filter user profile to get user data
   const getUserData = () => {
     if (user && profile.length > 0) {
       const matched = profile.find((item) => item.id === user.id);
       if (matched) setUserdata(matched);
+    }
+  };
+
+  // filter data to get specific houses set to user
+  const getHouseData = () => {
+    if (user && houseData.length > 0) {
+      const matched = houseData.filter((item) => item.user_id === user.id);
+      if (matched) setHouseData(matched);
     }
   };
 
@@ -30,6 +41,13 @@ export function UserProvider({ children }) {
     else console.error("Profile fetch error:", error.message);
   };
 
+  const gethHouse = async () => {
+    const { data: house, error } = await supabase2.from("house").select("*");
+    if (!error) {
+      setHouse(house);
+    }
+  };
+
   const getUser = async () => {
     const {
       data: { user },
@@ -41,6 +59,7 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     getUser();
+    gethHouse();
     getProfile();
     getTProfile();
 
@@ -64,7 +83,8 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     getUserData();
-  }, [user, profile]);
+    getHouseData();
+  }, [user, profile, houseData]);
 
   return (
     <UserContext.Provider
@@ -72,6 +92,7 @@ export function UserProvider({ children }) {
         user,
         userData,
         Tprofile,
+        houses,
         getUserData,
         setUser,
         setUserdata,
