@@ -39,17 +39,16 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       const { data, error } = await supabase2
         .from("house")
         .update({
-          name: house?.name,
-          region: house?.region,
-          street: house?.street,
-          type: house?.type,
+          name: formData?.name,
+          region: formData?.region,
+          street: formData?.street,
+          type: formData?.type,
         })
         .eq("id", house?.id)
         .select();
 
       if (error) {
         toast.error("Error updating house data");
-        console.log(error);
       } else {
         gethHouse();
         toast.success("House data updated successfully:");
