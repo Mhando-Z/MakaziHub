@@ -12,6 +12,7 @@ import {
   Calendar,
   Search,
   Filter,
+  Loader,
 } from "lucide-react";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
@@ -20,6 +21,7 @@ import { toast } from "react-toastify";
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
   const { user, gethHouse } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: house?.name || "",
     region: house?.region || "",
@@ -34,6 +36,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (house) {
       // Update existing house
       const { data, error } = await supabase2
@@ -49,8 +52,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
       if (error) {
         toast.error("Error updating house data");
+        setLoading(false);
       } else {
         gethHouse();
+        setLoading(false);
         toast.success("House data updated successfully:");
       }
     } else {
@@ -68,9 +73,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         ])
         .select();
       if (error) {
+        setLoading(false);
         toast.error("Error saving house data");
       } else {
         gethHouse();
+        setLoading(false);
         toast.success("House data saved successfully:");
       }
     }
@@ -190,13 +197,24 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         >
           Cancel
         </motion.button>
+
         <motion.button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.8 }}
+          transition={{ type: "spring", ease: "easeOut" }}
+          className={`flex   justify-center rounded-md ${
+            loading
+              ? "bg-gray-200 cursor-not-allowed "
+              : "bg-blue-600 hover:bg-blue-700"
+          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
         >
-          {house ? "Update" : "Save"}
+          {loading ? (
+            <div className="flex items-center justify-center cursor-not-allowed">
+              <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+            </div>
+          ) : (
+            <span className="relative z-10"> {house ? "Update" : "Save"}</span>
+          )}
         </motion.button>
       </div>
     </motion.form>
@@ -437,7 +455,7 @@ const HouseItem = ({
         <div className="flex items-center gap-2">
           {/* edit button */}
           <motion.button
-            className="p-1 hover:bg-gray-200 rounded-full"
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
             whileHover={{ scale: 1.1 }}
             onClick={() => onEdit(house)}
           >
@@ -445,7 +463,7 @@ const HouseItem = ({
           </motion.button>
           {/* delete button */}
           <motion.button
-            className="p-1 hover:bg-gray-200 rounded-full"
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
             whileHover={{ scale: 1.1 }}
             onClick={() => onDelete(house.id)}
           >
@@ -453,7 +471,7 @@ const HouseItem = ({
           </motion.button>
           {/* view button */}
           <motion.button
-            className="p-1 hover:bg-gray-200 rounded-full"
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
             whileHover={{ scale: 1.1 }}
             onClick={() => setExpanded(!expanded)}
           >
@@ -519,7 +537,7 @@ const HouseItem = ({
 
 // Main House Component
 const House = () => {
-  const { houses } = useContext(UserContext);
+  const { houses, gethHouse } = useContext(UserContext);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showHouseForm, setShowHouseForm] = useState(false);
@@ -536,8 +554,18 @@ const House = () => {
     setShowHouseForm(true);
   };
 
-  const handleDeleteHouse = (id) => {
-    setHouses((prev) => prev.filter((house) => house.id !== id));
+  const handleDeleteHouse = async (id) => {
+    const { error } = await supabase2
+      .from("house") // Specify your table name
+      .delete() // Perform the delete operation
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting House:", error.message);
+    } else {
+      gethHouse(); // Refresh the house data after deletion
+      toast.success("House deleted successfully");
+    }
   };
 
   const handleSaveHouse = (house) => {
