@@ -95,6 +95,7 @@ export function UserProvider({ children }) {
         houses,
         getUserData,
         setUser,
+        gethHouse,
         setUserdata,
         getUser,
         getProfile,

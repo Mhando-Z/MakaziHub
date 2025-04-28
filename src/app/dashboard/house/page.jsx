@@ -19,12 +19,12 @@ import { toast } from "react-toastify";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
-  const { user } = useContext(UserContext);
+  const { user, gethHouse } = useContext(UserContext);
   const [formData, setFormData] = useState({
     name: house?.name || "",
     region: house?.region || "",
     street: house?.stret || "",
-    type: house?.type || "apartment",
+    type: house?.type || "",
   });
 
   const handleChange = (e) => {
@@ -39,15 +39,19 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       const { data, error } = await supabase2
         .from("house")
         .update({
-          name: house?.name || "",
-          region: house?.region || "",
-          street: house?.street || "",
-          type: house?.type || "apartment",
+          name: house?.name,
+          region: house?.region,
+          street: house?.street,
+          type: house?.type,
         })
+        .eq("id", house?.id)
         .select();
+
       if (error) {
         toast.error("Error updating house data");
+        console.log(error);
       } else {
+        gethHouse();
         toast.success("House data updated successfully:");
       }
     } else {
@@ -67,6 +71,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       if (error) {
         toast.error("Error saving house data");
       } else {
+        gethHouse();
         toast.success("House data saved successfully:");
       }
     }
@@ -599,6 +604,8 @@ const House = () => {
   const handleCancelRoomForm = () => {
     setShowRoomForm(false);
   };
+
+  useEffect(() => {}, [houses]);
   return (
     <div className="relative">
       <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
