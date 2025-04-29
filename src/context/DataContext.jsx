@@ -8,7 +8,7 @@ const DataContext = createContext();
 
 export function DataProvider({ children }) {
   const [quotes, setQuotes] = useState([]);
-  const [houseData, setHouse] = useState([]);
+  const [roomData, setRoom] = useState([]);
 
   // fetch quotes
   const fetchQts = async () => {
@@ -18,20 +18,22 @@ export function DataProvider({ children }) {
     }
   };
 
-  const fetchHouse = async () => {
-    const { data: house, error } = await supabase2.from("house").select("*");
+  const fetchRoom = async () => {
+    const { data: room, error } = await supabase2.from("house").select("*");
     if (!error) {
       setHouse(house);
     }
   };
 
   useEffect(() => {
-    fetchHouse();
+    fetchRoom();
     fetchQts();
   }, []);
 
   return (
-    <DataContext.Provider value={{ quotes }}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ quotes, roomData }}>
+      {children}
+    </DataContext.Provider>
   );
 }
 

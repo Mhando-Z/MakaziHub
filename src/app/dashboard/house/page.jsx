@@ -17,6 +17,7 @@ import {
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import { toast } from "react-toastify";
+import DataContext from "@/context/DataContext";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -424,6 +425,9 @@ const HouseItem = ({
   Id,
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const { roomData } = useContext(DataContext);
+
+  const rooms = roomData.filter((room) => room.house_id === house.id);
 
   return (
     <motion.div
@@ -495,7 +499,7 @@ const HouseItem = ({
           >
             <div className="p-4 border-t">
               <div className="flex justify-between items-center mb-4">
-                <h4 className="font-medium">Rooms ({house.length})</h4>
+                <h4 className="font-medium">Rooms ({rooms?.length})</h4>
                 <motion.button
                   className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
                   whileHover={{ scale: 1.05 }}
@@ -508,7 +512,7 @@ const HouseItem = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {house.rooms.map((room) => (
+                {rooms?.map((room) => (
                   <RoomCard
                     key={room.id}
                     room={room}
@@ -544,6 +548,7 @@ const House = () => {
   const [showRoomForm, setShowRoomForm] = useState(false);
   const [ID, setID] = useState(null);
 
+  // fuctios related to house
   const handleAddHouse = () => {
     setSelectedHouse(null);
     setShowHouseForm(true);
@@ -567,6 +572,7 @@ const House = () => {
       toast.success("House deleted successfully");
     }
   };
+  //
 
   const handleSaveHouse = (house) => {
     if (selectedHouse) {
@@ -589,18 +595,7 @@ const House = () => {
     setID(houseId);
   };
 
-  const handleDeleteRoom = (houseId, roomId) => {
-    setHouses((prev) =>
-      prev.map((house) =>
-        house.id === houseId
-          ? {
-              ...house,
-              rooms: house.rooms.filter((room) => room.id !== roomId),
-            }
-          : house
-      )
-    );
-  };
+  const handleDeleteRoom = (houseId, roomId) => {};
 
   const handleSaveRoom = (room) => {
     if (selectedRoom) {
