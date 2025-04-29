@@ -249,7 +249,6 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           room_name: formData?.name,
           room_type: formData?.type,
           rent_price: formData?.rent,
-          is_occupied: formData?.type,
         })
         .eq("id", room?.id)
         .select();
@@ -278,8 +277,6 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       if (error) {
         setLoading(false);
         toast.error("Error saving room data");
-        console.log(error);
-        console.log(formData);
       } else {
         fetchRoom();
         setLoading(false);
@@ -308,7 +305,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       onSubmit={handleSubmit}
     >
       <h2 className="text-xl font-bold mb-4">
-        {room ? "Edit Room" : "Add New Room"}
+        {room ? <>Edit {room.room_name} room</> : "Add New Room"}
       </h2>
 
       <div className="mb-4">
