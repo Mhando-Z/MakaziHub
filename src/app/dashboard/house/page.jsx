@@ -224,10 +224,12 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
 // Room Form Component
 const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
+  const { fetchRoom } = useContext(DataContext);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: room?.name || "",
-    type: room?.type || "Single",
-    rent: room?.rent || "",
+    name: room?.room_name || "",
+    type: room?.room_type || "",
+    rent: room?.rent_price || "",
   });
 
   const handleChange = (e) => {
@@ -235,19 +237,67 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave({
-      id: room?.id || Date.now(),
-      name: formData.name,
-      type: formData.type,
-      rent: parseInt(formData.rent),
-      tenant: room?.tenant || null,
-      status: room?.status || "vacant",
-      startDate: room?.startDate || null,
-      duration: room?.duration || null,
-    });
+    setLoading(true);
+    setLoading(true);
+    if (room) {
+      // Update existing house
+      const { data, error } = await supabase2
+        .from("room")
+        .update({
+          room_name: formData?.name,
+          room_type: formData?.type,
+          rent_price: formData?.rent,
+          is_occupied: formData?.type,
+        })
+        .eq("id", room?.id)
+        .select();
+
+      if (error) {
+        toast.error("Error updating room data");
+        setLoading(false);
+      } else {
+        fetchRoom();
+        setLoading(false);
+        toast.success("Room data updated successfully:");
+      }
+    } else {
+      // Insert new house
+      const { data, error } = await supabase2
+        .from("room")
+        .insert([
+          {
+            house_id: houseId,
+            room_name: formData?.name,
+            room_type: formData?.type,
+            rent_price: formData?.rent,
+          },
+        ])
+        .select();
+      if (error) {
+        setLoading(false);
+        toast.error("Error saving room data");
+        console.log(error);
+        console.log(formData);
+      } else {
+        fetchRoom();
+        setLoading(false);
+        toast.success("Room data saved successfully:");
+      }
+    }
   };
+
+  // refresh the form data when the house is updated
+  useEffect(() => {
+    if (room) {
+      setFormData({
+        name: room?.room_name,
+        type: room?.room_type,
+        rent: room?.rent_price,
+      });
+    }
+  }, [room]);
 
   return (
     <motion.form
@@ -270,7 +320,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         </label>
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="roomName"
+          id="name"
           type="text"
           name="name"
           value={formData.name}
@@ -288,15 +338,17 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           Room Type
         </label>
         <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="roomType"
+          className="shadow lowercase appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="type"
           name="type"
           value={formData.type}
           onChange={handleChange}
           required
         >
-          <option value="Single">Single</option>
-          <option value="Master">Master</option>
+          <option value="">Select Type</option>
+          <option value="single">Single</option>
+          <option value="master">Master</option>
+          <option value="shared">Shared</option>
         </select>
       </div>
 
@@ -331,11 +383,21 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         </motion.button>
         <motion.button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.8 }}
+          transition={{ type: "spring", ease: "easeOut" }}
+          className={`flex  justify-center rounded-md ${
+            loading
+              ? "bg-gray-200 cursor-not-allowed "
+              : "bg-blue-600 hover:bg-blue-700"
+          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
         >
-          {room ? "Update" : "Save"}
+          {loading ? (
+            <div className="flex items-center justify-center cursor-not-allowed">
+              <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+            </div>
+          ) : (
+            <span className="relative z-10"> {room ? "Update" : "Save"}</span>
+          )}
         </motion.button>
       </div>
     </motion.form>
@@ -344,6 +406,9 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
 
 // Room Card Component
 const RoomCard = ({ room, onEdit, onDelete }) => {
+  const { room_status } = useContext(DataContext);
+  const roomStatus = room_status.find((status) => status.room_id === room?.id);
+
   return (
     <motion.div
       className="bg-white rounded-lg shadow p-4"
@@ -354,8 +419,8 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
     >
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="font-bold text-lg">{room.name}</h3>
-          <p className="text-sm text-gray-600">{room.type} Room</p>
+          <h3 className="font-bold text-lg">{room.room_name}</h3>
+          <p className="text-sm text-gray-600">{room.room_type} Room</p>
         </div>
         <div className="flex gap-1">
           <motion.button
@@ -378,7 +443,7 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
       <div className="mt-3 flex items-center">
         <DollarSign size={16} className="text-green-600 mr-1" />
         <span className="font-medium">
-          TZS {room.rent.toLocaleString()}/month
+          TZS {room.rent_price.toLocaleString()}/month
         </span>
       </div>
 
@@ -390,19 +455,19 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
               : "bg-yellow-100 text-yellow-800"
           }`}
         >
-          {room.status === "occupied" ? "Occupied" : "Vacant"}
+          {room.is_occupied === "occupied" ? "Occupied" : "Vacant"}
         </div>
       </div>
 
-      {room.status === "occupied" && (
+      {room.is_occupied === "occupied" && (
         <div className="mt-3 border-t pt-3">
           <div className="flex items-center mb-1">
             <User size={14} className="text-gray-600 mr-1" />
-            <span className="text-sm">{room.tenant}</span>
+            <span className="text-sm">room tenant name</span>
           </div>
           <div className="flex items-center">
             <Calendar size={14} className="text-gray-600 mr-1" />
-            <span className="text-sm">{`Since ${room.startDate} (${room.duration} months)`}</span>
+            <span className="text-sm">{`Since ${roomStatus?.start_date} (${roomStatus?.duration_in_months} months)`}</span>
           </div>
         </div>
       )}
@@ -525,7 +590,7 @@ const HouseItem = ({
             {showRoomForm && Id === house.id ? (
               <RoomForm
                 room={selectedRoom}
-                houseId={selectedRoom?.houseId}
+                houseId={house.id}
                 onSave={handleSaveRoom}
                 onCancel={handleCancelRoomForm}
               />
