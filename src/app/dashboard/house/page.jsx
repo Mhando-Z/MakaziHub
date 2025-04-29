@@ -421,14 +421,14 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
         </div>
         <div className="flex gap-1">
           <motion.button
-            className="p-1 text-blue-600 hover:text-blue-800"
+            className="p-1 text-blue-600 cursor-pointer hover:text-blue-800"
             whileHover={{ scale: 1.1 }}
             onClick={() => onEdit(room)}
           >
             <Edit size={16} />
           </motion.button>
           <motion.button
-            className="p-1 text-red-600 hover:text-red-800"
+            className="p-1 text-red-600 cursor-pointer hover:text-red-800"
             whileHover={{ scale: 1.1 }}
             onClick={() => onDelete(room.id)}
           >
@@ -579,7 +579,7 @@ const HouseItem = ({
                     key={room.id}
                     room={room}
                     onEdit={() => onEditRoom(house.id, room)}
-                    onDelete={() => onDeleteRoom(house.id, room.id)}
+                    onDelete={() => onDeleteRoom(room.id)}
                   />
                 ))}
               </div>
@@ -604,6 +604,7 @@ const HouseItem = ({
 // Main House Component
 const House = () => {
   const { houses, gethHouse } = useContext(UserContext);
+  const { fetchRoom } = useContext(DataContext);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showHouseForm, setShowHouseForm] = useState(false);
@@ -657,29 +658,21 @@ const House = () => {
     setID(houseId);
   };
 
-  const handleDeleteRoom = (houseId, roomId) => {};
+  const handleDeleteRoom = async (roomId) => {
+    const { error } = await supabase2
+      .from("room") // Specify your table name
+      .delete() // Perform the delete operation
+      .eq("id", roomId);
+
+    if (error) {
+      console.error("Error deleting room:", error.message);
+    } else {
+      fetchRoom(); // Refresh the house data after deletion
+      toast.success("Room deleted successfully");
+    }
+  };
 
   const handleSaveRoom = (room) => {
-    if (selectedRoom) {
-      setHouses((prev) =>
-        prev.map((house) =>
-          house.id === selectedRoom.houseId
-            ? {
-                ...house,
-                rooms: house.rooms.map((r) => (r.id === room.id ? room : r)),
-              }
-            : house
-        )
-      );
-    } else {
-      setHouses((prev) =>
-        prev.map((house) =>
-          house.id === selectedRoom.houseId
-            ? { ...house, rooms: [...house.rooms, room] }
-            : house
-        )
-      );
-    }
     setShowRoomForm(false);
   };
   const handleCancelHouseForm = () => {
