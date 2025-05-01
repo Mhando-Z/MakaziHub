@@ -11,7 +11,7 @@ import { RiLuggageDepositFill } from "react-icons/ri";
 import Image from "next/image";
 // other imports
 import logo from "../../../public/Assets/Logo/House.png";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -19,6 +19,7 @@ import ProfilePictures from "@/compponents/ProfilePicture";
 import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 // what vano and other supervisors can see
 const userRoutes = [
@@ -101,6 +102,15 @@ export default function DashboardLayout({ children }) {
     }
   };
 
+  useLayoutEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      redirect("/");
+      return;
+    }
+  }, []);
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -132,7 +142,7 @@ export default function DashboardLayout({ children }) {
                             className={`${
                               pathname === dt.path
                                 ? "bg-green-600 items-center gap-x-5 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
-                                : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-green-300 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
+                                : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-gray-200 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
                             }`}
                           >
                             <p className="text-xl">{dt.icon}</p>
