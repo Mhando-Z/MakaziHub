@@ -16,18 +16,23 @@ import {
 } from "lucide-react";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
-import { toast } from "react-toastify";
 import DataContext from "@/context/DataContext";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
   const { user, gethHouse } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [formData, setFormData] = useState({
     name: house?.name || "",
     region: house?.region || "",
     street: house?.stret || "",
     type: house?.type || "",
+    purpose: house?.purpose || "",
+    houseprice: house?.house_price || "",
+    bedrooms: house?.bedrooms || "",
+    bathrooms: house?.bathrooms || "",
+    description: house?.description || "",
   });
 
   const handleChange = (e) => {
@@ -38,6 +43,8 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage({ text: "", type: "" });
+
     if (house) {
       // Update existing house
       const { data, error } = await supabase2
@@ -47,17 +54,28 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           region: formData?.region,
           street: formData?.street,
           type: formData?.type,
+          purpose: formData?.purpose,
+          bathrooms: formData?.bathrooms,
+          bedrooms: formData?.bedrooms,
+          description: formData?.description,
+          house_price: formData?.houseprice,
         })
         .eq("id", house?.id)
         .select();
 
       if (error) {
-        toast.error("Error updating house data");
         setLoading(false);
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
       } else {
         gethHouse();
         setLoading(false);
-        toast.success("House data updated successfully:");
+        setMessage({
+          text: "House data updated successfully!",
+          type: "success",
+        });
       }
     } else {
       // Insert new house
@@ -70,16 +88,27 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             region: formData?.region || "",
             street: formData?.street || "",
             type: formData?.type || "apartment",
+            purpose: formData?.purpose || "",
+            bathrooms: formData?.bathrooms || 0,
+            bedrooms: formData?.bedrooms || 0,
+            description: formData?.description || "",
+            house_price: formData?.houseprice || 0,
           },
         ])
         .select();
       if (error) {
         setLoading(false);
-        toast.error("Error saving house data");
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
       } else {
         gethHouse();
         setLoading(false);
-        toast.success("House data saved successfully:");
+        setMessage({
+          text: "House data saved successfully!",
+          type: "success",
+        });
       }
     }
   };
@@ -92,9 +121,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         region: house.region,
         street: house.street,
         type: house.type,
+        purpose: house?.purpose,
       });
     }
   }, [house]);
+
   return (
     <motion.form
       className="bg-white p-6 rounded-lg shadow-lg"
@@ -168,25 +199,161 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       <div className="mb-6">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="type"
+          htmlFor="purpose"
         >
-          House Type
+          Purpose
         </label>
         <select
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="type"
-          name="type"
-          value={formData.type}
+          id="purpose"
+          name="purpose"
+          value={formData.purpose}
           onChange={handleChange}
           required
         >
-          <option value="">Select Type</option>
-          <option value="apartment">Apartment</option>
-          <option value="bungalow">Bungalow</option>
-          <option value="duplex">Duplex</option>
-          <option value="townhouse">Townhouse</option>
+          <option value={null}>Select purpose</option>
+          <option value="Rent House">Rent House</option>
+          <option value="Rent Rooms">Rent Rooms</option>
         </select>
       </div>
+
+      {/* if house is for rent show the following inputs */}
+      {formData?.purpose === "Rent House" ? (
+        <>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="houseprice"
+            >
+              House Price
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="houseprice"
+              type="number"
+              name="houseprice"
+              value={formData.houseprice}
+              onChange={handleChange}
+              placeholder="Enter number of bed rooms"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="bedrooms"
+            >
+              BedRooms
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="bedrooms"
+              type="number"
+              name="bedrooms"
+              value={formData.bedrooms}
+              onChange={handleChange}
+              placeholder="Enter number of bedrooms"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="bathrooms"
+            >
+              BathRooms
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="bathrooms"
+              type="number"
+              name="bathrooms"
+              value={formData.bathrooms}
+              onChange={handleChange}
+              placeholder="Enter number of bathrooms"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="type"
+            >
+              House Type
+            </label>
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value={null}>Select Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="bungalow">Bungalow</option>
+              <option value="duplex">Duplex</option>
+              <option value="townhouse">Townhouse</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="description"
+            >
+              House Description
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Write a short description of the house"
+              rows={3}
+              required
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="type"
+            >
+              House Type
+            </label>
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value={null}>Select Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="bungalow">Bungalow</option>
+              <option value="duplex">Duplex</option>
+              <option value="townhouse">Townhouse</option>
+            </select>
+          </div>
+        </>
+      )}
+
+      {/* notification section */}
+      {message.text && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
 
       <div className="flex justify-end gap-2">
         <motion.button
@@ -254,12 +421,10 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         .select();
 
       if (error) {
-        toast.error("Error updating room data");
         setLoading(false);
       } else {
         fetchRoom();
         setLoading(false);
-        toast.success("Room data updated successfully:");
       }
     } else {
       // Insert new house
@@ -276,11 +441,9 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         .select();
       if (error) {
         setLoading(false);
-        toast.error("Error saving room data");
       } else {
         fetchRoom();
         setLoading(false);
-        toast.success("Room data saved successfully:");
       }
     }
   };
@@ -632,7 +795,6 @@ const House = () => {
       console.error("Error deleting House:", error.message);
     } else {
       gethHouse(); // Refresh the house data after deletion
-      toast.success("House deleted successfully");
     }
   };
   //
@@ -668,7 +830,6 @@ const House = () => {
       console.error("Error deleting room:", error.message);
     } else {
       fetchRoom(); // Refresh the house data after deletion
-      toast.success("Room deleted successfully");
     }
   };
 
