@@ -12,14 +12,14 @@ export default function OccupancyForm({ house, occupancy }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    room_id: occupancy.room_id || "",
-    tenant_id: occupancy.tenant_id || house?.tenant_id,
-    start_date: occupancy.start_date || "",
-    duration_in_months: occupancy.duration_in_months || "",
-    end_date: occupancy.end_date || "",
-    rent_due_date: occupancy.rent_due_date || "",
-    is_active: occupancy.is_active || false,
-    house_id: occupancy.house_id || house?.id,
+    room_id: occupancy?.room_id || "",
+    tenant_id: occupancy?.tenant_id || house?.tenant_id,
+    start_date: occupancy?.start_date || "",
+    duration_in_months: occupancy?.duration_in_months || "",
+    end_date: occupancy?.end_date || "",
+    rent_due_date: occupancy?.rent_due_date || "",
+    is_active: occupancy?.is_active || false,
+    house_id: occupancy?.house_id || house?.id,
   });
 
   //   end date calculation logic

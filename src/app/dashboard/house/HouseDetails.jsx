@@ -22,9 +22,6 @@ export default function HouseDetailsCard({ house }) {
   //  occupancy allocation based on house-id
   const Occupancy = occupancy?.find((dt) => dt?.house_id === house?.id);
 
-  console.log(Occupancy);
-  console.log(occupancy);
-
   return (
     <motion.div className="bg-white  overflow-hidden w-full">
       {/* Header */}
