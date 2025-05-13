@@ -52,6 +52,7 @@ export default function OccupancyForm({ house, occupancy }) {
     }
 
     setErrors(newErrors);
+    setLoading(false);
     return Object.keys(newErrors).length === 0;
   };
 
