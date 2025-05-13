@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Home, MapPin, Tag, Bed, Bath } from "lucide-react";
+import OccupancyForm from "@/compponents/OccupancyForm";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-US", {
@@ -14,7 +15,6 @@ const formatPrice = (price) => {
 
 export default function HouseDetailsCard({ house }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
   const amenities = house.description.split(", ").map((item) => item.trim());
 
   console.log(house);
@@ -51,21 +51,21 @@ export default function HouseDetailsCard({ house }) {
       <div className="p-6">
         <div className="flex justify-between mb-6">
           <div className="flex items-center">
-            <Tag size={20} className="text-blue-600 mr-2" />
+            <Tag size={25} className="text-blue-600 mr-2" />
             <div>
               <div className="text-gray-500 text-xs">Type</div>
               <div className="font-medium capitalize">{house.type}</div>
             </div>
           </div>
           <div className="flex items-center">
-            <Bed size={20} className="text-blue-600 mr-2" />
+            <Bed size={25} className="text-blue-600 mr-2" />
             <div>
               <div className="text-gray-500 text-xs">Bedrooms</div>
               <div className="font-medium">{house.bedrooms}</div>
             </div>
           </div>
           <div className="flex items-center">
-            <Bath size={20} className="text-blue-600 mr-2" />
+            <Bath size={25} className="text-blue-600 mr-2" />
             <div>
               <div className="text-gray-500 text-xs">Bathrooms</div>
               <div className="font-medium">{house.bathrooms}</div>
@@ -73,10 +73,20 @@ export default function HouseDetailsCard({ house }) {
           </div>
         </div>
 
+        {/* tenant details */}
+
         {/* description section */}
         <div className="py-2">
           <h1 className="font-bold">House Description</h1>
           <p className="text-xs md:text-sm">{house?.description}</p>
+        </div>
+
+        {/* occupancy details */}
+        <div></div>
+
+        {/* Occupancy form */}
+        <div className="mt-4">
+          <OccupancyForm />
         </div>
       </div>
     </motion.div>

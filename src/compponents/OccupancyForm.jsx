@@ -1,17 +1,22 @@
 "use client";
 
+import { supabase2 } from "@/Config/Supabase";
+import { Loader } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
-export default function OccupancyForm({ onSubmit, initialData = {} }) {
+export default function OccupancyForm({ onSubmit, occupancy = {} }) {
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    room_id: initialData.room_id || "",
-    tenant_id: initialData.tenant_id || "",
-    start_date: initialData.start_date || "",
-    duration_in_months: initialData.duration_in_months || "",
-    end_date: initialData.end_date || "",
-    rent_due_date: initialData.rent_due_date || "",
-    is_active: initialData.is_active || false,
-    house_id: initialData.house_id || "",
+    room_id: occupancy.room_id || "",
+    tenant_id: occupancy.tenant_id || "",
+    start_date: occupancy.start_date || "",
+    duration_in_months: occupancy.duration_in_months || "",
+    end_date: occupancy.end_date || "",
+    rent_due_date: occupancy.rent_due_date || "",
+    is_active: occupancy.is_active || false,
+    house_id: occupancy.house_id || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -27,7 +32,6 @@ export default function OccupancyForm({ onSubmit, initialData = {} }) {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.room_id) newErrors.room_id = "Room ID is required";
     if (!formData.tenant_id) newErrors.tenant_id = "Tenant ID is required";
     if (!formData.start_date) newErrors.start_date = "Start date is required";
     if (!formData.duration_in_months) {
@@ -38,22 +42,84 @@ export default function OccupancyForm({ onSubmit, initialData = {} }) {
     ) {
       newErrors.duration_in_months = "Duration must be a positive number";
     }
-    if (!formData.house_id) newErrors.house_id = "House ID is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       onSubmit(formData);
     }
+    if (occupancy) {
+      // Update existing occupancy
+      const { data, error } = await supabase2
+        .from("occupancy")
+        .update({
+          room_id: occupancy.room_id,
+          tenant_id: occupancy.tenant_id,
+          start_date: occupancy.start_date,
+          duration_in_months: occupancy.duration_in_months,
+          end_date: occupancy.end_date,
+          rent_due_date: occupancy.rent_due_date,
+          is_active: occupancy.is_active,
+          house_id: occupancy.house_id,
+        })
+        .eq("id", occupancy?.id)
+        .select();
+
+      if (error) {
+        setLoading(false);
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
+      } else {
+        gethHouse();
+        setLoading(false);
+        setMessage({
+          text: "House data updated successfully!",
+          type: "success",
+        });
+      }
+    } else {
+      // Insert new occupancy
+      const { data, error } = await supabase2
+        .from("occupancy")
+        .insert([
+          {
+            room_id: occupancy.room_id || null,
+            tenant_id: occupancy.tenant_id || null,
+            start_date: occupancy.start_date || "",
+            duration_in_months: occupancy.duration_in_months || "",
+            end_date: occupancy.end_date || "",
+            rent_due_date: occupancy.rent_due_date || "",
+            is_active: occupancy.is_active || false,
+            house_id: occupancy.house_id || null,
+          },
+        ])
+        .select();
+      if (error) {
+        setLoading(false);
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
+      } else {
+        gethHouse();
+        setLoading(false);
+        setMessage({
+          text: "House data saved successfully!",
+          type: "success",
+        });
+      }
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Occupancy Form</h2>
+    <div className="mx-auto bg-white">
+      <h2 className="font-bold mb-3 text-gray-800">Occupancy Form</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -235,10 +301,23 @@ export default function OccupancyForm({ onSubmit, initialData = {} }) {
           </div>
         </div>
 
-        <div className="flex justify-end gap-4 pt-4">
+        {/* notification section */}
+        {message.text && (
+          <div
+            className={`mb-4 p-3 rounded ${
+              message.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
+        <div className="flex flex-row justify-end gap-4 pt-4">
           <button
             type="button"
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             onClick={() =>
               setFormData({
                 room_id: "",
@@ -254,12 +333,24 @@ export default function OccupancyForm({ onSubmit, initialData = {} }) {
           >
             Reset
           </button>
-          <button
+          <motion.button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            whileTap={{ scale: 0.8 }}
+            transition={{ type: "spring", ease: "easeOut" }}
+            className={`flex   justify-center rounded-md ${
+              loading
+                ? "bg-gray-200 cursor-not-allowed "
+                : "bg-blue-600 hover:bg-blue-700"
+            }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
           >
-            Submit
-          </button>
+            {loading ? (
+              <div className="flex items-center justify-center cursor-not-allowed">
+                <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+              </div>
+            ) : (
+              <span className="">Submit</span>
+            )}
+          </motion.button>
         </div>
       </form>
     </div>
