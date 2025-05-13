@@ -22,13 +22,6 @@ export default function OccupancyForm({ house, occupancy }) {
     house_id: occupancy?.house_id || house?.id,
   });
 
-  //   end date calculation logic
-  // if (!formData.end_date && formData.start_date && formData.duration_in_months) {
-  //   const start = new Date(formData.start_date);
-  //   start.setMonth(start.getMonth() + Number(formData.duration_in_months));
-  //   formData.end_date = start.toISOString().split("T")[0];
-  // }
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({

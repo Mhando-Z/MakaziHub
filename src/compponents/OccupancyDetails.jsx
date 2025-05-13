@@ -75,11 +75,11 @@ export default function OccupancyDetails({ occupancyData }) {
         <div
           className={`px-3 py-1 rounded-full text-sm font-medium ${
             occupancyData.is_active
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-green-300 text-green-800"
+              : "bg-red-200 text-red-800"
           }`}
         >
-          {occupancyData.is_active ? "Active" : "Inactive"}
+          {occupancyData.is_active ? "Occupied" : "Not Occupied"}
         </div>
       </div>
 

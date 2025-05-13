@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Home, MapPin, Tag, Bed, Bath } from "lucide-react";
+import { Home, MapPin, Tag, Bed, Bath, Key, Check, Copy } from "lucide-react";
 import OccupancyForm from "@/compponents/OccupancyForm";
 import DataContext from "@/context/DataContext";
 import OccupancyDetails from "@/compponents/OccupancyDetails";
@@ -20,6 +20,22 @@ export default function HouseDetailsCard({ house }) {
   const amenities = house.description.split(", ").map((item) => item.trim());
   const { occupancy } = useContext(DataContext);
   const [Occupancy, setOccupancy] = useState([]);
+  const [copied, setCopied] = useState(false);
+
+  //   handles copying data to clipboard
+  const copyToClipboard = () => {
+    if (house?.id) {
+      navigator.clipboard
+        .writeText(house.id)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch((err) => {
+          console.error("Failed to copy: ", err);
+        });
+    }
+  };
 
   //  occupancy allocation based on house-id
   const handleOccupancy = () => {
@@ -34,7 +50,13 @@ export default function HouseDetailsCard({ house }) {
   return (
     <motion.div className="bg-white  overflow-hidden w-full">
       {/* Header */}
-      <div className="bg-gradient-to-r justify-between  flex flex-col md:flex-row from-blue-600 to-blue-800 p-6 text-white">
+      <div
+        className={`bg-gradient-to-r justify-between ${
+          Occupancy
+            ? "from-green-600 to-green-700"
+            : "from-blue-600 to-blue-800"
+        }  flex flex-col md:flex-row  to-blue-800 p-6 text-white`}
+      >
         <div>
           <div className="flex items-center mb-2">
             <Home className="mr-2" />
@@ -54,8 +76,28 @@ export default function HouseDetailsCard({ house }) {
           </div>
         </div>
         {/* id section */}
-        <div>
-          <h2>{house?.id}</h2>
+
+        <div className="">
+          <div className="flex items-center gap-2">
+            <Key size={16} className="text-white" />
+            <h2 className="font-medium text-white">House key</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <code className="  px-3 py-1 rounded text-white font-mono">
+              {house?.id || "No ID available"}
+            </code>
+            <button
+              onClick={copyToClipboard}
+              className="flex items-center justify-center p-2 rounded-md hover:bg-gray-700 transition-colors"
+              title="Copy house ID"
+            >
+              {copied ? (
+                <Check size={16} className="text-white" />
+              ) : (
+                <Copy size={16} className="text-white" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
