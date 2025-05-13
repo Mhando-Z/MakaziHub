@@ -17,6 +17,7 @@ import {
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import DataContext from "@/context/DataContext";
+import HouseDetailsCard from "./HouseDetails";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -722,40 +723,48 @@ const HouseItem = ({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="p-4 border-t">
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-medium">Rooms ({rooms?.length})</h4>
-                <motion.button
-                  className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => onAddRoom(house.id)}
-                >
-                  <Plus size={14} className="mr-1" />
-                  Add Room
-                </motion.button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {rooms?.map((room) => (
-                  <RoomCard
-                    key={room.id}
-                    room={room}
-                    onEdit={() => onEditRoom(house.id, room)}
-                    onDelete={() => onDeleteRoom(room.id)}
-                  />
-                ))}
-              </div>
-            </div>
-            {showRoomForm && Id === house.id ? (
-              <RoomForm
-                room={selectedRoom}
-                houseId={house.id}
-                onSave={handleSaveRoom}
-                onCancel={handleCancelRoomForm}
-              />
+            {house?.purpose === "Rent House" ? (
+              <>
+                <HouseDetailsCard house={house} />
+              </>
             ) : (
-              ""
+              <>
+                <div className="p-4 border-t">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-medium">Rooms ({rooms?.length})</h4>
+                    <motion.button
+                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => onAddRoom(house.id)}
+                    >
+                      <Plus size={14} className="mr-1" />
+                      Add Room
+                    </motion.button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {rooms?.map((room) => (
+                      <RoomCard
+                        key={room.id}
+                        room={room}
+                        onEdit={() => onEditRoom(house.id, room)}
+                        onDelete={() => onDeleteRoom(room.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {showRoomForm && Id === house.id ? (
+                  <RoomForm
+                    room={selectedRoom}
+                    houseId={house.id}
+                    onSave={handleSaveRoom}
+                    onCancel={handleCancelRoomForm}
+                  />
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </motion.div>
         )}
