@@ -2,24 +2,32 @@
 
 import { supabase2 } from "@/Config/Supabase";
 import { Loader } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
+import DataContext from "@/context/DataContext";
 
-export default function OccupancyForm({ onSubmit, occupancy = {} }) {
+export default function OccupancyForm({ house, occupancy }) {
+  const { fetchOccupancy } = useContext(DataContext);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     room_id: occupancy.room_id || "",
-    tenant_id: occupancy.tenant_id || "",
+    tenant_id: occupancy.tenant_id || house?.tenant_id,
     start_date: occupancy.start_date || "",
     duration_in_months: occupancy.duration_in_months || "",
     end_date: occupancy.end_date || "",
     rent_due_date: occupancy.rent_due_date || "",
     is_active: occupancy.is_active || false,
-    house_id: occupancy.house_id || "",
+    house_id: occupancy.house_id || house?.id,
   });
 
-  const [errors, setErrors] = useState({});
+  //   end date calculation logic
+  // if (!formData.end_date && formData.start_date && formData.duration_in_months) {
+  //   const start = new Date(formData.start_date);
+  //   start.setMonth(start.getMonth() + Number(formData.duration_in_months));
+  //   formData.end_date = start.toISOString().split("T")[0];
+  // }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,70 +57,70 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage({ text: "", type: "" });
     if (validateForm()) {
-      onSubmit(formData);
-    }
-    if (occupancy) {
-      // Update existing occupancy
-      const { data, error } = await supabase2
-        .from("occupancy")
-        .update({
-          room_id: occupancy.room_id,
-          tenant_id: occupancy.tenant_id,
-          start_date: occupancy.start_date,
-          duration_in_months: occupancy.duration_in_months,
-          end_date: occupancy.end_date,
-          rent_due_date: occupancy.rent_due_date,
-          is_active: occupancy.is_active,
-          house_id: occupancy.house_id,
-        })
-        .eq("id", occupancy?.id)
-        .select();
+      if (occupancy) {
+        // Update existing occupancy
+        const { data, error } = await supabase2
+          .from("occupancy")
+          .update({
+            tenant_id: formData.tenant_id,
+            start_date: formData.start_date,
+            duration_in_months: formData.duration_in_months,
+            end_date: formData.end_date,
+            rent_due_date: formData.rent_due_date,
+            is_active: formData.is_active,
+            house_id: formData.house_id,
+          })
+          .eq("id", occupancy?.id)
+          .select();
 
-      if (error) {
-        setLoading(false);
-        setMessage({
-          text: error?.response?.data?.message || "An error occurred",
-          type: "error",
-        });
+        if (error) {
+          setLoading(false);
+          setMessage({
+            text: error?.response?.data?.message || "An error occurred",
+            type: "error",
+          });
+        } else {
+          fetchOccupancy();
+          setLoading(false);
+          setMessage({
+            text: "House data updated successfully!",
+            type: "success",
+          });
+        }
       } else {
-        gethHouse();
-        setLoading(false);
-        setMessage({
-          text: "House data updated successfully!",
-          type: "success",
-        });
-      }
-    } else {
-      // Insert new occupancy
-      const { data, error } = await supabase2
-        .from("occupancy")
-        .insert([
-          {
-            room_id: occupancy.room_id || null,
-            tenant_id: occupancy.tenant_id || null,
-            start_date: occupancy.start_date || "",
-            duration_in_months: occupancy.duration_in_months || "",
-            end_date: occupancy.end_date || "",
-            rent_due_date: occupancy.rent_due_date || "",
-            is_active: occupancy.is_active || false,
-            house_id: occupancy.house_id || null,
-          },
-        ])
-        .select();
-      if (error) {
-        setLoading(false);
-        setMessage({
-          text: error?.response?.data?.message || "An error occurred",
-          type: "error",
-        });
-      } else {
-        gethHouse();
-        setLoading(false);
-        setMessage({
-          text: "House data saved successfully!",
-          type: "success",
-        });
+        // Insert new occupancy
+        const { data, error } = await supabase2
+          .from("occupancy")
+          .insert([
+            {
+              room_id: formData.room_id || null,
+              tenant_id: formData.tenant_id || null,
+              start_date: formData.start_date || "",
+              duration_in_months: formData.duration_in_months || "",
+              end_date: formData.end_date || "",
+              rent_due_date: formData.rent_due_date || "",
+              is_active: formData.is_active || false,
+              house_id: formData.house_id || null,
+            },
+          ])
+          .select();
+        if (error) {
+          setLoading(false);
+          setMessage({
+            text: error?.response?.data?.message || "An error occurred",
+            type: "error",
+          });
+        } else {
+          fetchOccupancy();
+          setLoading(false);
+          setMessage({
+            text: "House data saved successfully!",
+            type: "success",
+          });
+        }
       }
     }
   };
@@ -137,7 +145,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
               name="room_id"
               value={formData.room_id}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md ${
+              className={`w-full p-2 border rounded-md outline-0 ${
                 errors.room_id ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -160,7 +168,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
               name="tenant_id"
               value={formData.tenant_id}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md ${
+              className={`w-full p-2 border rounded-md outline-0 ${
                 errors.tenant_id ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -183,7 +191,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
               name="house_id"
               value={formData.house_id}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md ${
+              className={`w-full p-2 border rounded-md outline-0 ${
                 errors.house_id ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -206,7 +214,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
               name="start_date"
               value={formData.start_date}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md ${
+              className={`w-full p-2 border rounded-md outline-0 ${
                 errors.start_date ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -230,7 +238,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
               min="1"
               value={formData.duration_in_months}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md ${
+              className={`w-full p-2 border rounded-md outline-0 ${
                 errors.duration_in_months ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -317,7 +325,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
         <div className="flex flex-row justify-end gap-4 pt-4">
           <button
             type="button"
-            className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
             onClick={() =>
               setFormData({
                 room_id: "",
@@ -348,7 +356,7 @@ export default function OccupancyForm({ onSubmit, occupancy = {} }) {
                 <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
               </div>
             ) : (
-              <span className="">Submit</span>
+              <span className=""> {occupancy ? "Update" : "Submit"}</span>
             )}
           </motion.button>
         </div>

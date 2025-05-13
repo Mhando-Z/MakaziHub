@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Home, MapPin, Tag, Bed, Bath } from "lucide-react";
 import OccupancyForm from "@/compponents/OccupancyForm";
+import DataContext from "@/context/DataContext";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-US", {
@@ -16,8 +17,13 @@ const formatPrice = (price) => {
 export default function HouseDetailsCard({ house }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const amenities = house.description.split(", ").map((item) => item.trim());
+  const { occupancy } = useContext(DataContext);
 
-  console.log(house);
+  //  occupancy allocation based on house-id
+  const Occupancy = occupancy?.find((dt) => dt?.house_id === house?.id);
+
+  console.log(Occupancy);
+  console.log(occupancy);
 
   return (
     <motion.div className="bg-white  overflow-hidden w-full">
@@ -86,7 +92,7 @@ export default function HouseDetailsCard({ house }) {
 
         {/* Occupancy form */}
         <div className="mt-4">
-          <OccupancyForm />
+          <OccupancyForm house={house} occupancy={Occupancy} />
         </div>
       </div>
     </motion.div>
