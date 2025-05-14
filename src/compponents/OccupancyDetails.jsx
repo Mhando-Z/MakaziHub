@@ -27,7 +27,11 @@ const defaultOccupancyData = {
   house_id: "9c5ba1ac-24ac-4cb8-b517-58e10eebdd11",
 };
 
-export default function OccupancyDetails({ occupancyData }) {
+export default function OccupancyDetails({
+  occupancyData,
+  setShowEdit,
+  showEdit,
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Format date to display in a more readable format
@@ -65,6 +69,10 @@ export default function OccupancyDetails({ occupancyData }) {
 
   // Check if we should show the reminder
   const showEndDateReminder = isEndDateInCurrentMonth();
+
+  const handleShowEdit = () => {
+    setShowEdit(!showEdit);
+  };
 
   return (
     <div className="bg-white">
@@ -155,27 +163,37 @@ export default function OccupancyDetails({ occupancyData }) {
       </div>
 
       {/* Toggle for additional details */}
-      <button
-        className="mt-6 text-blue-600 font-medium flex items-center"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        {isExpanded ? "Hide" : "Show"} additional details
-        <svg
-          className={`ml-1 h-4 w-4 transform transition-transform ${
-            isExpanded ? "rotate-180" : ""
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div className="w-full  mt-6 flex flex-row items-center justify-between">
+        <button
+          className=" text-blue-600 font-medium flex cursor-pointer items-center"
+          onClick={() => setIsExpanded(!isExpanded)}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
+          {isExpanded ? "Hide" : "Show"} additional details
+          <svg
+            className={`ml-1 h-4 w-4 transform transition-transform ${
+              isExpanded ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {/* show edit button */}
+        <button
+          onClick={handleShowEdit}
+          className="cursor-pointer text-sm text-blue-600 hover:text-red-600 "
+        >
+          Edit Occupancy form
+        </button>
+      </div>
 
       {/* Additional details section */}
       {isExpanded && (

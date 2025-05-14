@@ -21,6 +21,7 @@ export default function HouseDetailsCard({ house }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const amenities = house.description.split(", ").map((item) => item.trim());
   const { occupancy } = useContext(DataContext);
+  const [showEdit, setShowEdit] = useState(false);
   const { profile } = useContext(UserContext);
   const [Occupancy, setOccupancy] = useState([]);
   const [tenant, setTenant] = useState([]);
@@ -152,7 +153,11 @@ export default function HouseDetailsCard({ house }) {
           <>
             {/* occupancy details */}
             <div className="mt-4">
-              <OccupancyDetails occupancyData={Occupancy} />
+              <OccupancyDetails
+                occupancyData={Occupancy}
+                setShowEdit={setShowEdit}
+                showEdit={showEdit}
+              />
             </div>
           </>
         ) : (
