@@ -57,8 +57,6 @@ export default function OccupancyDetails({ occupancyData }) {
     const today = new Date();
     const endDate = new Date(occupancyData.end_date);
 
-    console.log(endDate);
-
     return (
       today.getMonth() === endDate.getMonth() &&
       today.getFullYear() === endDate.getFullYear()
@@ -107,9 +105,7 @@ export default function OccupancyDetails({ occupancyData }) {
         >
           <div className="flex items-center mb-2">
             <Calendar className="h-5 w-5 text-blue-500 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-700">
-              Tenancy Period
-            </h3>
+            <h3 className="  font-semibold text-gray-700">Tenancy Period</h3>
           </div>
           <div className="ml-7">
             <p className="text-gray-700">
@@ -135,9 +131,7 @@ export default function OccupancyDetails({ occupancyData }) {
         >
           <div className="flex items-center mb-2">
             <DollarSign className="h-5 w-5 text-green-500 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-700">
-              Payment Details
-            </h3>
+            <h3 className="  font-semibold text-gray-700">Payment Details</h3>
           </div>
           <div className="ml-7">
             <p className="text-gray-700">

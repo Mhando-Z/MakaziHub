@@ -91,6 +91,7 @@ export function UserProvider({ children }) {
       value={{
         user,
         userData,
+        profile,
         Tprofile,
         houses,
         getUserData,

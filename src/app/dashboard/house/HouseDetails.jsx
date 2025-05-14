@@ -6,6 +6,8 @@ import { Home, MapPin, Tag, Bed, Bath, Key, Check, Copy } from "lucide-react";
 import OccupancyForm from "@/compponents/OccupancyForm";
 import DataContext from "@/context/DataContext";
 import OccupancyDetails from "@/compponents/OccupancyDetails";
+import UserContext from "@/context/UserContext";
+import TenantDetails from "@/compponents/TenantDetails";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-US", {
@@ -19,7 +21,9 @@ export default function HouseDetailsCard({ house }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const amenities = house.description.split(", ").map((item) => item.trim());
   const { occupancy } = useContext(DataContext);
+  const { profile } = useContext(UserContext);
   const [Occupancy, setOccupancy] = useState([]);
+  const [tenant, setTenant] = useState([]);
   const [copied, setCopied] = useState(false);
 
   //   handles copying data to clipboard
@@ -41,6 +45,8 @@ export default function HouseDetailsCard({ house }) {
   const handleOccupancy = () => {
     const Occupancy = occupancy?.find((dt) => dt?.house_id === house?.id);
     setOccupancy(Occupancy);
+    const tenants = profile?.find((dt) => dt?.house_id === house?.id);
+    setTenant(tenants);
   };
 
   useEffect(() => {
@@ -128,6 +134,13 @@ export default function HouseDetailsCard({ house }) {
         </div>
 
         {/* tenant details */}
+        {Occupancy ? (
+          <div className="mt-4">
+            <TenantDetails tenant={tenant} />
+          </div>
+        ) : (
+          ""
+        )}
 
         {/* description section */}
         <div className="py-2">
