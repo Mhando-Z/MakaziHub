@@ -168,6 +168,18 @@ export default function HouseDetailsCard({ house }) {
             </div>
           </>
         )}
+
+        {/* Occupancy form */}
+        {showEdit && (
+          <div className="mt-4">
+            <OccupancyForm
+              house={house}
+              showEdit={showEdit}
+              occupancy={Occupancy}
+              setShowEdit={setShowEdit}
+            />
+          </div>
+        )}
       </div>
     </motion.div>
   );

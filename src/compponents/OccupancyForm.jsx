@@ -6,7 +6,12 @@ import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import DataContext from "@/context/DataContext";
 
-export default function OccupancyForm({ house, occupancy }) {
+export default function OccupancyForm({
+  house,
+  occupancy,
+  setShowEdit,
+  showEdit,
+}) {
   const { fetchOccupancy } = useContext(DataContext);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
@@ -317,24 +322,34 @@ export default function OccupancyForm({ house, occupancy }) {
         )}
 
         <div className="flex flex-row justify-end gap-4 pt-4">
-          <button
-            type="button"
-            className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
-            onClick={() =>
-              setFormData({
-                room_id: "",
-                tenant_id: "",
-                start_date: "",
-                duration_in_months: "",
-                end_date: "",
-                rent_due_date: "",
-                is_active: false,
-                house_id: "",
-              })
-            }
-          >
-            Reset
-          </button>
+          {showEdit ? (
+            <button
+              type="button"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
+              onClick={() => setShowEdit(!showEdit)}
+            >
+              Cancel
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
+              onClick={() =>
+                setFormData({
+                  room_id: "",
+                  tenant_id: "",
+                  start_date: "",
+                  duration_in_months: "",
+                  end_date: "",
+                  rent_due_date: "",
+                  is_active: false,
+                  house_id: "",
+                })
+              }
+            >
+              Reset
+            </button>
+          )}
           <motion.button
             type="submit"
             whileTap={{ scale: 0.8 }}
