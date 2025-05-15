@@ -54,14 +54,30 @@ export default function HouseDetailsCard({ house }) {
     handleOccupancy();
   }, []);
 
+  const isEndDateInCurrentMonth = () => {
+    const today = new Date();
+    const endDate = new Date(Occupancy?.end_date);
+
+    return (
+      today?.getMonth() === endDate?.getMonth() &&
+      today?.getFullYear() === endDate?.getFullYear()
+    );
+  };
+
+  // Check if we should show the reminder
+
+  const showEndDateReminder = isEndDateInCurrentMonth();
+
   return (
     <motion.div className="bg-white  overflow-hidden w-full">
       {/* Header */}
       <div
         className={`bg-gradient-to-r justify-between ${
-          Occupancy
-            ? "from-green-600 to-green-700"
-            : "from-blue-600 to-blue-800"
+          showEndDateReminder
+            ? "from-red-600 to-red-900"
+            : Occupancy
+            ? "from-green-600 to-green-900"
+            : "from-blue-600 to-blue-900"
         }  flex flex-col md:flex-row  to-blue-800 p-6 text-white`}
       >
         <div>

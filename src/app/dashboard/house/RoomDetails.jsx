@@ -66,11 +66,11 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
 
   const isEndDateInCurrentMonth = () => {
     const today = new Date();
-    const endDate = new Date(Occupancy.end_date);
+    const endDate = new Date(Occupancy?.end_date);
 
     return (
-      today.getMonth() === endDate.getMonth() &&
-      today.getFullYear() === endDate.getFullYear()
+      today?.getMonth() === endDate?.getMonth() &&
+      today?.getFullYear() === endDate?.getFullYear()
     );
   };
 
