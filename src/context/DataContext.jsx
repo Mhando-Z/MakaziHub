@@ -10,6 +10,8 @@ export function DataProvider({ children }) {
   const [roomData, setRoom] = useState([]);
   const [room_status, setRoomStatus] = useState([]);
   const [occupancy, setOccupancy] = useState([]);
+  //
+  const [dueDate, setDueDate] = useState();
 
   // fetch quotes
   const fetchQts = async () => {
