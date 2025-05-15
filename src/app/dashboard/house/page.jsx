@@ -18,6 +18,7 @@ import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
 import DataContext from "@/context/DataContext";
 import HouseDetailsCard from "./HouseDetails";
+import RoomDetailsCard from "./RoomDetails";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -572,7 +573,7 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
 
   return (
     <motion.div
-      className="bg-white rounded-lg shadow p-4"
+      className="bg-white rounded-lg shadow p-2"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
@@ -652,8 +653,15 @@ const HouseItem = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const { roomData } = useContext(DataContext);
+  const [showRoomDetails, setShowRoomDetails] = useState(false);
+  const [room, setRoom] = useState([]);
 
   const rooms = roomData.filter((room) => room.house_id === house.id);
+
+  const handleRoom = (room) => {
+    setRoom(room);
+    setShowRoomDetails(!showRoomDetails);
+  };
 
   return (
     <motion.div
@@ -745,15 +753,31 @@ const HouseItem = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {rooms?.map((room) => (
-                      <RoomCard
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleRoom(room)}
                         key={room.id}
-                        room={room}
-                        onEdit={() => onEditRoom(house.id, room)}
-                        onDelete={() => onDeleteRoom(room.id)}
-                      />
+                      >
+                        <RoomCard
+                          key={room.id}
+                          room={room}
+                          onEdit={() => onEditRoom(house.id, room)}
+                          onDelete={() => onDeleteRoom(room.id)}
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>
+                {/* show room details section */}
+                {showRoomDetails && (
+                  <RoomDetailsCard
+                    room={room}
+                    house={house}
+                    setShowRoomDetails={setShowRoomDetails}
+                  />
+                )}
+
+                {/* roomform edit */}
                 {showRoomForm && Id === house.id ? (
                   <RoomForm
                     room={selectedRoom}

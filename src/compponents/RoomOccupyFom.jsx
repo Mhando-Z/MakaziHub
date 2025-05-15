@@ -6,24 +6,25 @@ import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import DataContext from "@/context/DataContext";
 
-export default function OccupancyForm({
-  house,
+export default function RoomOccupancyForm({
+  room,
   occupancy,
   setShowEdit,
   showEdit,
+  setShowRoomDetails,
 }) {
   const { fetchOccupancy } = useContext(DataContext);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    tenant_id: occupancy?.tenant_id || house?.tenant_id,
+    room_id: occupancy?.room_id || room?.id,
+    tenant_id: occupancy?.tenant_id || room?.tenant_id,
     start_date: occupancy?.start_date || "",
     duration_in_months: occupancy?.duration_in_months || "",
     end_date: occupancy?.end_date || "",
     rent_due_date: occupancy?.rent_due_date || "",
     is_active: occupancy?.is_active || false,
-    house_id: occupancy?.house_id || house?.id,
   });
 
   const handleChange = (e) => {
@@ -54,8 +55,8 @@ export default function OccupancyForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMessage({ text: "", type: "" });
+    setLoading(true);
     if (validateForm()) {
       if (occupancy) {
         // Update existing occupancy
@@ -68,7 +69,7 @@ export default function OccupancyForm({
             end_date: formData.end_date,
             rent_due_date: formData.rent_due_date,
             is_active: formData.is_active,
-            house_id: formData.house_id,
+            room_id: formData.room_id,
           })
           .eq("id", occupancy?.id)
           .select();
@@ -86,7 +87,7 @@ export default function OccupancyForm({
           fetchOccupancy();
           setLoading(false);
           setMessage({
-            text: "House data updated successfully!",
+            text: "room data updated successfully!",
             type: "success",
           });
         }
@@ -96,14 +97,14 @@ export default function OccupancyForm({
           .from("occupancy")
           .insert([
             {
-              room_id: null,
+              house_id: null,
+              room_id: formData.room_id || null,
               tenant_id: formData.tenant_id || null,
               start_date: formData.start_date || "",
               duration_in_months: formData.duration_in_months || "",
               end_date: formData.end_date || "",
               rent_due_date: formData.rent_due_date || "",
               is_active: formData.is_active || false,
-              house_id: formData.house_id || null,
             },
           ])
           .select();
@@ -120,12 +121,14 @@ export default function OccupancyForm({
           fetchOccupancy();
           setLoading(false);
           setMessage({
-            text: "House data saved successfully!",
+            text: "room data saved successfully!",
             type: "success",
           });
         }
       }
-    } else setLoading(false);
+    } else {
+      setLoading(false);
+    }
   };
 
   return (
@@ -134,6 +137,29 @@ export default function OccupancyForm({
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Room ID Field */}
+          <div className="space-y-1">
+            <label
+              htmlFor="room_id"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Room ID
+            </label>
+            <input
+              type="text"
+              id="room_id"
+              name="room_id"
+              value={formData.room_id}
+              onChange={handleChange}
+              className={`w-full p-2 border rounded-md outline-0 ${
+                errors.room_id ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.room_id && (
+              <p className="text-red-500 text-xs">{errors.room_id}</p>
+            )}
+          </div>
+
           {/* Tenant ID Field */}
           <div className="space-y-1">
             <label
@@ -154,29 +180,6 @@ export default function OccupancyForm({
             />
             {errors.tenant_id && (
               <p className="text-red-500 text-xs">{errors.tenant_id}</p>
-            )}
-          </div>
-
-          {/* House ID Field */}
-          <div className="space-y-1">
-            <label
-              htmlFor="house_id"
-              className="block text-sm font-medium text-gray-700"
-            >
-              House ID
-            </label>
-            <input
-              type="text"
-              id="house_id"
-              name="house_id"
-              value={formData.house_id}
-              onChange={handleChange}
-              className={`w-full p-2 border rounded-md outline-0 ${
-                errors.house_id ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.house_id && (
-              <p className="text-red-500 text-xs">{errors.house_id}</p>
             )}
           </div>
 
@@ -315,20 +318,9 @@ export default function OccupancyForm({
             <button
               type="button"
               className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
-              onClick={() =>
-                setFormData({
-                  room_id: "",
-                  tenant_id: "",
-                  start_date: "",
-                  duration_in_months: "",
-                  end_date: "",
-                  rent_due_date: "",
-                  is_active: false,
-                  house_id: "",
-                })
-              }
+              onClick={() => setShowRoomDetails(false)}
             >
-              Reset
+              cancel
             </button>
           )}
           <motion.button
