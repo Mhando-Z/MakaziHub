@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Home, MapPin, Tag, Bed, Bath, Key, Check, Copy } from "lucide-react";
 import OccupancyForm from "@/compponents/OccupancyForm";
@@ -23,8 +23,8 @@ export default function HouseDetailsCard({ house }) {
   const { occupancy } = useContext(DataContext);
   const [showEdit, setShowEdit] = useState(false);
   const { profile } = useContext(UserContext);
-  const [Occupancy, setOccupancy] = useState([]);
-  const [tenant, setTenant] = useState([]);
+  // const [Occupancy, setOccupancy] = useState([]);
+  // const [tenant, setTenant] = useState([]);
   const [copied, setCopied] = useState(false);
 
   //   handles copying data to clipboard
@@ -43,16 +43,9 @@ export default function HouseDetailsCard({ house }) {
   };
 
   //  occupancy allocation based on house-id
-  const handleOccupancy = () => {
-    const Occupancy = occupancy?.find((dt) => dt?.house_id === house?.id);
-    setOccupancy(Occupancy);
-    const tenants = profile?.find((dt) => dt?.house_id === house?.id);
-    setTenant(tenants);
-  };
-
-  useEffect(() => {
-    handleOccupancy();
-  }, []);
+  const Occupancy = occupancy?.find((dt) => dt?.house_id === house?.id);
+  //  tenants allocation based on house-id
+  const tenant = profile?.find((dt) => dt?.house_id === house?.id);
 
   const isEndDateInCurrentMonth = () => {
     const today = new Date();

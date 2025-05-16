@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Home,
@@ -33,8 +33,8 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   const { occupancy } = useContext(DataContext);
   const [showEdit, setShowEdit] = useState(false);
   const { profile } = useContext(UserContext);
-  const [Occupancy, setOccupancy] = useState([]);
-  const [tenant, setTenant] = useState([]);
+  // const [Occupancy, setOccupancy] = useState([]);
+  // const [tenant, setTenant] = useState([]);
   const [copied, setCopied] = useState(false);
 
   //   handles copying data to clipboard
@@ -53,16 +53,9 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   };
 
   //  occupancy allocation based on room-id
-  const handleOccupancy = () => {
-    const Occupancy = occupancy?.find((dt) => dt?.room_id === room?.id);
-    setOccupancy(Occupancy);
-    const tenants = profile?.find((dt) => dt?.room_id === room?.id);
-    setTenant(tenants);
-  };
-
-  useEffect(() => {
-    handleOccupancy();
-  }, []);
+  const Occupancy = occupancy?.find((dt) => dt?.room_id === room?.id);
+  //  tenants allocation based on room-id
+  const tenant = profile?.find((dt) => dt?.room_id === room?.id);
 
   const isEndDateInCurrentMonth = () => {
     const today = new Date();
