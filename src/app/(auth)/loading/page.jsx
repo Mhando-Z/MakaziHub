@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import logo from "../../../../public/assets/logo/House.png";
+import logo from "../../../../public/Assets/Logo/House.png";
 import UserContext from "@/context/UserContext";
 import { redirect, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
