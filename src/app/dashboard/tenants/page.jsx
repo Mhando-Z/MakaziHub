@@ -66,7 +66,7 @@ function Tenants() {
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Dashboard Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">
           Tenant Management
         </h1>
         <p className="text-gray-500">
@@ -78,7 +78,7 @@ function Tenants() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow p-4 flex items-center">
           <div className="bg-blue-100 p-3 rounded-full mr-4">
-            <Users className="text-blue-600" size={20} />
+            <Users className="text-blue-600" size={26} />
           </div>
           <div>
             <p className="text-gray-500 text-sm">Total Tenants</p>
@@ -88,7 +88,7 @@ function Tenants() {
 
         <div className="bg-white rounded-lg shadow p-4 flex items-center">
           <div className="bg-orange-100 p-3 rounded-full mr-4">
-            <Bell className="text-orange-600" size={20} />
+            <Bell className="text-orange-600" size={26} />
           </div>
           <div>
             <p className="text-gray-500 text-sm">Ending This Month</p>
@@ -98,7 +98,7 @@ function Tenants() {
 
         <div className="bg-white rounded-lg shadow p-4 flex items-center">
           <div className="bg-green-100 p-3 rounded-full mr-4">
-            <Home className="text-green-600" size={20} />
+            <Home className="text-green-600" size={26} />
           </div>
           <div>
             <p className="text-gray-500 text-sm">Active Properties</p>
@@ -155,7 +155,7 @@ function Tenants() {
                   >
                     <div className="flex items-center">
                       <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600 mr-4">
-                        <User size={20} />
+                        <User size={26} />
                       </div>
                       <div>
                         <p className="font-medium text-gray-800">
