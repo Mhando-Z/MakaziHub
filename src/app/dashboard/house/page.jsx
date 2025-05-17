@@ -878,7 +878,7 @@ const House = () => {
 
   useEffect(() => {}, [houses]);
   return (
-    <div className="relative">
+    <div className="relative md:p-6 bg-gray-50">
       <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
       <motion.button
         className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"

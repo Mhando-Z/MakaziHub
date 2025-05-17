@@ -13,7 +13,7 @@ function Tenants() {
 
   const tenants = profile?.filter((dt) => dt?.lords_id === userData?.id);
 
-  const [filteredTenants, setFilteredTenants] = useState([]);
+  // const [filteredTenants, setFilteredTenants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("ending");
 
@@ -34,12 +34,13 @@ function Tenants() {
       });
   }
 
-  useEffect(() => {
-    if (occupancy && tenants) {
-      const result = filterAndCombineByEndMonth(occupancy, tenants);
-      setFilteredTenants(result);
-    }
-  }, []);
+  const filteredTenants = filterAndCombineByEndMonth(occupancy, tenants);
+  // useEffect(() => {
+  //   if (occupancy && tenants) {
+  //     const result = filterAndCombineByEndMonth(occupancy, tenants);
+  //     setFilteredTenants(result);
+  //   }
+  // }, []);
 
   const filteredAllTenants = tenants?.filter((tenant) =>
     tenant?.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -77,7 +78,7 @@ function Tenants() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 md:p-6">
       {/* Dashboard Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
