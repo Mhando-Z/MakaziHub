@@ -12,6 +12,7 @@ function Tenants() {
   const { occupancy, roomData } = useContext(DataContext);
 
   const tenants = profile?.filter((dt) => dt?.lords_id === userData?.id);
+  const Occupancy = occupancy?.filter((dt) => dt?.lords_id === userData?.id);
 
   // const [filteredTenants, setFilteredTenants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,7 +35,7 @@ function Tenants() {
       });
   }
 
-  const filteredTenants = filterAndCombineByEndMonth(occupancy, tenants);
+  const filteredTenants = filterAndCombineByEndMonth(Occupancy, tenants);
   // useEffect(() => {
   //   if (occupancy && tenants) {
   //     const result = filterAndCombineByEndMonth(occupancy, tenants);
@@ -117,7 +118,7 @@ function Tenants() {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Active Properties</p>
-            <p className="text-2xl font-bold">{occupancy?.length || 0}</p>
+            <p className="text-2xl font-bold">{Occupancy?.length || 0}</p>
           </div>
         </div>
       </div>
