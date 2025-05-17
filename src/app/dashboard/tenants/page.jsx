@@ -13,8 +13,16 @@ function Tenants() {
   console.log(tenants);
 
   return (
-    <div>
-      <div></div>
+    <div className="min-h-screen flex flex-col">
+      {/* header section */}
+      <div>
+        <h1>List of Tenants</h1>
+        <div className="flex flex-col h-[500px] mt-4 overflow-y-scroll">
+          {tenants?.map((dt, index) => {
+            return <div>{dt?.full_name}</div>;
+          })}
+        </div>
+      </div>
     </div>
   );
 }

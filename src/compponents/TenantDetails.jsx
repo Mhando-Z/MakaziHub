@@ -9,6 +9,7 @@ import {
   Home,
   Users,
   Mail,
+  MailIcon,
 } from "lucide-react";
 
 // This would typically come from props or a context/state management
@@ -76,6 +77,14 @@ export default function TenantDetails({ tenant }) {
             <div>
               <p className="text-sm text-gray-500">Phone Number</p>
               <p className="font-medium">{tenant?.phone_number}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <MailIcon className="text-gray-500 w-5 h-5" />
+            <div>
+              <p className="text-sm text-gray-500">Email</p>
+              <p className="font-medium">{tenant?.email}</p>
             </div>
           </div>
 
