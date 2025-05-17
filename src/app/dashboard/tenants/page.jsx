@@ -36,9 +36,10 @@ function Tenants() {
   }
 
   const filteredTenants = filterAndCombineByEndMonth(Occupancy, tenants);
+
   // useEffect(() => {
-  //   if (occupancy && tenants) {
-  //     const result = filterAndCombineByEndMonth(occupancy, tenants);
+  //   if (Occupancy && tenants) {
+  //     const result = filterAndCombineByEndMonth(Occupancy, tenants);
   //     setFilteredTenants(result);
   //   }
   // }, []);
