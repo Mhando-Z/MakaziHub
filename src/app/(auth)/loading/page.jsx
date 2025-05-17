@@ -11,7 +11,6 @@ export default function Loading() {
   const [progress, setProgress] = useState(0);
   const { userData, getUser, getProfile } = useContext(UserContext);
   const pathname = usePathname();
-
   useEffect(() => {
     getUser();
     getProfile();
