@@ -4,10 +4,12 @@ import React, { useContext, useEffect, useState } from "react";
 import UserContext from "@/context/UserContext";
 import DataContext from "@/context/DataContext";
 import { Calendar, Users, Bell, Clock, Home, Search, User } from "lucide-react";
+import HouseDetailsCard from "../house/HouseDetails";
+import RoomDetailsCard from "../house/RoomDetails";
 
 function Tenants() {
-  const { profile, userData } = useContext(UserContext);
-  const { occupancy } = useContext(DataContext);
+  const { profile, userData, houses } = useContext(UserContext);
+  const { occupancy, roomData } = useContext(DataContext);
 
   const tenants = profile?.filter((dt) => dt?.lords_id === userData?.id);
 
@@ -60,6 +62,18 @@ function Tenants() {
     const diffTime = end - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
+  };
+
+  // property creation
+  const [property, setPropety] = useState([]);
+  const [showDetails, setDetails] = useState(false);
+  const [propertyId, setPropertyId] = useState("");
+  const handleSelect = (dt) => {
+    const room = roomData?.find((dat) => dat?.id === dt?.room_id);
+    const house = houses?.find((dat) => dat?.id === dt?.house_id);
+    setPropertyId(dt?.id);
+    setPropety(room || house);
+    setDetails(!showDetails);
   };
 
   return (
@@ -143,32 +157,33 @@ function Tenants() {
             </h2>
           </div>
 
-          <div className="mt-4 space-y-4 max-h-96 overflow-y-auto">
+          <div className="mt-4 space-y-4   overflow-y-auto">
             {filteredTenants?.length > 0 ? (
               filteredTenants.map((dt, index) => {
                 const daysLeft = getDaysLeft(dt.end_date);
-
                 return (
-                  <div
-                    key={index}
-                    className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between hover:shadow-md transition-all duration-200"
-                  >
-                    <div className="flex items-center">
-                      <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600 mr-4">
-                        <User size={26} />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-800">
-                          {dt.tenant?.full_name || "Unknown Tenant"}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Contract ends: {formatDate(dt.end_date)}
-                        </p>
-                      </div>
-                    </div>
-
+                  <div>
                     <div
-                      className={`px-3 py-1 rounded-full text-sm font-medium flex items-center
+                      key={index}
+                      onClick={() => handleSelect(dt)}
+                      className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="flex items-center">
+                        <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600 mr-4">
+                          <User size={26} />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {dt.tenant?.full_name || "Unknown Tenant"}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            Contract ends: {formatDate(dt.end_date)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
+                        className={`px-3 py-1 rounded-full text-sm font-medium flex items-center
                       ${
                         daysLeft <= 7
                           ? "bg-red-100 text-red-800"
@@ -176,9 +191,30 @@ function Tenants() {
                           ? "bg-orange-100 text-orange-800"
                           : "bg-blue-100 text-blue-800"
                       }`}
-                    >
-                      <Clock size={14} className="mr-1" />
-                      {daysLeft} days left
+                      >
+                        <Clock size={14} className="mr-1" />
+                        {daysLeft} days left
+                      </div>
+                    </div>
+
+                    {/* House and Room Details section */}
+                    <div>
+                      {showDetails &&
+                      propertyId === dt?.id &&
+                      property?.id === dt?.house_id ? (
+                        <HouseDetailsCard house={property} />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div>
+                      {showDetails &&
+                      propertyId === dt?.id &&
+                      property?.id === dt?.room_id ? (
+                        <RoomDetailsCard room={property} />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 );

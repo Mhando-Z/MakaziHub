@@ -97,7 +97,7 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
           <div className="flex items-center text-blue-100 text-sm mb-2">
             <MapPin size={16} className="mr-1" />
             <span>
-              {house.street}, {house.region}
+              {house?.street}, {house?.region}
             </span>
           </div>
         </div>
