@@ -139,7 +139,7 @@ function Tenants() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-800 flex items-center">
               <Calendar className="mr-2 text-blue-600" size={20} />
-              Tenants with Expiring Leases
+              Tenants with Expiring Contract
             </h2>
           </div>
 
@@ -162,7 +162,7 @@ function Tenants() {
                           {dt.tenant?.full_name || "Unknown Tenant"}
                         </p>
                         <p className="text-sm text-gray-500">
-                          Lease ends: {formatDate(dt.end_date)}
+                          Contract ends: {formatDate(dt.end_date)}
                         </p>
                       </div>
                     </div>
@@ -231,9 +231,9 @@ function Tenants() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Property
-                  </th>
+                  </th> */}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
@@ -274,10 +274,10 @@ function Tenants() {
                             {tenant.email || "No email"}
                           </div>
                           <div className="text-sm text-gray-500">
-                            {tenant.phone || "No phone"}
+                            {tenant.phone_number || "No phone"}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {rental?.property_name || "Not assigned"}
                           </div>
@@ -286,7 +286,7 @@ function Tenants() {
                               Until: {formatDate(rental.end_date)}
                             </div>
                           )}
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
