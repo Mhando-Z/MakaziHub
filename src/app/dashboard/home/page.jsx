@@ -877,7 +877,10 @@ const House = () => {
     setShowRoomForm(false);
   };
 
-  useEffect(() => {}, [houses]);
+  useEffect(() => {
+    gethHouse();
+    fetchRoom();
+  }, []);
 
   return (
     <div className="relative md:p-6 bg-gray-50">
