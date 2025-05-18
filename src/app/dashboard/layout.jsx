@@ -108,8 +108,12 @@ export default function DashboardLayout({ children }) {
       >
         <div className="flex flex-col justify-between min-h-screen p-6">
           <div>
-            <div className="flex  items-center gap-x-3 justify-center">
-              <Image src={logo} alt="herveg logo" className="w-auto h-30 " />
+            <div className="flex flex-col  items-center gap-x-3 justify-center">
+              <Image
+                src={logo}
+                alt="herveg logo"
+                className="w-auto h-30 opacity-45 "
+              />
               {/* <h1>MakaziHub</h1> */}
             </div>
             <nav className="mt-10">
