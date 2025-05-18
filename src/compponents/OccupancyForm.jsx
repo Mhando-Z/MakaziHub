@@ -5,6 +5,7 @@ import { Loader } from "lucide-react";
 import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import DataContext from "@/context/DataContext";
+import UserContext from "@/context/UserContext";
 
 export default function OccupancyForm({
   house,
@@ -13,9 +14,11 @@ export default function OccupancyForm({
   showEdit,
 }) {
   const { fetchOccupancy } = useContext(DataContext);
+  const { userData } = useContext(UserContext);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     tenant_id: occupancy?.tenant_id || house?.tenant_id,
     start_date: occupancy?.start_date || "",
@@ -97,6 +100,7 @@ export default function OccupancyForm({
           .insert([
             {
               room_id: null,
+              lords_id: userData?.id,
               tenant_id: formData.tenant_id || null,
               start_date: formData.start_date || "",
               duration_in_months: formData.duration_in_months || "",
