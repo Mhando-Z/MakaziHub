@@ -318,13 +318,8 @@ function Tenants() {
                         </td>
                         {/* <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
-                            {rental?.property_name || "Not assigned"}
+                            {Occupancy?.length || 0}
                           </div>
-                          {rental && (
-                            <div className="text-sm text-gray-500">
-                              Until: {formatDate(rental.end_date)}
-                            </div>
-                          )}
                         </td> */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span

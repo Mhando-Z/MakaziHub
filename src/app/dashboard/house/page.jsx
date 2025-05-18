@@ -19,6 +19,7 @@ import { supabase2 } from "@/Config/Supabase";
 import DataContext from "@/context/DataContext";
 import HouseDetailsCard from "./HouseDetails";
 import RoomDetailsCard from "./RoomDetails";
+import { toast } from "react-toastify";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -141,14 +142,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="name"
-        >
+        <label className="block  text-sm font-bold mb-2" htmlFor="name">
           House Name
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           id="name"
           type="text"
           name="name"
@@ -161,14 +159,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="region"
-          >
+          <label className="block  text-sm font-bold mb-2" htmlFor="region">
             Region
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
             id="region"
             type="text"
             name="region"
@@ -179,14 +174,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           />
         </div>
         <div>
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="street"
-          >
+          <label className="block  text-sm font-bold mb-2" htmlFor="street">
             street
           </label>
           <input
-            className="shadow lowercase appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
             id="street"
             type="text"
             name="street"
@@ -199,14 +191,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="purpose"
-        >
+        <label className="block  text-sm font-bold mb-2" htmlFor="purpose">
           Purpose
         </label>
         <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           id="purpose"
           name="purpose"
           value={formData.purpose}
@@ -224,13 +213,13 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         <>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block  text-sm font-bold mb-2"
               htmlFor="houseprice"
             >
               House Price
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="houseprice"
               type="number"
               name="houseprice"
@@ -241,14 +230,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="bedrooms"
-            >
+            <label className="block  text-sm font-bold mb-2" htmlFor="bedrooms">
               BedRooms
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="bedrooms"
               type="number"
               name="bedrooms"
@@ -260,13 +246,13 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block  text-sm font-bold mb-2"
               htmlFor="bathrooms"
             >
               BathRooms
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="bathrooms"
               type="number"
               name="bathrooms"
@@ -277,14 +263,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="type"
-            >
+            <label className="block  text-sm font-bold mb-2" htmlFor="type">
               House Type
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="type"
               name="type"
               value={formData.type}
@@ -300,13 +283,13 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block  text-sm font-bold mb-2"
               htmlFor="description"
             >
               House Description
             </label>
             <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               name="description"
               value={formData.description}
@@ -320,14 +303,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       ) : (
         <>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="type"
-            >
+            <label className="block  text-sm font-bold mb-2" htmlFor="type">
               House Type
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="type"
               name="type"
               value={formData.type}
@@ -399,6 +379,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
     name: room?.room_name || "",
     type: room?.room_type || "",
     rent: room?.rent_price || "",
+    status: room?.is_occupied || false,
   });
 
   const handleChange = (e) => {
@@ -418,15 +399,18 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           room_name: formData?.name,
           room_type: formData?.type,
           rent_price: formData?.rent,
+          is_occupied: formData?.status,
         })
         .eq("id", room?.id)
         .select();
 
       if (error) {
         setLoading(false);
+        toast?.error("fail to update", error?.message);
       } else {
         fetchRoom();
         setLoading(false);
+        toast?.success("Updated succesfully!!");
       }
     } else {
       // Insert new house
@@ -438,14 +422,17 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
             room_name: formData?.name,
             room_type: formData?.type,
             rent_price: formData?.rent,
+            is_occupied: formData?.status,
           },
         ])
         .select();
       if (error) {
         setLoading(false);
+        toast.error("fail to upload data", error?.message);
       } else {
         fetchRoom();
         setLoading(false);
+        toast.success("data uploaded succesfully");
       }
     }
   };
@@ -474,14 +461,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="roomName"
-        >
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomName">
           Room Name/Number
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           id="name"
           type="text"
           name="name"
@@ -493,14 +477,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="roomType"
-        >
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomType">
           Room Type
         </label>
         <select
-          className="shadow lowercase appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           id="type"
           name="type"
           value={formData.type}
@@ -515,14 +496,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="roomRent"
-        >
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomRent">
           Monthly Rent (TZS)
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           id="roomRent"
           type="number"
           name="rent"
@@ -531,6 +509,23 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           placeholder="Enter monthly rent"
           required
         />
+      </div>
+
+      <div className="space-y-1 col-span-1 flex items-center">
+        <input
+          type="checkbox"
+          id="status"
+          name="status"
+          checked={formData.status}
+          onChange={handleChange}
+          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label
+          htmlFor="status"
+          className="ml-2 block text-sm font-medium text-gray-700"
+        >
+          Room Occupied .?
+        </label>
       </div>
 
       <div className="flex justify-end gap-2">
@@ -573,16 +568,16 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
 
   return (
     <motion.div
-      className="bg-white rounded-lg shadow p-2"
+      className="bg-white rounded-lg shadow md:p-4 border border-gray-200"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       whileHover={{ boxShadow: "0px 4px 15px rgba(0,0,0,0.1)" }}
     >
       <div className="flex justify-between items-start">
-        <div>
+        <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">{room.room_name}</h3>
-          <p className="text-sm text-gray-600">{room.room_type} Room</p>
+          <p className="text-sm ">{room.room_type} Room</p>
         </div>
         <div className="flex gap-1">
           <motion.button
@@ -609,26 +604,26 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
         </span>
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3 w-full flex flex-col justify-end items-end">
         <div
-          className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
-            room.status === "occupied"
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
+          className={`inline-flex items-center px-5 py-1 rounded text-xs font-medium ${
+            room?.is_occupied
+              ? "bg-green-200 text-green-800"
+              : "bg-yellow-200 text-yellow-800"
           }`}
         >
-          {room.is_occupied === "occupied" ? "Occupied" : "Vacant"}
+          {room?.is_occupied ? "Occupied" : "Vacant"}
         </div>
       </div>
 
       {room.is_occupied === "occupied" && (
         <div className="mt-3 border-t pt-3">
           <div className="flex items-center mb-1">
-            <User size={14} className="text-gray-600 mr-1" />
+            <User size={14} className=" mr-1" />
             <span className="text-sm">room tenant name</span>
           </div>
           <div className="flex items-center">
-            <Calendar size={14} className="text-gray-600 mr-1" />
+            <Calendar size={14} className=" mr-1" />
             <span className="text-sm">{`Since ${roomStatus?.start_date} (${roomStatus?.duration_in_months} months)`}</span>
           </div>
         </div>
@@ -684,7 +679,7 @@ const HouseItem = ({
             >
               {house.name}
             </h3>
-            <p className="text-sm text-gray-600 font-raleway">
+            <p className="text-sm  font-raleway">
               {house.region}, {house.street} • {house.type}
             </p>
           </div>
