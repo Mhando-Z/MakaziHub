@@ -874,6 +874,7 @@ const House = () => {
   };
 
   useEffect(() => {}, [houses]);
+
   return (
     <div className="relative md:p-6 bg-gray-50">
       {/* house widgets */}

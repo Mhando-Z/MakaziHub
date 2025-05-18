@@ -230,14 +230,14 @@ export default function DashboardLayout({ children }) {
                       {userData?.role === "landlord" ? (
                         <div className="flex flex-row items-center w-full gap-x-1">
                           <>
-                            <h1 className="text-sm">Admin</h1>
+                            <h1 className="text-sm">landlord</h1>
                           </>
                           <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
                         </div>
                       ) : (
                         <div className="flex flex-row items-center w-full gap-x-1">
                           <>
-                            <h1 className="text-sm">User</h1>
+                            <h1 className="text-sm">tenant</h1>
                           </>
                           <HiMiniCheckBadge className="text-green-700 gap-x-10" />
                         </div>
