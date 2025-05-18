@@ -143,11 +143,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label className="block  text-sm font-bold mb-2" htmlFor="name">
+        <label className="block text-sm mb-2" htmlFor="name">
           House Name
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="name"
           type="text"
           name="name"
@@ -160,11 +160,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block  text-sm font-bold mb-2" htmlFor="region">
+          <label className="block  text-sm mb-2" htmlFor="region">
             Region
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
             id="region"
             type="text"
             name="region"
@@ -175,11 +175,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           />
         </div>
         <div>
-          <label className="block  text-sm font-bold mb-2" htmlFor="street">
+          <label className="block  text-sm mb-2" htmlFor="street">
             street
           </label>
           <input
-            className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow lowercase appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
             id="street"
             type="text"
             name="street"
@@ -192,11 +192,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label className="block  text-sm font-bold mb-2" htmlFor="purpose">
+        <label className="block  text-sm mb-2" htmlFor="purpose">
           Purpose
         </label>
         <select
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border outline-0 border-gray-300 rounded w-full py-2 px-3"
           id="purpose"
           name="purpose"
           value={formData.purpose}
@@ -213,14 +213,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       {formData?.purpose === "Rent House" ? (
         <>
           <div className="mb-4">
-            <label
-              className="block  text-sm font-bold mb-2"
-              htmlFor="houseprice"
-            >
+            <label className="block  text-sm mb-2" htmlFor="houseprice">
               House Price
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="houseprice"
               type="number"
               name="houseprice"
@@ -231,11 +228,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block  text-sm font-bold mb-2" htmlFor="bedrooms">
+            <label className="block  text-sm mb-2" htmlFor="bedrooms">
               BedRooms
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="bedrooms"
               type="number"
               name="bedrooms"
@@ -246,14 +243,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-4">
-            <label
-              className="block  text-sm font-bold mb-2"
-              htmlFor="bathrooms"
-            >
+            <label className="block  text-sm mb-2" htmlFor="bathrooms">
               BathRooms
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="bathrooms"
               type="number"
               name="bathrooms"
@@ -264,11 +258,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block  text-sm font-bold mb-2" htmlFor="type">
+            <label className="block  text-sm mb-2" htmlFor="type">
               House Type
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="type"
               name="type"
               value={formData.type}
@@ -283,14 +277,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label
-              className="block  text-sm font-bold mb-2"
-              htmlFor="description"
-            >
+            <label className="block  text-sm mb-2" htmlFor="description">
               House Description
             </label>
             <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="description"
               name="description"
               value={formData.description}
@@ -304,11 +295,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       ) : (
         <>
           <div className="mb-6">
-            <label className="block  text-sm font-bold mb-2" htmlFor="type">
+            <label className="block  text-sm mb-2" htmlFor="type">
               House Type
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="type"
               name="type"
               value={formData.type}
@@ -463,11 +454,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label className="block  text-sm font-bold mb-2" htmlFor="roomName">
+        <label className="block  text-sm mb-2" htmlFor="roomName">
           Room Name/Number
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="name"
           type="text"
           name="name"
@@ -479,11 +470,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block  text-sm font-bold mb-2" htmlFor="roomType">
+        <label className="block  text-sm mb-2" htmlFor="roomType">
           Room Type
         </label>
         <select
-          className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow lowercase appearance-none border border-gray-300 outline-0 rounded w-full py-2 px-3"
           id="type"
           name="type"
           value={formData.type}
@@ -498,11 +489,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label className="block  text-sm font-bold mb-2" htmlFor="roomRent">
+        <label className="block  text-sm mb-2" htmlFor="roomRent">
           Monthly Rent (TZS)
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="roomRent"
           type="number"
           name="rent"
