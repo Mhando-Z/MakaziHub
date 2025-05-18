@@ -295,8 +295,8 @@ function Tenants() {
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="bg-gray-200 h-8 w-8 rounded-full flex items-center justify-center text-gray-600">
-                              <User size={16} />
+                            <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600">
+                              <User size={26} />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
