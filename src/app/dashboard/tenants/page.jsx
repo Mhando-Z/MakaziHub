@@ -14,11 +14,6 @@ function Tenants() {
   const tenants = profile?.filter((dt) => dt?.lords_id === userData?.id);
   const Occupancy = occupancy?.filter((dt) => dt?.lords_id === userData?.id);
 
-  useEffect(() => {
-    gethHouse();
-    fetchRoom();
-  }, []);
-
   // const [filteredTenants, setFilteredTenants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("ending");
@@ -76,6 +71,12 @@ function Tenants() {
     setPropety(room || house);
     setDetails(!showDetails);
   };
+
+  useEffect(() => {
+    gethHouse();
+    fetchRoom();
+    filterAndCombineByEndMonth(Occupancy, tenants);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 md:p-6">
