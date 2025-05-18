@@ -255,7 +255,7 @@ const ProfilePage = () => {
                 <div className="relative">
                   <motion.img
                     className="object-cover h-20 border-4 border-green-300 rounded-full md:h-20"
-                    src={`https://ui-avatars.com/api/?name=${userData?.email}`}
+                    src={`https://ui-avatars.com/api/?name=${userData?.email}&background=EEF2FF&color=6366F1`}
                     alt="User Avatar"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}

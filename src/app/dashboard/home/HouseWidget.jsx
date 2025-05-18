@@ -2,14 +2,19 @@
 
 import DataContext from "@/context/DataContext";
 import UserContext from "@/context/UserContext";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Copy, Home, Key } from "lucide-react";
 
 function HouseWidget() {
-  const { profile, userData, houses } = useContext(UserContext);
-  const { occupancy, roomData } = useContext(DataContext);
+  const { profile, userData, houses, gethHouse } = useContext(UserContext);
+  const { occupancy, roomData, fetchRoom } = useContext(DataContext);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    gethHouse();
+    fetchRoom();
+  }, []);
 
   //   handles copying data to clipboard
   const copyToClipboard = () => {

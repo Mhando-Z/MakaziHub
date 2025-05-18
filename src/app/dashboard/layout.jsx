@@ -259,7 +259,7 @@ export default function DashboardLayout({ children }) {
                 </div>
 
                 <div className="py-2">
-                  <Link href="/userprofile">
+                  <Link href="profile">
                     <div
                       onClick={() => setshow(false)}
                       className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
