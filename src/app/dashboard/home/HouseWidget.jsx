@@ -2,13 +2,29 @@
 
 import DataContext from "@/context/DataContext";
 import UserContext from "@/context/UserContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { Home } from "lucide-react";
+import { Check, Copy, Home, Key } from "lucide-react";
 
 function HouseWidget() {
   const { profile, userData, houses } = useContext(UserContext);
   const { occupancy, roomData } = useContext(DataContext);
+  const [copied, setCopied] = useState(false);
+
+  //   handles copying data to clipboard
+  const copyToClipboard = () => {
+    if (userData?.id) {
+      navigator.clipboard
+        .writeText(userData.id)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch((err) => {
+          console.error("Failed to copy: ", err);
+        });
+    }
+  };
 
   //   find houses linked to user
   const filerdHouse = houses?.filter((dt) => dt?.user_id === userData?.id);
@@ -36,6 +52,29 @@ function HouseWidget() {
 
   return (
     <div className="mb-10">
+      {/* id section */}
+      <div className="mb-5">
+        <div className="flex items-center gap-2">
+          <Key size={16} className="" />
+          <h2 className="font-medium">LandLord's key</h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <code className="  px-3 py-1 rounded  font-mono">
+            {userData?.id || "No ID available"}
+          </code>
+          <button
+            onClick={copyToClipboard}
+            className="flex items-center justify-center p-2 rounded-md hover:bg-gray-300 transition-colors"
+            title="Copy landlords ID"
+          >
+            {copied ? (
+              <Check size={16} className="" />
+            ) : (
+              <Copy size={16} className="" />
+            )}
+          </button>
+        </div>
+      </div>
       {/* house widgets */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* totatl houses */}

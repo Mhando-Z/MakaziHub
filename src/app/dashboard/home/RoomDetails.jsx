@@ -101,8 +101,8 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
             </span>
           </div>
         </div>
-        {/* id section */}
 
+        {/* id section */}
         <div className="">
           <div className="flex items-center gap-2">
             <Key size={16} className="text-white" />
