@@ -444,6 +444,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         name: room?.room_name,
         type: room?.room_type,
         rent: room?.rent_price,
+        status: room?.is_occupied,
       });
     }
   }, [room]);
