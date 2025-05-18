@@ -8,11 +8,16 @@ import HouseDetailsCard from "../home/HouseDetails";
 import RoomDetailsCard from "../home/RoomDetails";
 
 function Tenants() {
-  const { profile, userData, houses } = useContext(UserContext);
-  const { occupancy, roomData } = useContext(DataContext);
+  const { profile, userData, houses, gethHouse } = useContext(UserContext);
+  const { occupancy, roomData, fetchRoom } = useContext(DataContext);
 
   const tenants = profile?.filter((dt) => dt?.lords_id === userData?.id);
   const Occupancy = occupancy?.filter((dt) => dt?.lords_id === userData?.id);
+
+  useEffect(() => {
+    gethHouse();
+    fetchRoom();
+  }, []);
 
   // const [filteredTenants, setFilteredTenants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
