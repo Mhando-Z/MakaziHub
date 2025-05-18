@@ -19,7 +19,6 @@ import ProfilePictures from "@/compponents/ProfilePicture";
 import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
 
 // what vano and other supervisors can see
 const userRoutes = [
@@ -30,22 +29,10 @@ const userRoutes = [
     icon: <FaHome />,
   },
   {
-    sections: "House",
-    path: "/dashboard/house",
-    links: "house",
-    icon: <RiLuggageDepositFill />,
-  },
-  {
     sections: "Tenants",
     path: "/dashboard/tenants",
     links: "tenants",
     icon: <IoPeople />,
-  },
-  {
-    sections: "Payments Updates",
-    path: "/dashboard/payments",
-    links: "payments",
-    icon: <FaMoneyBillTrendUp />,
   },
 ];
 
@@ -209,21 +196,6 @@ export default function DashboardLayout({ children }) {
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
               />
-              {userData?.role === "landlord" ? (
-                <div className="flex flex-row items-center w-full gap-x-1">
-                  <>
-                    <h1 className="text-sm">Admin</h1>
-                  </>
-                  <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
-                </div>
-              ) : (
-                <div className="flex flex-row items-center w-full gap-x-1">
-                  <>
-                    <h1 className="text-sm">User</h1>
-                  </>
-                  <HiMiniCheckBadge className="text-green-700 gap-x-10" />
-                </div>
-              )}
             </div>
             {show ? (
               <motion.div
@@ -235,7 +207,7 @@ export default function DashboardLayout({ children }) {
                   ease: "easeOut",
                   type: "spring",
                 }}
-                className="absolute top-14  right-0 h-[23rem] w-[270px] rounded-xl bg-slate-100 "
+                className="absolute top-14  right-0 h-[23rem] w-[270px] rounded-xl bg-slate-100"
               >
                 <div className="flex flex-col justify-center py-14 gap-y-4 px-7">
                   <div className="flex flex-col items-center">
@@ -250,7 +222,25 @@ export default function DashboardLayout({ children }) {
                       transition={{ duration: 0.5 }}
                     />
 
-                    <h1 className="text-lg line-clamp-2 mt-2 items-center text-[#121037] font-medium">
+                    <div className="mt-2">
+                      {userData?.role === "landlord" ? (
+                        <div className="flex flex-row items-center w-full gap-x-1">
+                          <>
+                            <h1 className="text-sm">Admin</h1>
+                          </>
+                          <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
+                        </div>
+                      ) : (
+                        <div className="flex flex-row items-center w-full gap-x-1">
+                          <>
+                            <h1 className="text-sm">User</h1>
+                          </>
+                          <HiMiniCheckBadge className="text-green-700 gap-x-10" />
+                        </div>
+                      )}
+                    </div>
+
+                    <h1 className="text-lg line-clamp-2  items-center text-[#121037] font-medium">
                       {userData?.full_name}
                     </h1>
                     <p className="line-clamp-2  items-center text-[#121037]">
