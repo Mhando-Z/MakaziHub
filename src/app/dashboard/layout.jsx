@@ -164,16 +164,17 @@ export default function DashboardLayout({ children }) {
         ></div>
       )}
       {/* Main content */}
-      <div className="flex-1 ml-0 overflow-y-auto bg-gray-50 md:ml-64">
-        <header className="sticky top-0 z-30 flex items-center justify-between py-4 shadow bg-slate-100 md:py-6">
+      <div className="flex-1 ml-0 overflow-y-auto   md:ml-64">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3  shadow bg-slate-100 ">
           {/* Button to toggle sidebar on mobile */}
           <button
-            className="px-4 text-gray-600 focus:outline-none"
+            className="p-2 text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
             onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
+              className="w-5 h-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -186,97 +187,105 @@ export default function DashboardLayout({ children }) {
               />
             </svg>
           </button>
-          <div className="relative flex flex-col items-center gap-x-2 ">
-            {/* profile icon or picture */}
+
+          <div className="relative">
             <div
-              className="flex flex-row items-center px-5 cursor-pointer gap-x-3"
+              className="flex items-center gap-x-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer transition-colors"
               onClick={handleShow}
             >
               <motion.img
-                className="object-cover h-8 border-4 border-green-300 rounded-full md:h-10"
-                src={`https://ui-avatars.com/api/?name=${user?.email}`}
+                className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border-2 border-green-400 shadow-sm"
+                src={`https://ui-avatars.com/api/?name=${user?.email}&background=EEF2FF&color=6366F1`}
                 alt="User Avatar"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
               />
-            </div>
-            {show ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{
-                  duration: 0.7,
-                  ease: "easeOut",
-                  type: "spring",
-                }}
-                className="absolute top-14  right-0 h-[22rem] w-[270px] rounded-xl bg-slate-100"
+              {/* <span className="hidden md:block text-sm font-medium text-gray-700 truncate max-w-[120px]">
+                {userData?.full_name || user?.email?.split("@")[0]}
+              </span> */}
+              <svg
+                className="w-4 h-4 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <div className="flex flex-col justify-center py-14 gap-y-4 px-7">
-                  <div className="flex flex-col items-center">
-                    {/* <ProfileIcon data={userData} /> */}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
 
+            {show && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-16 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
+              >
+                <div className="p-4 border-b border-gray-100">
+                  <div className="flex items-center gap-x-3">
                     <motion.img
-                      className="object-cover border-4 border-green-300 rounded-full h-14"
-                      src={`https://ui-avatars.com/api/?name=${user?.email}`}
+                      className="h-12 w-12 rounded-full object-cover border-2 border-green-400"
+                      src={`https://ui-avatars.com/api/?name=${user?.email}&background=EEF2FF&color=6366F1`}
                       alt="User Avatar"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.5 }}
                     />
-
-                    <div className="mt-2">
-                      {userData?.role === "landlord" ? (
-                        <div className="flex flex-row items-center w-full gap-x-1">
-                          <>
-                            <h1 className="text-sm">landlord</h1>
-                          </>
-                          <HiMiniCheckBadge className="text-blue-700 gap-x-10" />
-                        </div>
-                      ) : (
-                        <div className="flex flex-row items-center w-full gap-x-1">
-                          <>
-                            <h1 className="text-sm">tenant</h1>
-                          </>
-                          <HiMiniCheckBadge className="text-green-700 gap-x-10" />
-                        </div>
-                      )}
-                    </div>
-
-                    <h1 className="text-lg line-clamp-2  items-center text-[#121037] font-medium">
-                      {userData?.full_name}
-                    </h1>
-                    <p className="line-clamp-2  items-center text-[#121037]">
-                      {user?.email}
-                    </p>
-                  </div>
-                  <div className="mt-5 border-2 border-slate-300"></div>
-                  <Link href={"userprofile"}>
-                    <div onClick={() => setshow(!show)}>
-                      <div className="flex flex-row items-center cursor-pointer gap-x-4 ">
-                        <FaRegUser className="text-xl" />
-                        <h1 className=" text-[#121037] font-medium">
-                          View Profile
-                        </h1>
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800 truncate">
+                        {userData?.full_name}
+                      </h3>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user?.email}
+                      </p>
+                      <div className="mt-1 flex items-center">
+                        {userData?.role === "landlord" ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                            <HiMiniCheckBadge className="mr-1" />
+                            Landlord
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                            <HiMiniCheckBadge className="mr-1" />
+                            Tenant
+                          </span>
+                        )}
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="py-2">
+                  <Link href="/userprofile">
+                    <div
+                      onClick={() => setshow(false)}
+                      className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <FaRegUser className="w-4 h-4 text-gray-500" />
+                      <span className="ml-3 text-sm font-medium text-gray-700">
+                        View Profile
+                      </span>
                     </div>
                   </Link>
 
-                  <div
+                  <button
                     onClick={handleLogout}
-                    className="flex flex-row items-center cursor-pointer gap-x-4 "
+                    className="w-full flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-left"
                   >
-                    <FaPowerOff className="text-xl text-red-600" />
-                    <h1 className="text-[#121037] font-medium">Log Out</h1>
-                  </div>
+                    <FaPowerOff className="w-4 h-4 text-red-500" />
+                    <span className="ml-3 text-sm font-medium text-gray-700">
+                      Log Out
+                    </span>
+                  </button>
                 </div>
               </motion.div>
-            ) : (
-              ""
             )}
           </div>
         </header>
+
         {/* other pages router rendered here */}
         <main className="flex flex-col min-h-screen p-4 md:p-6">
           <main>{children}</main>
