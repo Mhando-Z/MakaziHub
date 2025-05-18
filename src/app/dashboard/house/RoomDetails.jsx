@@ -30,9 +30,9 @@ const formatPrice = (price) => {
 
 export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { profile } = useContext(UserContext);
   const { occupancy } = useContext(DataContext);
   const [showEdit, setShowEdit] = useState(false);
-  const { profile } = useContext(UserContext);
   // const [Occupancy, setOccupancy] = useState([]);
   // const [tenant, setTenant] = useState([]);
   const [copied, setCopied] = useState(false);

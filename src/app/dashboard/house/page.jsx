@@ -20,6 +20,7 @@ import DataContext from "@/context/DataContext";
 import HouseDetailsCard from "./HouseDetails";
 import RoomDetailsCard from "./RoomDetails";
 import { toast } from "react-toastify";
+import HouseWidget from "./HouseWidget";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -884,6 +885,10 @@ const House = () => {
   useEffect(() => {}, [houses]);
   return (
     <div className="relative md:p-6 bg-gray-50">
+      {/* house widgets */}
+      <div className="">
+        <HouseWidget />
+      </div>
       <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
       <motion.button
         className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
