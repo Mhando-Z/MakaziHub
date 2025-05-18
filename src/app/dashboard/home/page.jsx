@@ -1,326 +1,929 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useContext, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
-  Users,
+  Plus,
+  Edit,
+  Trash,
+  User,
   DollarSign,
-  AlertCircle,
-  PieChart,
-  BarChart2,
+  Calendar,
+  Search,
+  Filter,
+  Loader,
 } from "lucide-react";
+import UserContext from "@/context/UserContext";
+import { supabase2 } from "@/Config/Supabase";
+import DataContext from "@/context/DataContext";
+import HouseDetailsCard from "./HouseDetails";
+import RoomDetailsCard from "./RoomDetails";
+import { toast } from "react-toastify";
+import HouseWidget from "./HouseWidget";
 
-// Mock data - in a real app this would come from your API
-const mockData = {
-  totalHouses: 3,
-  totalRooms: 15,
-  occupiedRooms: 10,
-  vacantRooms: 5,
-  totalTenants: 10,
-  totalRentCollected: 1000000,
-  pendingPayments: 2,
-  upcomingRentDue: 3,
-  recentActivities: [
-    {
-      id: 1,
-      type: "move-in",
-      tenant: "John Doe",
-      house: "House A",
-      date: "2025-04-20",
-    },
-    {
-      id: 2,
-      type: "payment",
-      tenant: "Jane Smith",
-      house: "House B",
-      amount: 300000,
-      date: "2025-04-18",
-    },
-    {
-      id: 3,
-      type: "move-out",
-      tenant: "Mike Johnson",
-      house: "House C",
-      date: "2025-04-15",
-    },
-  ],
-  monthlyRentData: [
-    { month: "Jan", amount: 800000 },
-    { month: "Feb", amount: 900000 },
-    { month: "Mar", amount: 950000 },
-    { month: "Apr", amount: 1000000 },
-  ],
-};
+// House Form Component
+const HouseForm = ({ house = null, onSave, onCancel }) => {
+  const { user, gethHouse } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [formData, setFormData] = useState({
+    name: house?.name || "",
+    region: house?.region || "",
+    street: house?.stret || "",
+    type: house?.type || "",
+    purpose: house?.purpose || "",
+    houseprice: house?.house_price || "",
+    bedrooms: house?.bedrooms || "",
+    bathrooms: house?.bathrooms || "",
+    description: house?.description || "",
+  });
 
-// Dashboard Stat Card Component
-const StatCard = ({ title, value, icon, color }) => {
-  return (
-    <motion.div
-      className={`bg-white rounded-lg shadow-md p-4 ${color}`}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-500 text-sm font-medium">{title}</p>
-          <h3 className="text-2xl font-bold mt-1">{value}</h3>
-        </div>
-        <div
-          className={`p-2 rounded-full ${
-            color === "border-l-green-500"
-              ? "bg-green-100"
-              : color === "border-l-red-500"
-              ? "bg-red-100"
-              : color === "border-l-blue-500"
-              ? "bg-blue-100"
-              : color === "border-l-yellow-500"
-              ? "bg-yellow-100"
-              : "bg-gray-100"
-          }`}
-        >
-          {icon}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-// Recent Activity Component
-const RecentActivity = ({ activity }) => {
-  const getActivityDetails = (activity) => {
-    switch (activity.type) {
-      case "move-in":
-        return {
-          title: `${activity.tenant} moved in`,
-          description: `to ${activity.house} on ${activity.date}`,
-          color: "bg-green-100 text-green-800",
-        };
-      case "move-out":
-        return {
-          title: `${activity.tenant} moved out`,
-          description: `from ${activity.house} on ${activity.date}`,
-          color: "bg-red-100 text-red-800",
-        };
-      case "payment":
-        return {
-          title: `${activity.tenant} paid rent`,
-          description: `TZS ${activity.amount.toLocaleString()} for ${
-            activity.house
-          }`,
-          color: "bg-blue-100 text-blue-800",
-        };
-      default:
-        return {
-          title: "Activity",
-          description: "Unknown activity",
-          color: "bg-gray-100 text-gray-800",
-        };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ text: "", type: "" });
+
+    if (house) {
+      // Update existing house
+      const { data, error } = await supabase2
+        .from("house")
+        .update({
+          name: formData?.name,
+          region: formData?.region,
+          street: formData?.street,
+          type: formData?.type,
+          purpose: formData?.purpose,
+          bathrooms: formData?.bathrooms,
+          bedrooms: formData?.bedrooms,
+          description: formData?.description,
+          house_price: formData?.houseprice,
+        })
+        .eq("id", house?.id)
+        .select();
+
+      if (error) {
+        setLoading(false);
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
+      } else {
+        gethHouse();
+        setLoading(false);
+        setMessage({
+          text: "House data updated successfully!",
+          type: "success",
+        });
+      }
+    } else {
+      // Insert new house
+      const { data, error } = await supabase2
+        .from("house")
+        .insert([
+          {
+            user_id: user?.id,
+            name: formData?.name || "",
+            region: formData?.region || "",
+            street: formData?.street || "",
+            type: formData?.type || "apartment",
+            purpose: formData?.purpose || "",
+            bathrooms: formData?.bathrooms || 0,
+            bedrooms: formData?.bedrooms || 0,
+            description: formData?.description || "",
+            house_price: formData?.houseprice || 0,
+          },
+        ])
+        .select();
+      if (error) {
+        setLoading(false);
+        setMessage({
+          text: error?.response?.data?.message || "An error occurred",
+          type: "error",
+        });
+      } else {
+        gethHouse();
+        setLoading(false);
+        setMessage({
+          text: "House data saved successfully!",
+          type: "success",
+        });
+      }
     }
   };
 
-  const details = getActivityDetails(activity);
+  // refresh the form data when the house is updated
+  useEffect(() => {
+    if (house) {
+      setFormData({
+        name: house.name,
+        region: house.region,
+        street: house.street,
+        type: house.type,
+        purpose: house?.purpose,
+      });
+    }
+  }, [house]);
+
+  return (
+    <motion.form
+      className="bg-white p-6 rounded-lg shadow-lg"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      onSubmit={handleSubmit}
+    >
+      <h2 className="text-xl font-bold mb-4">
+        {house ? <>Edit {house?.name}</> : "Add New House"}
+      </h2>
+
+      <div className="mb-4">
+        <label className="block  text-sm font-bold mb-2" htmlFor="name">
+          House Name
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          id="name"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Enter house name"
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="block  text-sm font-bold mb-2" htmlFor="region">
+            Region
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+            id="region"
+            type="text"
+            name="region"
+            value={formData.region}
+            onChange={handleChange}
+            placeholder="Enter region"
+            required
+          />
+        </div>
+        <div>
+          <label className="block  text-sm font-bold mb-2" htmlFor="street">
+            street
+          </label>
+          <input
+            className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+            id="street"
+            type="text"
+            name="street"
+            value={formData.street}
+            onChange={handleChange}
+            placeholder="Enter street"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <label className="block  text-sm font-bold mb-2" htmlFor="purpose">
+          Purpose
+        </label>
+        <select
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          id="purpose"
+          name="purpose"
+          value={formData.purpose}
+          onChange={handleChange}
+          required
+        >
+          <option value={null}>Select purpose</option>
+          <option value="Rent House">Rent House</option>
+          <option value="Rent Rooms">Rent Rooms</option>
+        </select>
+      </div>
+
+      {/* if house is for rent show the following inputs */}
+      {formData?.purpose === "Rent House" ? (
+        <>
+          <div className="mb-4">
+            <label
+              className="block  text-sm font-bold mb-2"
+              htmlFor="houseprice"
+            >
+              House Price
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="houseprice"
+              type="number"
+              name="houseprice"
+              value={formData.houseprice}
+              onChange={handleChange}
+              placeholder="Enter number of bed rooms"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block  text-sm font-bold mb-2" htmlFor="bedrooms">
+              BedRooms
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="bedrooms"
+              type="number"
+              name="bedrooms"
+              value={formData.bedrooms}
+              onChange={handleChange}
+              placeholder="Enter number of bedrooms"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block  text-sm font-bold mb-2"
+              htmlFor="bathrooms"
+            >
+              BathRooms
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="bathrooms"
+              type="number"
+              name="bathrooms"
+              value={formData.bathrooms}
+              onChange={handleChange}
+              placeholder="Enter number of bathrooms"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block  text-sm font-bold mb-2" htmlFor="type">
+              House Type
+            </label>
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value={null}>Select Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="bungalow">Bungalow</option>
+              <option value="duplex">Duplex</option>
+              <option value="townhouse">Townhouse</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block  text-sm font-bold mb-2"
+              htmlFor="description"
+            >
+              House Description
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Write a short description of the house"
+              rows={3}
+              required
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mb-6">
+            <label className="block  text-sm font-bold mb-2" htmlFor="type">
+              House Type
+            </label>
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value={null}>Select Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="bungalow">Bungalow</option>
+              <option value="duplex">Duplex</option>
+              <option value="townhouse">Townhouse</option>
+            </select>
+          </div>
+        </>
+      )}
+
+      {/* notification section */}
+      {message.text && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2">
+        <motion.button
+          type="button"
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onCancel}
+        >
+          Cancel
+        </motion.button>
+
+        <motion.button
+          type="submit"
+          whileTap={{ scale: 0.8 }}
+          transition={{ type: "spring", ease: "easeOut" }}
+          className={`flex   justify-center rounded-md ${
+            loading
+              ? "bg-gray-200 cursor-not-allowed "
+              : "bg-blue-600 hover:bg-blue-700"
+          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center cursor-not-allowed">
+              <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+            </div>
+          ) : (
+            <span className="relative z-10"> {house ? "Update" : "Save"}</span>
+          )}
+        </motion.button>
+      </div>
+    </motion.form>
+  );
+};
+
+// Room Form Component
+const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
+  const { fetchRoom } = useContext(DataContext);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: room?.room_name || "",
+    type: room?.room_type || "",
+    rent: room?.rent_price || "",
+    status: room?.is_occupied || false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setLoading(true);
+    if (room) {
+      // Update existing house
+      const { data, error } = await supabase2
+        .from("room")
+        .update({
+          room_name: formData?.name,
+          room_type: formData?.type,
+          rent_price: formData?.rent,
+          is_occupied: formData?.status,
+        })
+        .eq("id", room?.id)
+        .select();
+
+      if (error) {
+        setLoading(false);
+        toast?.error("fail to update", error?.message);
+      } else {
+        fetchRoom();
+        setLoading(false);
+        toast?.success("Updated succesfully!!");
+      }
+    } else {
+      // Insert new house
+      const { data, error } = await supabase2
+        .from("room")
+        .insert([
+          {
+            house_id: houseId,
+            room_name: formData?.name,
+            room_type: formData?.type,
+            rent_price: formData?.rent,
+            is_occupied: formData?.status,
+          },
+        ])
+        .select();
+      if (error) {
+        setLoading(false);
+        toast.error("fail to upload data", error?.message);
+      } else {
+        fetchRoom();
+        setLoading(false);
+        toast.success("data uploaded succesfully");
+      }
+    }
+  };
+
+  // refresh the form data when the house is updated
+  useEffect(() => {
+    if (room) {
+      setFormData({
+        name: room?.room_name,
+        type: room?.room_type,
+        rent: room?.rent_price,
+        status: room?.is_occupied,
+      });
+    }
+  }, [room]);
+
+  return (
+    <motion.form
+      className="bg-white p-6 rounded-lg  shadow-lg"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      onSubmit={handleSubmit}
+    >
+      <h2 className="text-xl font-bold mb-4">
+        {room ? <>Edit {room.room_name} room</> : "Add New Room"}
+      </h2>
+
+      <div className="mb-4">
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomName">
+          Room Name/Number
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          id="name"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Enter room name or number"
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomType">
+          Room Type
+        </label>
+        <select
+          className="shadow lowercase appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          id="type"
+          name="type"
+          value={formData.type}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Type</option>
+          <option value="single">Single</option>
+          <option value="master">Master</option>
+          <option value="shared">Shared</option>
+        </select>
+      </div>
+
+      <div className="mb-6">
+        <label className="block  text-sm font-bold mb-2" htmlFor="roomRent">
+          Monthly Rent (TZS)
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+          id="roomRent"
+          type="number"
+          name="rent"
+          value={formData.rent}
+          onChange={handleChange}
+          placeholder="Enter monthly rent"
+          required
+        />
+      </div>
+
+      <div className="space-y-1 col-span-1 flex items-center">
+        <input
+          type="checkbox"
+          id="status"
+          name="status"
+          checked={formData.status}
+          onChange={handleChange}
+          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label
+          htmlFor="status"
+          className="ml-2 block text-sm font-medium text-gray-700"
+        >
+          Room Occupied .?
+        </label>
+      </div>
+
+      <div className="flex justify-end gap-2">
+        <motion.button
+          type="button"
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onCancel}
+        >
+          Cancel
+        </motion.button>
+        <motion.button
+          type="submit"
+          whileTap={{ scale: 0.8 }}
+          transition={{ type: "spring", ease: "easeOut" }}
+          className={`flex  justify-center rounded-md ${
+            loading
+              ? "bg-gray-200 cursor-not-allowed "
+              : "bg-blue-600 hover:bg-blue-700"
+          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center cursor-not-allowed">
+              <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+            </div>
+          ) : (
+            <span className="relative z-10"> {room ? "Update" : "Save"}</span>
+          )}
+        </motion.button>
+      </div>
+    </motion.form>
+  );
+};
+
+// Room Card Component
+const RoomCard = ({
+  room,
+  onEdit,
+  onDelete,
+  setRoom,
+  setShowRoomDetails,
+  showRoomDetails,
+  selectedRoom,
+}) => {
+  const { room_status } = useContext(DataContext);
+  const roomStatus = room_status.find((status) => status.room_id === room?.id);
+  const [roomSelect, setRoomId] = useState("");
+
+  // select room
+  const handleSelect = () => {
+    setRoom(room);
+    setShowRoomDetails(!showRoomDetails);
+    setRoomId(isSelected);
+  };
+  const isSelected = selectedRoom === room.id;
 
   return (
     <motion.div
-      className="flex items-center gap-3 mb-3"
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
+      className={` ${
+        isSelected && showRoomDetails ? "bg-green-200" : "bg-white"
+      } rounded-lg shadow md:p-4 border border-gray-200`}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
+      whileHover={{ boxShadow: "0px 4px 15px rgba(0,0,0,0.1)" }}
     >
+      <div className="flex justify-between items-start">
+        <div
+          onClick={handleSelect}
+          className="flex cursor-pointer flex-col gap-2"
+        >
+          <h3 className="font-bold text-lg">{room.room_name}</h3>
+          <p className="text-sm ">{room.room_type} Room</p>
+        </div>
+
+        <div className="flex gap-1">
+          <motion.button
+            className="p-1 text-blue-600 cursor-pointer hover:text-blue-800"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => onEdit(room)}
+          >
+            <Edit size={16} />
+          </motion.button>
+          <motion.button
+            className="p-1 text-red-600 cursor-pointer hover:text-red-800"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => onDelete(room.id)}
+          >
+            <Trash size={16} />
+          </motion.button>
+        </div>
+      </div>
+
       <div
-        className={`w-2 h-2 rounded-full ${details.color.split(" ")[0]}`}
-      ></div>
-      <div>
-        <h4 className="font-medium">{details.title}</h4>
-        <p className="text-sm text-gray-500">{details.description}</p>
+        onClick={handleSelect}
+        className="mt-3 cursor-pointer flex items-center"
+      >
+        <DollarSign size={16} className="text-green-600 mr-1" />
+        <span className="font-medium">
+          TZS {room.rent_price.toLocaleString()}/month
+        </span>
+      </div>
+
+      <div
+        onClick={handleSelect}
+        className="mt-3 w-full flex flex-col justify-end items-end"
+      >
+        <div
+          className={`inline-flex items-center px-5 py-1 rounded text-xs font-medium ${
+            room?.is_occupied
+              ? "bg-green-200 text-green-800"
+              : "bg-yellow-200 text-yellow-800"
+          }`}
+        >
+          {room?.is_occupied ? "Occupied" : "Vacant"}
+        </div>
       </div>
     </motion.div>
   );
 };
 
-// Chart Components
-const RoomOccupancyChart = ({ occupied, vacant }) => {
+// House Item Component
+const HouseItem = ({
+  house,
+  onEdit,
+  onDelete,
+  onAddRoom,
+  onEditRoom,
+  onDeleteRoom,
+  showRoomForm,
+  selectedRoom,
+  handleSaveRoom,
+  handleCancelRoomForm,
+  Id,
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const { roomData } = useContext(DataContext);
+  const [showRoomDetails, setShowRoomDetails] = useState(false);
+  const [room, setRoom] = useState([]);
+
+  const rooms = roomData.filter((room) => room.house_id === house.id);
+
   return (
-    <div className="relative h-40 w-40 mx-auto">
-      <PieChart className="w-full h-full text-gray-300" />
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <p className="text-sm font-medium">Room Occupancy</p>
-        <p className="text-lg font-bold text-green-500">
-          {occupied} / {occupied + vacant}
-        </p>
+    <motion.div
+      className="bg-white rounded-lg shadow-md overflow-hidden mb-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="bg-gray-50 p-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <Home
+            onClick={() => setExpanded(!expanded)}
+            className="cursor-pointer text-blue-950 mr-2"
+            size={50}
+          />
+          <div>
+            <h3
+              onClick={() => setExpanded(!expanded)}
+              className="font-bold cursor-pointer font-roboto text-lg"
+            >
+              {house.name}
+            </h3>
+            <p className="text-sm  font-raleway">
+              {house.region}, {house.street} • {house.type}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* edit button */}
+          <motion.button
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => onEdit(house)}
+          >
+            <Edit size={18} className="text-blue-600" />
+          </motion.button>
+          {/* delete button */}
+          <motion.button
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => onDelete(house.id)}
+          >
+            <Trash size={18} className="text-red-600" />
+          </motion.button>
+          {/* view button */}
+          <motion.button
+            className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? (
+              <motion.div animate={{ rotate: 180 }}>▲</motion.div>
+            ) : (
+              <motion.div animate={{ rotate: 0 }}>▼</motion.div>
+            )}
+          </motion.button>
+        </div>
       </div>
-    </div>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            {house?.purpose === "Rent House" ? (
+              <>
+                <HouseDetailsCard house={house} />
+              </>
+            ) : (
+              <>
+                <div className="p-4 border-t">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-medium">Rooms ({rooms?.length})</h4>
+                    <motion.button
+                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => onAddRoom(house.id)}
+                    >
+                      <Plus size={14} className="mr-1" />
+                      Add Room
+                    </motion.button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {rooms?.map((rooms) => (
+                      <RoomCard
+                        key={rooms.id}
+                        room={rooms}
+                        onEdit={() => onEditRoom(house.id, rooms)}
+                        onDelete={() => onDeleteRoom(rooms.id)}
+                        setRoom={setRoom}
+                        setShowRoomDetails={setShowRoomDetails}
+                        showRoomDetails={showRoomDetails}
+                        selectedRoom={room?.id}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {/* show room details section */}
+                {showRoomDetails && (
+                  <RoomDetailsCard
+                    room={room}
+                    house={house}
+                    setShowRoomDetails={setShowRoomDetails}
+                  />
+                )}
+
+                {/* roomform edit */}
+                {showRoomForm && Id === house.id ? (
+                  <RoomForm
+                    room={selectedRoom}
+                    houseId={house.id}
+                    onSave={handleSaveRoom}
+                    onCancel={handleCancelRoomForm}
+                  />
+                ) : (
+                  ""
+                )}
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
-const MonthlyRentChart = ({ data }) => {
+// Main House Component
+const House = () => {
+  const { houses, gethHouse } = useContext(UserContext);
+  const { fetchRoom } = useContext(DataContext);
+  const [selectedHouse, setSelectedHouse] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [showHouseForm, setShowHouseForm] = useState(false);
+  const [showRoomForm, setShowRoomForm] = useState(false);
+  const [ID, setID] = useState(null);
+
+  // fuctios related to house
+  const handleAddHouse = () => {
+    setSelectedHouse(null);
+    setShowHouseForm(true);
+  };
+
+  const handleEditHouse = (house) => {
+    setSelectedHouse(house);
+    setShowHouseForm(true);
+  };
+
+  const handleDeleteHouse = async (id) => {
+    const { error } = await supabase2
+      .from("house") // Specify your table name
+      .delete() // Perform the delete operation
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting House:", error.message);
+    } else {
+      gethHouse(); // Refresh the house data after deletion
+    }
+  };
+  //
+
+  const handleSaveHouse = (house) => {
+    if (selectedHouse) {
+      setHouses((prev) => prev.map((h) => (h.id === house.id ? house : h)));
+    } else {
+      setHouses((prev) => [...prev, house]);
+    }
+    setShowHouseForm(false);
+  };
+
+  const handleAddRoom = (houseId) => {
+    setSelectedRoom(null);
+    setShowRoomForm(true);
+    setID(houseId);
+  };
+
+  const handleEditRoom = (houseId, room) => {
+    setSelectedRoom(room);
+    setShowRoomForm(true);
+    setID(houseId);
+  };
+
+  const handleDeleteRoom = async (roomId) => {
+    const { error } = await supabase2
+      .from("room") // Specify your table name
+      .delete() // Perform the delete operation
+      .eq("id", roomId);
+
+    if (error) {
+      console.error("Error deleting room:", error.message);
+    } else {
+      fetchRoom(); // Refresh the house data after deletion
+    }
+  };
+
+  const handleSaveRoom = (room) => {
+    setShowRoomForm(false);
+  };
+  const handleCancelHouseForm = () => {
+    setShowHouseForm(false);
+  };
+  const handleCancelRoomForm = () => {
+    setShowRoomForm(false);
+  };
+
+  useEffect(() => {}, [houses]);
   return (
-    <div className="h-40 w-full flex items-end justify-between gap-2 mt-4">
-      {data.map((item, index) => (
-        <div key={index} className="flex flex-col items-center">
-          <motion.div
-            className="w-8 bg-blue-500 rounded-t"
-            initial={{ height: 0 }}
-            animate={{ height: `${(item.amount / 1000000) * 100}px` }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          ></motion.div>
-          <p className="text-xs mt-1">{item.month}</p>
-        </div>
+    <div className="relative md:p-6 bg-gray-50">
+      {/* house widgets */}
+      <div className="">
+        <HouseWidget />
+      </div>
+      <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
+      <motion.button
+        className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
+        whileTap={{ scale: 0.95 }}
+        onClick={handleAddHouse}
+      >
+        <Plus size={16} className="mr-1" />
+        Add House
+      </motion.button>
+
+      {showHouseForm && (
+        <HouseForm
+          house={selectedHouse}
+          onSave={handleSaveHouse}
+          onCancel={handleCancelHouseForm}
+        />
+      )}
+
+      {houses?.map((house) => (
+        <HouseItem
+          key={house.id}
+          house={house}
+          onEdit={handleEditHouse}
+          onDelete={handleDeleteHouse}
+          onAddRoom={handleAddRoom}
+          onEditRoom={handleEditRoom}
+          onDeleteRoom={handleDeleteRoom}
+          showRoomForm={showRoomForm}
+          selectedRoom={selectedRoom}
+          handleSaveRoom={handleSaveRoom}
+          handleCancelRoomForm={handleCancelRoomForm}
+          Id={ID}
+        />
       ))}
     </div>
   );
 };
-
-// Main Dashboard Component
-export default function Dashboard() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    // Simulate API fetch
-    setTimeout(() => {
-      setData(mockData);
-    }, 500);
-  }, []);
-
-  if (!data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="">
-      <motion.h1
-        className="text-2xl font-bold mb-6"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Dashboard
-      </motion.h1>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard
-          title="Total Houses"
-          value={data.totalHouses}
-          icon={<Home size={20} className="text-blue-600" />}
-          color="border-l-blue-500 border-l-4"
-        />
-        <StatCard
-          title="Total Rooms"
-          value={data.totalRooms}
-          icon={<Home size={20} className="text-blue-600" />}
-          color="border-l-blue-500 border-l-4"
-        />
-        <StatCard
-          title="Occupied Rooms"
-          value={data.occupiedRooms}
-          icon={<Users size={20} className="text-green-600" />}
-          color="border-l-green-500 border-l-4"
-        />
-        <StatCard
-          title="Vacant Rooms"
-          value={data.vacantRooms}
-          icon={<Home size={20} className="text-yellow-600" />}
-          color="border-l-yellow-500 border-l-4"
-        />
-        <StatCard
-          title="Total Tenants"
-          value={data.totalTenants}
-          icon={<Users size={20} className="text-blue-600" />}
-          color="border-l-blue-500 border-l-4"
-        />
-        <StatCard
-          title="Total Rent Collected"
-          value={`TZS ${data.totalRentCollected.toLocaleString()}`}
-          icon={<DollarSign size={20} className="text-green-600" />}
-          color="border-l-green-500 border-l-4"
-        />
-        <StatCard
-          title="Pending Payments"
-          value={`${data.pendingPayments} tenants`}
-          icon={<AlertCircle size={20} className="text-red-600" />}
-          color="border-l-red-500 border-l-4"
-        />
-        <StatCard
-          title="Upcoming Rent Due"
-          value={`${data.upcomingRentDue} in 7 days`}
-          icon={<AlertCircle size={20} className="text-yellow-600" />}
-          color="border-l-yellow-500 border-l-4"
-        />
-      </div>
-
-      {/* Second Row: Charts and Activities */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Charts Section */}
-        <motion.div
-          className="lg:col-span-2 bg-white rounded-lg shadow-md p-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h2 className="text-lg font-semibold mb-4">
-            Rent Collection & Occupancy
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col">
-              <h3 className="text-md font-medium mb-2">Room Occupancy</h3>
-              <RoomOccupancyChart
-                occupied={data.occupiedRooms}
-                vacant={data.vacantRooms}
-              />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-md font-medium mb-2">
-                Monthly Rent Collection
-              </h3>
-              <MonthlyRentChart data={data.monthlyRentData} />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Recent Activities */}
-        <motion.div
-          className="bg-white rounded-lg shadow-md p-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
-          <div className="mt-4">
-            {data.recentActivities.map((activity) => (
-              <RecentActivity key={activity.id} activity={activity} />
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mt-6">
-            <h3 className="text-md font-medium mb-3">Quick Actions</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <motion.button
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Home size={16} />
-                <span>Add House</span>
-              </motion.button>
-              <motion.button
-                className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Users size={16} />
-                <span>Add Tenant</span>
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
+export default House;

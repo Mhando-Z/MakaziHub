@@ -4,8 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import UserContext from "@/context/UserContext";
 import DataContext from "@/context/DataContext";
 import { Calendar, Users, Bell, Clock, Home, Search, User } from "lucide-react";
-import HouseDetailsCard from "../house/HouseDetails";
-import RoomDetailsCard from "../house/RoomDetails";
+import HouseDetailsCard from "../home/HouseDetails";
+import RoomDetailsCard from "../home/RoomDetails";
 
 function Tenants() {
   const { profile, userData, houses } = useContext(UserContext);
