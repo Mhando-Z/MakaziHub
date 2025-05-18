@@ -673,7 +673,7 @@ const HouseItem = ({
         <div className="flex items-center">
           <Home
             onClick={() => setExpanded(!expanded)}
-            className="cursor-pointer text-blue-950 mr-2"
+            className="cursor-pointer text-blue-950/70 mr-2"
             size={50}
           />
           <div>
