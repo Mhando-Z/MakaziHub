@@ -211,7 +211,7 @@ export default function DashboardLayout({ children }) {
                   ease: "easeOut",
                   type: "spring",
                 }}
-                className="absolute top-14  right-0 h-[23rem] w-[270px] rounded-xl bg-slate-100"
+                className="absolute top-14  right-0 h-[22rem] w-[270px] rounded-xl bg-slate-100"
               >
                 <div className="flex flex-col justify-center py-14 gap-y-4 px-7">
                   <div className="flex flex-col items-center">
@@ -262,12 +262,7 @@ export default function DashboardLayout({ children }) {
                       </div>
                     </div>
                   </Link>
-                  <div className="flex flex-row items-center cursor-pointer gap-x-4 ">
-                    <IoKeySharp className="text-xl" />
-                    <h1 className="text-[#121037] font-medium">
-                      Change password
-                    </h1>
-                  </div>
+
                   <div
                     onClick={handleLogout}
                     className="flex flex-row items-center cursor-pointer gap-x-4 "
