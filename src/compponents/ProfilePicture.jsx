@@ -12,8 +12,8 @@ function ProfilePictures() {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center w-full text-gray-900 md:justify-between md:flex-row gap-y-7 gap-x-3">
-        <div className="items-center justify-center">
+      <div className="flex flex-row   justify-between w-full text-gray-900 md:justify-between md:flex-row gap-y-7 gap-x-3">
+        <div className=" ">
           {/* profile images */}
           {user !== null ? (
             <>
@@ -23,7 +23,7 @@ function ProfilePictures() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="object-cover h-16 border-4 border-green-300 rounded-full"
+                className="object-cover h-5 w-full border-4 border-green-300 rounded-full"
               />
             </>
           ) : (
