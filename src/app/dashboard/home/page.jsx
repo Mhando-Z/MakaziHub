@@ -688,7 +688,7 @@ const HouseItem = ({
           <div>
             <h3
               onClick={() => setExpanded(!expanded)}
-              className="font-bold cursor-pointer font-roboto text-lg"
+              className="font-bold text-gray-500 cursor-pointer font-roboto text-lg"
             >
               {house.name}
             </h3>
@@ -889,15 +889,19 @@ const House = () => {
       <div className="">
         <HouseWidget />
       </div>
-      <h1 className="text-2xl font-raleway font-bold mb-4">House Management</h1>
-      <motion.button
-        className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
-        whileTap={{ scale: 0.95 }}
-        onClick={handleAddHouse}
-      >
-        <Plus size={16} className="mr-1" />
-        Add House
-      </motion.button>
+      <h1 className="text-2xl text-end justify-end text-gray-500 font-raleway font-bold mb-4">
+        House Management
+      </h1>
+      <div className="w-full flex flex-col justify-end items-end">
+        <motion.button
+          className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
+          whileTap={{ scale: 0.95 }}
+          onClick={handleAddHouse}
+        >
+          <Plus size={16} className="mr-1" />
+          Add House
+        </motion.button>
+      </div>
 
       {showHouseForm && (
         <HouseForm
