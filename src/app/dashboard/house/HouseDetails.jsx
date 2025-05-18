@@ -62,7 +62,7 @@ export default function HouseDetailsCard({ house }) {
   const showEndDateReminder = isEndDateInCurrentMonth();
 
   return (
-    <motion.div className="bg-white  overflow-hidden w-full">
+    <motion.div className="bg-white  overflow-hidden p-4 w-full">
       {/* Header */}
       <div
         className={`bg-gradient-to-r justify-between ${
