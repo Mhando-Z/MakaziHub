@@ -37,13 +37,6 @@ function Tenants() {
 
   const filteredTenants = filterAndCombineByEndMonth(Occupancy, tenants);
 
-  // useEffect(() => {
-  //   if (Occupancy && tenants) {
-  //     const result = filterAndCombineByEndMonth(Occupancy, tenants);
-  //     setFilteredTenants(result);
-  //   }
-  // }, []);
-
   const filteredAllTenants = tenants?.filter((tenant) =>
     tenant?.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -167,7 +160,7 @@ function Tenants() {
                 return (
                   <div>
                     <div
-                      key={index}
+                      key={index + dt?.id}
                       onClick={() => handleSelect(dt)}
                       className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between hover:shadow-md transition-all duration-200"
                     >
