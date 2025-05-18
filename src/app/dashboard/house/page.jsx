@@ -563,23 +563,46 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
 };
 
 // Room Card Component
-const RoomCard = ({ room, onEdit, onDelete }) => {
+const RoomCard = ({
+  room,
+  onEdit,
+  onDelete,
+  setRoom,
+  setShowRoomDetails,
+  showRoomDetails,
+  selectedRoom,
+}) => {
   const { room_status } = useContext(DataContext);
   const roomStatus = room_status.find((status) => status.room_id === room?.id);
+  const [roomSelect, setRoomId] = useState("");
+
+  // select room
+  const handleSelect = () => {
+    setRoom(room);
+    setShowRoomDetails(!showRoomDetails);
+    setRoomId(isSelected);
+  };
+  const isSelected = selectedRoom === room.id;
 
   return (
     <motion.div
-      className="bg-white rounded-lg shadow md:p-4 border border-gray-200"
+      className={` ${
+        isSelected && showRoomDetails ? "bg-green-200" : "bg-white"
+      } rounded-lg shadow md:p-4 border border-gray-200`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       whileHover={{ boxShadow: "0px 4px 15px rgba(0,0,0,0.1)" }}
     >
       <div className="flex justify-between items-start">
-        <div className="flex flex-col gap-2">
+        <div
+          onClick={handleSelect}
+          className="flex cursor-pointer flex-col gap-2"
+        >
           <h3 className="font-bold text-lg">{room.room_name}</h3>
           <p className="text-sm ">{room.room_type} Room</p>
         </div>
+
         <div className="flex gap-1">
           <motion.button
             className="p-1 text-blue-600 cursor-pointer hover:text-blue-800"
@@ -598,14 +621,20 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
         </div>
       </div>
 
-      <div className="mt-3 flex items-center">
+      <div
+        onClick={handleSelect}
+        className="mt-3 cursor-pointer flex items-center"
+      >
         <DollarSign size={16} className="text-green-600 mr-1" />
         <span className="font-medium">
           TZS {room.rent_price.toLocaleString()}/month
         </span>
       </div>
 
-      <div className="mt-3 w-full flex flex-col justify-end items-end">
+      <div
+        onClick={handleSelect}
+        className="mt-3 w-full flex flex-col justify-end items-end"
+      >
         <div
           className={`inline-flex items-center px-5 py-1 rounded text-xs font-medium ${
             room?.is_occupied
@@ -616,19 +645,6 @@ const RoomCard = ({ room, onEdit, onDelete }) => {
           {room?.is_occupied ? "Occupied" : "Vacant"}
         </div>
       </div>
-
-      {room.is_occupied === "occupied" && (
-        <div className="mt-3 border-t pt-3">
-          <div className="flex items-center mb-1">
-            <User size={14} className=" mr-1" />
-            <span className="text-sm">room tenant name</span>
-          </div>
-          <div className="flex items-center">
-            <Calendar size={14} className=" mr-1" />
-            <span className="text-sm">{`Since ${roomStatus?.start_date} (${roomStatus?.duration_in_months} months)`}</span>
-          </div>
-        </div>
-      )}
     </motion.div>
   );
 };
@@ -653,11 +669,6 @@ const HouseItem = ({
   const [room, setRoom] = useState([]);
 
   const rooms = roomData.filter((room) => room.house_id === house.id);
-
-  const handleRoom = (room) => {
-    setRoom(room);
-    setShowRoomDetails(!showRoomDetails);
-  };
 
   return (
     <motion.div
@@ -748,19 +759,17 @@ const HouseItem = ({
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {rooms?.map((room) => (
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => handleRoom(room)}
-                        key={room.id}
-                      >
-                        <RoomCard
-                          key={room.id}
-                          room={room}
-                          onEdit={() => onEditRoom(house.id, room)}
-                          onDelete={() => onDeleteRoom(room.id)}
-                        />
-                      </div>
+                    {rooms?.map((rooms) => (
+                      <RoomCard
+                        key={rooms.id}
+                        room={rooms}
+                        onEdit={() => onEditRoom(house.id, rooms)}
+                        onDelete={() => onDeleteRoom(rooms.id)}
+                        setRoom={setRoom}
+                        setShowRoomDetails={setShowRoomDetails}
+                        showRoomDetails={showRoomDetails}
+                        selectedRoom={room?.id}
+                      />
                     ))}
                   </div>
                 </div>
