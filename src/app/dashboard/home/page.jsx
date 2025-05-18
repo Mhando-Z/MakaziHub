@@ -73,6 +73,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           text: error?.response?.data?.message || "An error occurred",
           type: "error",
         });
+        toast?.error(error?.response?.data?.message || "An error occurred");
       } else {
         gethHouse();
         setLoading(false);
@@ -80,6 +81,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           text: "House data updated successfully!",
           type: "success",
         });
+        toast.success("House data updated successfully!");
       }
     } else {
       // Insert new house
@@ -106,6 +108,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           text: error?.response?.data?.message || "An error occurred",
           type: "error",
         });
+        toast?.error(error?.response?.data?.message || "An error occurred");
       } else {
         gethHouse();
         setLoading(false);
@@ -113,6 +116,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           text: "House data saved successfully!",
           type: "success",
         });
+        toast?.success("House data saved successfully!");
       }
     }
   };
