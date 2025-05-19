@@ -82,23 +82,25 @@ function Tenants() {
     <div className="min-h-screen bg-gray-50 md:p-6">
       {/* Dashboard Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+        <h1 className="text-base  md:text-xl font-bold text-gray-800 mb-2">
           Tenant Management
         </h1>
-        <p className="text-gray-500">
+        <p className="text-gray-500 text-sm">
           Manage and monitor your property tenants
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow p-4 flex items-center">
           <div className="bg-blue-100 p-3 rounded-full mr-4">
             <Users className="text-blue-600" size={26} />
           </div>
           <div>
             <p className="text-gray-500 text-sm">Total Tenants</p>
-            <p className="text-2xl font-bold">{tenants?.length || 0}</p>
+            <p className=" text-xl md:text-2xl font-bold">
+              {tenants?.length || 0}
+            </p>
           </div>
         </div>
 
@@ -108,7 +110,9 @@ function Tenants() {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Ending This Month</p>
-            <p className="text-2xl font-bold">{filteredTenants?.length || 0}</p>
+            <p className=" text-xl md:text-2xl font-bold">
+              {filteredTenants?.length || 0}
+            </p>
           </div>
         </div>
 
@@ -118,7 +122,9 @@ function Tenants() {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Active Properties</p>
-            <p className="text-2xl font-bold">{Occupancy?.length || 0}</p>
+            <p className=" text-xl md:text-2xl font-bold">
+              {Occupancy?.length || 0}
+            </p>
           </div>
         </div>
       </div>
@@ -127,7 +133,7 @@ function Tenants() {
       <div className="flex border-b border-gray-200 mb-6">
         <button
           onClick={() => setActiveTab("ending")}
-          className={`py-3 px-6 font-medium flex items-center ${
+          className={`py-3 px-6 font-medium flex text-sm items-center ${
             activeTab === "ending"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500 hover:text-gray-700"
@@ -138,7 +144,7 @@ function Tenants() {
         </button>
         <button
           onClick={() => setActiveTab("all")}
-          className={`py-3 px-6 font-medium flex items-center ${
+          className={`py-3 px-6 font-medium text-sm flex items-center ${
             activeTab === "all"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500 hover:text-gray-700"
@@ -151,15 +157,15 @@ function Tenants() {
 
       {activeTab === "ending" ? (
         /* Tenants Ending This Month */
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow  md:p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+            <h2 className="text-sm md:text-xl font-semibold text-gray-800 flex items-center">
               <Calendar className="mr-2 text-blue-600" size={20} />
               Tenants with Expiring Contract
             </h2>
           </div>
 
-          <div className="mt-4 space-y-4   overflow-y-auto">
+          <div className="mt-4 space-y-4 overflow-y-auto">
             {filteredTenants?.length > 0 ? (
               filteredTenants.map((dt, index) => {
                 const daysLeft = getDaysLeft(dt.end_date);
@@ -175,17 +181,17 @@ function Tenants() {
                           <User size={26} />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium  text-xs line-clamp-1 md:text-base text-gray-900">
                             {dt.tenant?.full_name || "Unknown Tenant"}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className=" text-xs md:text-sm text-gray-500">
                             Contract ends: {formatDate(dt.end_date)}
                           </p>
                         </div>
                       </div>
 
                       <div
-                        className={`px-3 py-1 rounded-full text-sm font-medium flex items-center
+                        className={`px-3 py-1 rounded-full text-xs md:text-sm font-medium flex items-center
                       ${
                         daysLeft <= 7
                           ? "bg-red-100 text-red-800"
@@ -224,10 +230,10 @@ function Tenants() {
             ) : (
               <div className="text-center py-12">
                 <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-400 text-lg">
+                <p className="text-gray-400 text-sm md:text-lg">
                   No tenants have leases ending this month.
                 </p>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-400 text-xs md:text-sm">
                   All your current leases extend beyond this month.
                 </p>
               </div>
@@ -237,8 +243,8 @@ function Tenants() {
       ) : (
         /* All Tenants Section */
         <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <div className="flex  flex-col md:flex-row gap-3 justify-between md:items-center mb-6">
+            <h2 className="md:text-lg text-sm font-semibold text-gray-800 flex items-center">
               <Users className="mr-2 text-blue-600" size={20} />
               All Tenants
             </h2>
@@ -248,7 +254,7 @@ function Tenants() {
               <input
                 type="text"
                 placeholder="Search tenants..."
-                className="py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="py-2 pl-10 pr-4 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -298,25 +304,25 @@ function Tenants() {
                               <User size={26} />
                             </div>
                             <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-xs md:text-sm  font-medium text-gray-900">
                                 {tenant.full_name || "Unknown"}
                               </div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-xs md:text-sm  text-gray-500">
                                 ID: {tenant.id}
                               </div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
+                          <div className="text-xs md:text-sm  text-gray-900">
                             {tenant.email || "No email"}
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-xs md:text-sm  text-gray-500">
                             {tenant.phone_number || "No phone"}
                           </div>
                         </td>
                         {/* <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
+                          <div className="text-xs md:text-sm  text-gray-900">
                             {Occupancy?.length || 0}
                           </div>
                         </td> */}
