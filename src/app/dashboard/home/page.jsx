@@ -147,7 +147,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label className="block text-xs   md:text-sm mb-2" htmlFor="name">
+        <label
+          className="block text-xs   md text-xs md:text-sm mb-2"
+          htmlFor="name"
+        >
           House Name
         </label>
         <input
@@ -179,7 +182,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           />
         </div>
         <div>
-          <label className="block  text-sm mb-2" htmlFor="street">
+          <label className="block text-xs md:text-sm mb-2" htmlFor="street">
             street
           </label>
           <input
@@ -196,7 +199,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label className="block  text-sm mb-2" htmlFor="purpose">
+        <label className="block  text-xs md:text-sm mb-2" htmlFor="purpose">
           Purpose
         </label>
         <select
@@ -217,7 +220,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       {formData?.purpose === "Rent House" ? (
         <>
           <div className="mb-4">
-            <label className="block  text-sm mb-2" htmlFor="houseprice">
+            <label
+              className="block  text-xs md:text-sm mb-2"
+              htmlFor="houseprice"
+            >
               House Price
             </label>
             <input
@@ -232,7 +238,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block  text-sm mb-2" htmlFor="bedrooms">
+            <label
+              className="block  text-xs md:text-sm mb-2"
+              htmlFor="bedrooms"
+            >
               BedRooms
             </label>
             <input
@@ -247,7 +256,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block  text-sm mb-2" htmlFor="bathrooms">
+            <label
+              className="block  text-xs md:text-sm mb-2"
+              htmlFor="bathrooms"
+            >
               BathRooms
             </label>
             <input
@@ -262,7 +274,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block  text-sm mb-2" htmlFor="type">
+            <label className="block  text-xs md:text-sm mb-2" htmlFor="type">
               House Type
             </label>
             <select
@@ -281,7 +293,10 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block  text-sm mb-2" htmlFor="description">
+            <label
+              className="block  text-xs md:text-sm mb-2"
+              htmlFor="description"
+            >
               House Description
             </label>
             <textarea
@@ -299,7 +314,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       ) : (
         <>
           <div className="mb-6">
-            <label className="block  text-sm mb-2" htmlFor="type">
+            <label className="block  text-xs md:text-sm mb-2" htmlFor="type">
               House Type
             </label>
             <select
