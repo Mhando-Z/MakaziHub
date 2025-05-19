@@ -803,7 +803,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="md:py-8  bg-gray-50">
+    <div className="md:py-8 mt-20 md:mt-0 bg-gray-50">
       <div className="mx-auto sm:px-2 lg:px-8">
         <div className="mb-8">
           <h1 className="text-base md:text-xl font-bold text-gray-900">
