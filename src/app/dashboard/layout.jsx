@@ -7,7 +7,6 @@ import { IoKeySharp, IoPeople } from "react-icons/io5";
 import { FaHome } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { HiMiniCheckBadge } from "react-icons/hi2";
-import { RiLuggageDepositFill } from "react-icons/ri";
 import Image from "next/image";
 // other imports
 import logo from "../../../public/Assets/Logo/House.png";
@@ -19,6 +18,7 @@ import ProfilePictures from "@/compponents/ProfilePicture";
 import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
+import { IoMdMenu } from "react-icons/io";
 
 // what vano and other supervisors can see
 const userRoutes = [
@@ -166,27 +166,14 @@ export default function DashboardLayout({ children }) {
 
       {/* Main content */}
       <div className="flex-1 ml-0 overflow-y-auto   md:ml-64">
-        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3  shadow bg-slate-100 ">
+        <header className="md:sticky w-full fixed top-0 z-30 flex items-center justify-between px-4 py-2 md:py-3  shadow bg-slate-100 ">
           {/* Button to toggle sidebar on mobile */}
           <button
-            className="p-2 text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
+            className="p-2 text-gray-600 md:invisible rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <IoMdMenu className="text-2xl " />
           </button>
 
           <div className="relative">
