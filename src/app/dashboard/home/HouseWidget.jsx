@@ -81,7 +81,7 @@ function HouseWidget() {
         </div>
       </div>
       {/* house widgets */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
         {/* totatl houses */}
         <StatCard
           title={"Total Houses"}
@@ -101,7 +101,7 @@ function HouseWidget() {
           icon={<Home size={30} className="text-green-600" />}
         />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-5">
         {/* totatl Rooms */}
         <StatCard
           title={"Total Rooms"}
@@ -137,8 +137,10 @@ const StatCard = ({ title, value, icon, color }) => {
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="font-bold text-gray-500">{title}</p>
-          <h3 className="text-2xl font-bold mt-1">{value}</h3>
+          <p className="font-bold text-sm md:text-base text-gray-500">
+            {title}
+          </p>
+          <h3 className="text-xl md:text-2xl font-bold mt-1">{value}</h3>
         </div>
         <div
           className={`p-2 rounded-full ${
