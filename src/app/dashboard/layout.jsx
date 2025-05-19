@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }) {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen md:h-screen">
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 w-64 bg-slate-100  h-full transform ${
