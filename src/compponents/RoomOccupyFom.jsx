@@ -160,7 +160,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="room_id"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Room ID
             </label>
@@ -183,7 +183,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="tenant_id"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Tenant ID
             </label>
@@ -206,7 +206,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="start_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Start Date
             </label>
@@ -229,7 +229,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="duration_in_months"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Duration (months)
             </label>
@@ -255,7 +255,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="end_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               End Date
             </label>
@@ -277,7 +277,7 @@ export default function RoomOccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="rent_due_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Rent Due Date
             </label>
@@ -304,7 +304,7 @@ export default function RoomOccupancyForm({
             />
             <label
               htmlFor="is_active"
-              className="ml-2 block text-sm font-medium text-gray-700"
+              className="ml-2 block text-xs md:text-sm font-medium text-gray-700"
             >
               Is Active
             </label>
