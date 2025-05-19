@@ -270,16 +270,16 @@ function Tenants() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Tenant
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Contact
                   </th>
                   {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Property
                   </th> */}
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
                 </tr>
@@ -299,7 +299,7 @@ function Tenants() {
 
                     return (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-3 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600">
                               <User size={26} />
@@ -308,7 +308,7 @@ function Tenants() {
                               <div className="text-xs md:text-sm  font-medium text-gray-900">
                                 {tenant.full_name || "Unknown"}
                               </div>
-                              <div className="text-xs md:text-sm  text-gray-500">
+                              <div className="text-xs  md:block hidden md:text-sm  text-gray-500">
                                 ID: {tenant.id}
                               </div>
                             </div>
@@ -327,7 +327,7 @@ function Tenants() {
                             {Occupancy?.length || 0}
                           </div>
                         </td> */}
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             ${

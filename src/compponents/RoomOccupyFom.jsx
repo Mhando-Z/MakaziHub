@@ -5,6 +5,8 @@ import { Loader } from "lucide-react";
 import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import DataContext from "@/context/DataContext";
+import UserContext from "@/context/UserContext";
+import { toast } from "react-toastify";
 
 export default function RoomOccupancyForm({
   room,
@@ -14,6 +16,7 @@ export default function RoomOccupancyForm({
   setShowRoomDetails,
 }) {
   const { fetchOccupancy } = useContext(DataContext);
+  const { userData } = useContext(UserContext);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -63,6 +66,7 @@ export default function RoomOccupancyForm({
         const { data, error } = await supabase2
           .from("occupancy")
           .update({
+            lords_id: userData?.id,
             tenant_id: formData.tenant_id,
             start_date: formData.start_date,
             duration_in_months: formData.duration_in_months,
@@ -83,6 +87,11 @@ export default function RoomOccupancyForm({
               "An error occurred",
             type: "error",
           });
+          toast.error(
+            error?.response?.data?.message ||
+              error?.message ||
+              "An error occurred"
+          );
         } else {
           fetchOccupancy();
           setLoading(false);
@@ -90,6 +99,7 @@ export default function RoomOccupancyForm({
             text: "room data updated successfully!",
             type: "success",
           });
+          toast.success("Updated Successfully!!");
         }
       } else {
         // Insert new occupancy
@@ -98,6 +108,7 @@ export default function RoomOccupancyForm({
           .insert([
             {
               house_id: null,
+              lords_id: userData?.id,
               room_id: formData.room_id || null,
               tenant_id: formData.tenant_id || null,
               start_date: formData.start_date || "",
@@ -117,6 +128,11 @@ export default function RoomOccupancyForm({
               "An error occurred",
             type: "error",
           });
+          toast.error(
+            error?.response?.data?.message ||
+              error?.message ||
+              "An error occurred"
+          );
         } else {
           fetchOccupancy();
           setLoading(false);
@@ -124,6 +140,7 @@ export default function RoomOccupancyForm({
             text: "room data saved successfully!",
             type: "success",
           });
+          toast.success("Created Successfully!!");
         }
       }
     } else {

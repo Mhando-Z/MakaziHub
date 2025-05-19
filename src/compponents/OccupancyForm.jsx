@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import DataContext from "@/context/DataContext";
 import UserContext from "@/context/UserContext";
+import { toast } from "react-toastify";
 
 export default function OccupancyForm({
   house,
@@ -72,10 +73,10 @@ export default function OccupancyForm({
             rent_due_date: formData.rent_due_date,
             is_active: formData.is_active,
             house_id: formData.house_id,
+            lords_id: userData?.id,
           })
           .eq("id", occupancy?.id)
           .select();
-
         if (error) {
           setLoading(false);
           setMessage({
@@ -85,6 +86,11 @@ export default function OccupancyForm({
               "An error occurred",
             type: "error",
           });
+          toast.error(
+            error?.response?.data?.message ||
+              error?.message ||
+              "An error occurred"
+          );
         } else {
           fetchOccupancy();
           setLoading(false);
@@ -92,6 +98,7 @@ export default function OccupancyForm({
             text: "House data updated successfully!",
             type: "success",
           });
+          toast.success("House data updated successfully!");
         }
       } else {
         // Insert new occupancy
@@ -120,6 +127,11 @@ export default function OccupancyForm({
               "An error occurred",
             type: "error",
           });
+          toast.error(
+            error?.response?.data?.message ||
+              error?.message ||
+              "An error occurred"
+          );
         } else {
           fetchOccupancy();
           setLoading(false);
@@ -127,6 +139,7 @@ export default function OccupancyForm({
             text: "House data saved successfully!",
             type: "success",
           });
+          toast.success("House data Created successfully!");
         }
       }
     } else setLoading(false);
@@ -144,7 +157,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="tenant_id"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Tenant ID
             </label>
@@ -167,7 +180,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="house_id"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               House ID
             </label>
@@ -190,7 +203,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="start_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Start Date
             </label>
@@ -213,7 +226,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="duration_in_months"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Duration (months)
             </label>
@@ -239,7 +252,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="end_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               End Date
             </label>
@@ -261,7 +274,7 @@ export default function OccupancyForm({
           <div className="space-y-1">
             <label
               htmlFor="rent_due_date"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs md:text-sm font-medium text-gray-700"
             >
               Rent Due Date
             </label>
@@ -288,7 +301,7 @@ export default function OccupancyForm({
             />
             <label
               htmlFor="is_active"
-              className="ml-2 block text-sm font-medium text-gray-700"
+              className="ml-2 block text-xs md:text-sm font-medium text-gray-700"
             >
               Is Active
             </label>
