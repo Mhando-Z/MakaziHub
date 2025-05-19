@@ -19,6 +19,8 @@ import OccupancyDetails from "@/compponents/OccupancyDetails";
 import UserContext from "@/context/UserContext";
 import TenantDetails from "@/compponents/TenantDetails";
 import RoomOccupancyForm from "@/compponents/RoomOccupyFom";
+import { LuHouse } from "react-icons/lu";
+import { FaDollarSign } from "react-icons/fa";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-US", {
@@ -72,7 +74,7 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   const showEndDateReminder = isEndDateInCurrentMonth();
 
   return (
-    <motion.div className="bg-white  overflow-hidden p-4 w-full">
+    <motion.div className="bg-white  overflow-hidden p-2 md:p-4 w-full">
       {/* Header */}
       <div
         className={`bg-gradient-to-r justify-between ${
@@ -81,41 +83,46 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
             : Occupancy
             ? "from-green-600 to-green-900"
             : "from-blue-600 to-blue-900"
-        }  flex flex-col md:flex-row  to-blue-800 p-6 text-white`}
+        }  flex flex-col md:flex-row  to-blue-800 px-3 py-4 md:p-6 text-white`}
       >
         <div>
-          <div className="flex items-center mb-2">
-            <Home className="mr-2" />
-            <h2 className="text-xl font-bold">{room.room_name}</h2>
+          <div className="flex justify-end md:justify-start items-center mb-2">
+            <LuHouse className="mr-2 text-lg md:text-xl" />
+            <h2 className="md:text-xl text-lg font-bold">{room.room_name}</h2>
           </div>
-          <div className="flex items-center mb-2">
-            <DollarSign size={20} className="mr-2 " />
-            <h2 className="text-lg font-bold">
+
+          <div className="flex items-center mb-2 ">
+            <FaDollarSign className="mr-2 text-lg md:text-xl" />
+            <h2 className="text-lg md:text-xl font-bold">
               {formatPrice(room.rent_price)}
             </h2>
           </div>
-          <div className="flex items-center text-blue-100 text-sm mb-2">
+
+          <div className="flex items-center text-blue-100 text-xs md:text-sm mb-2">
             <MapPin size={16} className="mr-1" />
             <span>
-              {house?.street}, {house?.region}
+              {house.street}, {house.region}
             </span>
+          </div>
+          <div className="text-blue-200 text-xs md:text-sm">
+            <span>{house.purpose}</span>
           </div>
         </div>
 
         {/* id section */}
-        <div className="">
+        <div className="mt-3 md:mt-0">
           <div className="flex items-center gap-2">
             <Key size={16} className="text-white" />
-            <h2 className="font-medium text-white">room key</h2>
+            <h2 className="font-medium text-sm text-white">Room key</h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm">
             <code className="  px-3 py-1 rounded text-white font-mono">
               {room?.id || "No ID available"}
             </code>
             <button
               onClick={copyToClipboard}
               className="flex items-center justify-center p-2 rounded-md hover:bg-gray-700 transition-colors"
-              title="Copy room ID"
+              title="Copy house ID"
             >
               {copied ? (
                 <Check size={16} className="text-white" />
@@ -128,7 +135,7 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
       </div>
 
       {/* Property details */}
-      <div className="p-6">
+      <div className="p-2 md:p-6">
         {/* tenant details */}
         {Occupancy ? (
           <div className="mt-4">

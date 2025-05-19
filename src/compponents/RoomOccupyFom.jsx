@@ -133,7 +133,9 @@ export default function RoomOccupancyForm({
 
   return (
     <div className="mx-auto bg-white">
-      <h2 className="font-bold mb-3 text-gray-800">Occupancy Form</h2>
+      <h2 className="font-bold text-sm md:text-base mb-3 text-gray-800">
+        Occupancy Form
+      </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -151,7 +153,7 @@ export default function RoomOccupancyForm({
               name="room_id"
               value={formData.room_id}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md outline-0 ${
+              className={`w-full p-2 text-xs md:text-sm border rounded-md outline-0 ${
                 errors.room_id ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -174,7 +176,7 @@ export default function RoomOccupancyForm({
               name="tenant_id"
               value={formData.tenant_id}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md outline-0 ${
+              className={`w-full p-2 text-xs md:text-sm border rounded-md outline-0 ${
                 errors.tenant_id ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -197,7 +199,7 @@ export default function RoomOccupancyForm({
               name="start_date"
               value={formData.start_date}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md outline-0 ${
+              className={`w-full p-2 text-xs md:text-sm border rounded-md outline-0 ${
                 errors.start_date ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -221,7 +223,7 @@ export default function RoomOccupancyForm({
               min="1"
               value={formData.duration_in_months}
               onChange={handleChange}
-              className={`w-full p-2 border rounded-md outline-0 ${
+              className={`w-full p-2 text-xs md:text-sm border rounded-md outline-0 ${
                 errors.duration_in_months ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -246,7 +248,7 @@ export default function RoomOccupancyForm({
               name="end_date"
               value={formData.end_date}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 text-xs md:text-sm border border-gray-300 rounded-md"
               placeholder="Calculated from start date + duration"
             />
             <p className="text-xs text-gray-500">
@@ -268,7 +270,7 @@ export default function RoomOccupancyForm({
               name="rent_due_date"
               value={formData.rent_due_date}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 text-xs md:text-sm border border-gray-300 rounded-md"
             />
             <p className="text-xs text-gray-500">Date when rent is due</p>
           </div>
@@ -295,7 +297,7 @@ export default function RoomOccupancyForm({
         {/* notification section */}
         {message.text && (
           <div
-            className={`mb-4 p-3 rounded ${
+            className={`mb-4 text-xs md:text-sm p-3 rounded ${
               message.type === "success"
                 ? "bg-green-100 text-green-700"
                 : "bg-red-100 text-red-700"
@@ -309,7 +311,7 @@ export default function RoomOccupancyForm({
           {showEdit ? (
             <button
               type="button"
-              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs md:text-sm"
               onClick={() => setShowEdit(!showEdit)}
             >
               Cancel
@@ -317,7 +319,7 @@ export default function RoomOccupancyForm({
           ) : (
             <button
               type="button"
-              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-sm"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs md:text-sm"
               onClick={() => setShowRoomDetails(false)}
             >
               cancel
@@ -327,7 +329,7 @@ export default function RoomOccupancyForm({
             type="submit"
             whileTap={{ scale: 0.8 }}
             transition={{ type: "spring", ease: "easeOut" }}
-            className={`flex   justify-center rounded-md ${
+            className={`flex text-xs md:text-sm  justify-center rounded-md ${
               loading
                 ? "bg-gray-200 cursor-not-allowed "
                 : "bg-blue-600 hover:bg-blue-700"
