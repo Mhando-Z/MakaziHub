@@ -11,7 +11,7 @@ function ProfilePictures() {
   useEffect(() => {}, [userData, user, pathname]);
 
   return (
-    <div className="flex items-center p-3 rounded-lg bg-white shadow-sm border border-gray-100">
+    <div className="flex items-center   rounded-lg   border border-gray-100">
       <div className="flex-shrink-0 mr-3">
         {user !== null ? (
           <motion.div
