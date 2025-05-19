@@ -77,7 +77,7 @@ export default function HouseDetailsCard({ house }) {
       >
         <div>
           <div className="flex items-center mb-2 ">
-            <LuHouse className="mr-2 text-lg md:text-xl" />
+            <LuHouse className="mr-1 text-lg md:text-xl" />
             <h2 className="md:text-xl text-base font-bold">
               {formatPrice(house.house_price)} / month
             </h2>

@@ -92,9 +92,9 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
           </div>
 
           <div className="flex items-center mb-2 ">
-            <FaDollarSign className="mr-2 text-lg md:text-xl" />
+            <FaDollarSign className="mr-1 text-lg md:text-xl" />
             <h2 className="text-lg md:text-xl font-bold">
-              {formatPrice(room.rent_price)}
+              {formatPrice(room.rent_price)} / month
             </h2>
           </div>
 
