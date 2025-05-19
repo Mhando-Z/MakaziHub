@@ -64,6 +64,7 @@ function Tenants() {
   const [property, setPropety] = useState([]);
   const [showDetails, setDetails] = useState(false);
   const [propertyId, setPropertyId] = useState("");
+
   const handleSelect = (dt) => {
     const room = roomData?.find((dat) => dat?.id === dt?.room_id);
     const house = houses?.find((dat) => dat?.id === dt?.house_id);
@@ -160,7 +161,7 @@ function Tenants() {
         <div className="bg-white rounded-lg shadow  md:p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-sm md:text-xl font-semibold text-gray-800 flex items-center">
-              <Calendar className="mr-2 text-blue-600" size={20} />
+              <Calendar className="mr-2   text-blue-600" size={20} />
               Tenants with Expiring Contract
             </h2>
           </div>
@@ -174,7 +175,7 @@ function Tenants() {
                     <div
                       key={index + dt?.id}
                       onClick={() => handleSelect(dt)}
-                      className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between hover:shadow-md transition-all duration-200"
+                      className="p-4 bg-gray-50 rounded-lg cursor-pointer border border-gray-100 flex items-center justify-between hover:shadow-md transition-all duration-200"
                     >
                       <div className="flex items-center">
                         <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600 mr-4">

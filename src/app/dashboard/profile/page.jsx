@@ -262,20 +262,20 @@ const ProfilePage = () => {
                     transition={{ duration: 0.5 }}
                   />
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800">
+                <div className="flex flex-col items-center justify-center md:items-start md:justify-start">
+                  <h2 className="text-base md:text-xl font-bold text-gray-800">
                     {profileData.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 mt-2">
                     <div
-                      className={`px-3 py-1 text-sm font-medium rounded-full ${getBadgeColor(
+                      className={`px-3 py-1 text-xs md:text-sm font-medium rounded-full ${getBadgeColor(
                         userData?.role
                       )}`}
                     >
                       {profileData.role}
                     </div>
                     {userData?.professional && (
-                      <div className="px-3 py-1 text-sm font-medium bg-yellow-100 rounded-full text-yellow-800">
+                      <div className="px-3 py-1 text-xs md:text-sm font-medium bg-yellow-100 rounded-full text-yellow-800">
                         {profileData.professional}
                       </div>
                     )}
@@ -283,23 +283,23 @@ const ProfilePage = () => {
                 </div>
               </div>
 
-              <h3 className="mb-4 text-lg font-semibold text-gray-800">
+              <h3 className="mb-4 text-sm md:text-lg font-semibold text-gray-800">
                 Account Summary
               </h3>
               <div className="p-4 bg-blue-50 rounded-lg">
                 <div className="flex flex-wrap gap-4">
-                  <div className="px-3 py-1 text-sm font-medium bg-blue-100 rounded-full text-blue-800">
+                  <div className="px-3 py-1 text-xs md:text-sm font-medium bg-blue-100 rounded-full text-blue-800">
                     Joined: {profileData.joinDate}
                   </div>
                   <div
-                    className={`px-3 py-1 text-sm font-medium rounded-full ${getBadgeColor(
+                    className={`px-3 py-1 text-xs md:text-sm font-medium rounded-full ${getBadgeColor(
                       userData?.role
                     )}`}
                   >
                     {profileData.role}
                   </div>
                   {userData?.professional && (
-                    <div className="px-3 py-1 text-sm font-medium bg-yellow-100 rounded-full text-yellow-800">
+                    <div className="px-3 py-1 text-xs md:text-sm font-medium bg-yellow-100 rounded-full text-yellow-800">
                       Professional
                     </div>
                   )}
@@ -308,7 +308,7 @@ const ProfilePage = () => {
             </motion.div>
 
             <motion.div variants={item} className="mb-6">
-              <h3 className="mb-4 text-lg font-semibold text-gray-800">
+              <h3 className="mb-4 text-sm md:text-lg font-semibold text-gray-800">
                 Profile Details
               </h3>
               <div className="overflow-hidden bg-white rounded-lg shadow">
@@ -350,7 +350,7 @@ const ProfilePage = () => {
                     <motion.div
                       key={detail.label}
                       variants={item}
-                      className={`flex items-center p-4 border-b border-gray-100 ${
+                      className={`flex  items-center p-4 border-b border-gray-100 ${
                         index % 2 === 0 ? "bg-gray-50" : "bg-white"
                       }`}
                     >
@@ -444,10 +444,10 @@ const ProfilePage = () => {
 
             {userData?.role === "landlord" && (
               <motion.div variants={item} className="mb-6">
-                <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                <h3 className="mb-4 text-sm md:text-lg font-semibold text-gray-800">
                   Property Information
                 </h3>
-                <div className="p-6 bg-white rounded-lg shadow">
+                <div className="md:p-6 p-2 bg-white rounded-lg shadow">
                   {userData?.house_id ? (
                     <div className="flex items-center">
                       <div className="flex items-center justify-center w-10 h-10 mr-4 text-green-500 bg-green-100 rounded-full">
@@ -467,10 +467,10 @@ const ProfilePage = () => {
                         </svg>
                       </div>
                       <div>
-                        <span className="block text-sm font-medium text-gray-500">
+                        <span className="block text-xs md:text-sm font-medium text-gray-500">
                           House ID
                         </span>
-                        <span className="block mt-1 text-sm font-medium text-gray-900">
+                        <span className="block mt-1 text-xs md:text-sm font-medium text-gray-900">
                           {userData.house_id}
                         </span>
                       </div>
@@ -494,10 +494,10 @@ const ProfilePage = () => {
                         </svg>
                       </div>
                       <div>
-                        <span className="block text-sm font-medium text-yellow-800">
+                        <span className="block text-xs md:text-sm font-medium text-yellow-800">
                           No property registered
                         </span>
-                        <span className="block mt-1 text-sm text-yellow-700">
+                        <span className="block mt-1 text-xs md:text-sm text-yellow-700">
                           Register a property to start listing rooms and
                           managing tenants.
                         </span>
@@ -538,7 +538,7 @@ const ProfilePage = () => {
                     id="full_name"
                     value={formData.full_name}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   />
                 </div>
 
@@ -554,7 +554,7 @@ const ProfilePage = () => {
                     id="phone_number"
                     value={formData.phone_number}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   />
                 </div>
 
@@ -570,7 +570,7 @@ const ProfilePage = () => {
                     id="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   />
                 </div>
 
@@ -586,7 +586,7 @@ const ProfilePage = () => {
                     id="national_id"
                     value={formData.national_id}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   />
                 </div>
 
@@ -601,7 +601,7 @@ const ProfilePage = () => {
                     id="gender"
                     value={formData.gender}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   >
                     <option value="">Select gender</option>
                     <option value="male">Male</option>
@@ -622,7 +622,7 @@ const ProfilePage = () => {
                     id="professional"
                     value={formData.professional}
                     onChange={handleInputChange}
-                    className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                    className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                     placeholder="E.g. Engineer, Doctor, etc."
                   />
                 </div>
@@ -708,7 +708,7 @@ const ProfilePage = () => {
                       currentPassword: e.target.value,
                     })
                   }
-                  className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                  className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   required
                 />
               </div>
@@ -730,7 +730,7 @@ const ProfilePage = () => {
                       newPassword: e.target.value,
                     })
                   }
-                  className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                  className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   required
                 />
               </div>
@@ -752,7 +752,7 @@ const ProfilePage = () => {
                       confirmPassword: e.target.value,
                     })
                   }
-                  className="block w-full px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
+                  className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   required
                 />
               </div>
@@ -803,11 +803,13 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="  py-8 bg-gray-50">
-      <div className="px-4 mx-auto   sm:px-6 lg:px-8">
+    <div className="md:py-8  bg-gray-50">
+      <div className="mx-auto sm:px-2 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-base md:text-xl font-bold text-gray-900">
+            My Profile
+          </h1>
+          <p className="mt-1 text-xs md:text-sm text-gray-500">
             View and manage your personal information and account settings.
           </p>
         </div>
@@ -819,7 +821,7 @@ const ProfilePage = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-6 text-center border-b-2 font-medium text-sm whitespace-nowrap ${
+                  className={`py-4 px-6 text-center border-b-2 font-medium text-xs md:text-sm whitespace-nowrap ${
                     activeTab === tab.id
                       ? "border-blue-500 text-blue-600"
                       : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -830,7 +832,7 @@ const ProfilePage = () => {
               ))}
             </nav>
           </div>
-          <div className="p-6">{renderTabContent()}</div>
+          <div className="md:p-6 p-2">{renderTabContent()}</div>
         </div>
       </div>
     </div>
