@@ -168,7 +168,7 @@ function Tenants() {
 
           <div className="mt-4 space-y-4 overflow-y-auto">
             {filteredTenants?.length > 0 ? (
-              filteredTenants.map((dt, index) => {
+              filteredTenants?.map((dt, index) => {
                 const daysLeft = getDaysLeft(dt.end_date);
                 return (
                   <div>
@@ -286,7 +286,7 @@ function Tenants() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredAllTenants?.length > 0 ? (
-                  filteredAllTenants.map((tenant, index) => {
+                  filteredAllTenants?.map((tenant, index) => {
                     // Find corresponding occupancy record
                     const rental = occupancy?.find(
                       (r) => r.tenant_id === tenant.id
@@ -298,7 +298,7 @@ function Tenants() {
                       : "Unknown";
 
                     return (
-                      <tr key={index} className="hover:bg-gray-50">
+                      <tr key={index + tenant?.id} className="hover:bg-gray-50">
                         <td className="px-3 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="bg-gray-200 h-10 w-10 rounded-full flex items-center justify-center text-gray-600">

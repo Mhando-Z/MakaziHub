@@ -35,8 +35,6 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   const { profile } = useContext(UserContext);
   const { occupancy } = useContext(DataContext);
   const [showEdit, setShowEdit] = useState(false);
-  // const [Occupancy, setOccupancy] = useState([]);
-  // const [tenant, setTenant] = useState([]);
   const [copied, setCopied] = useState(false);
 
   //   handles copying data to clipboard
@@ -90,22 +88,17 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
             <LuHouse className="mr-2 text-lg md:text-xl" />
             <h2 className="md:text-xl text-lg font-bold">{room.room_name}</h2>
           </div>
-
           <div className="flex items-center mb-2 ">
             <FaDollarSign className="mr-1 text-lg md:text-xl" />
             <h2 className="text-lg md:text-xl font-bold">
               {formatPrice(room.rent_price)} / month
             </h2>
           </div>
-
           <div className="flex items-center text-blue-100 text-xs md:text-sm mb-2">
             <MapPin size={16} className="mr-1" />
             <span>
-              {house.street}, {house.region}
+              {house?.street}, {house?.region}
             </span>
-          </div>
-          <div className="text-blue-200 text-xs md:text-sm">
-            <span>{house.purpose}</span>
           </div>
         </div>
 
@@ -172,7 +165,7 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
         {/* Occupancy form */}
         {showEdit && (
           <div className="mt-4">
-            <OccupancyForm
+            <RoomOccupancyForm
               room={room}
               showEdit={showEdit}
               occupancy={Occupancy}
