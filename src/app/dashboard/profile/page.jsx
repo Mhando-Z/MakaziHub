@@ -529,7 +529,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="full_name"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     Full Name
                   </label>
@@ -545,7 +545,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="phone_number"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     Phone Number
                   </label>
@@ -561,7 +561,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     Email Address
                   </label>
@@ -577,7 +577,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="national_id"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     National ID
                   </label>
@@ -593,7 +593,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="gender"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     Gender
                   </label>
@@ -613,7 +613,7 @@ const ProfilePage = () => {
                 <div>
                   <label
                     htmlFor="professional"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                   >
                     Professional
                   </label>
@@ -632,7 +632,7 @@ const ProfilePage = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`inline-flex items-center px-6 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  className={`inline-flex text-xs   items-center px-6 py-1 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                     loading ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >
@@ -685,7 +685,7 @@ const ProfilePage = () => {
               )}
 
               <div className="p-4 mb-6 border-l-4 border-blue-500 bg-blue-50">
-                <p className="text-sm text-blue-700">
+                <p className="text-xs md:text-sm text-blue-700">
                   Update your password to keep your account secure. Use a strong
                   password that you don't use elsewhere.
                 </p>
@@ -694,7 +694,7 @@ const ProfilePage = () => {
               <div>
                 <label
                   htmlFor="currentPassword"
-                  className="block mb-2 text-sm font-medium text-gray-700"
+                  className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                 >
                   Current Password
                 </label>
@@ -716,7 +716,7 @@ const ProfilePage = () => {
               <div>
                 <label
                   htmlFor="newPassword"
-                  className="block mb-2 text-sm font-medium text-gray-700"
+                  className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                 >
                   New Password
                 </label>
@@ -738,7 +738,7 @@ const ProfilePage = () => {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-700"
+                  className="block mb-2 text-xs md:text-xs font-medium text-gray-700"
                 >
                   Confirm New Password
                 </label>
@@ -761,7 +761,7 @@ const ProfilePage = () => {
                 <button
                   type="submit"
                   disabled={passwordLoading}
-                  className={`inline-flex items-center px-6 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  className={`inline-flex items-center px-6 py-1 text-xs   font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                     passwordLoading ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >
