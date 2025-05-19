@@ -580,6 +580,14 @@ const RoomCard = ({
   };
   const isSelected = selectedRoom === room.id;
 
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "TZS",
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
   return (
     <motion.div
       className={` ${
@@ -623,7 +631,7 @@ const RoomCard = ({
       >
         <DollarSign size={16} className="text-green-600 mr-1" />
         <span className="font-medium">
-          TZS {room.rent_price?.toLocaleString()}/month
+          TZS {formatPrice(room.rent_price)}/month
         </span>
       </div>
 

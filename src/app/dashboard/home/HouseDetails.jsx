@@ -62,7 +62,7 @@ export default function HouseDetailsCard({ house }) {
   const showEndDateReminder = isEndDateInCurrentMonth();
 
   return (
-    <motion.div className="bg-white  overflow-hidden p-4 w-full">
+    <motion.div className="bg-white  overflow-hidden p-2 md:p-4 w-full">
       {/* Header */}
       <div
         className={`bg-gradient-to-r justify-between ${
@@ -71,14 +71,13 @@ export default function HouseDetailsCard({ house }) {
             : Occupancy
             ? "from-green-600 to-green-900"
             : "from-blue-600 to-blue-900"
-        }  flex flex-col md:flex-row  to-blue-800 p-6 text-white`}
+        }  flex flex-col md:flex-row  to-blue-800 py-4 px-3 md:p-6 text-white`}
       >
         <div>
-          <div className="flex items-center mb-2">
+          <div className="flex items-center mb-2 ">
             <Home className="mr-2" />
-            <h2 className="text-xl font-bold">
-              {" "}
-              {formatPrice(house.house_price)}
+            <h2 className="md:text-xl text-base font-bold">
+              {formatPrice(house.house_price)} / month
             </h2>
           </div>
           <div className="flex items-center text-blue-100 text-sm mb-2">
