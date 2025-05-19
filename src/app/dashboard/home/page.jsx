@@ -680,6 +680,7 @@ const HouseItem = ({
   selectedRoom,
   handleSaveRoom,
   handleCancelRoomForm,
+  roomId,
   Id,
 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -781,39 +782,70 @@ const HouseItem = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {rooms?.map((rooms) => (
-                      <RoomCard
-                        key={rooms.id}
-                        room={rooms}
-                        onEdit={() => onEditRoom(house.id, rooms)}
-                        onDelete={() => onDeleteRoom(rooms.id)}
-                        setRoom={setRoom}
-                        setShowRoomDetails={setShowRoomDetails}
-                        showRoomDetails={showRoomDetails}
-                        selectedRoom={room?.id}
-                      />
+                      <>
+                        <RoomCard
+                          key={rooms.id}
+                          room={rooms}
+                          onEdit={() => onEditRoom(house.id, rooms)}
+                          onDelete={() => onDeleteRoom(rooms.id)}
+                          setRoom={setRoom}
+                          setShowRoomDetails={setShowRoomDetails}
+                          showRoomDetails={showRoomDetails}
+                          selectedRoom={room?.id}
+                        />
+                        {/* for small devices */}
+                        <div className="md:hidden">
+                          {showRoomDetails && room?.id === rooms?.id ? (
+                            <RoomDetailsCard
+                              room={room}
+                              house={house}
+                              setShowRoomDetails={setShowRoomDetails}
+                            />
+                          ) : (
+                            ""
+                          )}
+
+                          {/* roomform edit */}
+                          {showRoomForm &&
+                          Id === house.id &&
+                          roomId === rooms?.id ? (
+                            <RoomForm
+                              room={selectedRoom}
+                              houseId={house.id}
+                              onSave={handleSaveRoom}
+                              onCancel={handleCancelRoomForm}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </>
                     ))}
                   </div>
                 </div>
-                {/* show room details section */}
-                {showRoomDetails && (
-                  <RoomDetailsCard
-                    room={room}
-                    house={house}
-                    setShowRoomDetails={setShowRoomDetails}
-                  />
-                )}
+                {/* large screen view */}
+                <div className="hidden md:flex md:flex-col">
+                  {/* show room details section */}
+                  {showRoomDetails && (
+                    <RoomDetailsCard
+                      room={room}
+                      house={house}
+                      setShowRoomDetails={setShowRoomDetails}
+                    />
+                  )}
 
-                {/* roomform edit */}
-                {showRoomForm && Id === house.id ? (
-                  <RoomForm
-                    room={selectedRoom}
-                    houseId={house.id}
-                    onSave={handleSaveRoom}
-                    onCancel={handleCancelRoomForm}
-                  />
-                ) : (
-                  ""
-                )}
+                  {/* roomform edit */}
+                  {showRoomForm && Id === house.id ? (
+                    <RoomForm
+                      room={selectedRoom}
+                      houseId={house.id}
+                      onSave={handleSaveRoom}
+                      onCancel={handleCancelRoomForm}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </>
             )}
           </motion.div>
@@ -832,6 +864,7 @@ const House = () => {
   const [showHouseForm, setShowHouseForm] = useState(false);
   const [showRoomForm, setShowRoomForm] = useState(false);
   const [ID, setID] = useState(null);
+  const [roomId, setRoomId] = useState(null);
 
   // fuctios related to house
   const handleAddHouse = () => {
@@ -876,6 +909,7 @@ const House = () => {
   const handleEditRoom = (houseId, room) => {
     setSelectedRoom(room);
     setShowRoomForm(true);
+    setRoomId(room?.id);
     setID(houseId);
   };
 
@@ -948,6 +982,7 @@ const House = () => {
           selectedRoom={selectedRoom}
           handleSaveRoom={handleSaveRoom}
           handleCancelRoomForm={handleCancelRoomForm}
+          roomId={roomId}
           Id={ID}
         />
       ))}

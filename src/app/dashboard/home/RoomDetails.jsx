@@ -72,7 +72,7 @@ export default function RoomDetailsCard({ room, house, setShowRoomDetails }) {
   const showEndDateReminder = isEndDateInCurrentMonth();
 
   return (
-    <motion.div className="bg-white  overflow-hidden p-2 md:p-4 w-full">
+    <motion.div className="bg-white overflow-hidden   md:p-4 w-full">
       {/* Header */}
       <div
         className={`bg-gradient-to-r justify-between ${
