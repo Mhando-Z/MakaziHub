@@ -136,22 +136,22 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
   return (
     <motion.form
-      className="bg-white p-6 rounded-lg shadow-lg"
+      className="bg-white md:p-6 p-2 rounded-lg shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       onSubmit={handleSubmit}
     >
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="md:text-lg text-base font-bold mb-4">
         {house ? <>Edit {house?.name}</> : "Add New House"}
       </h2>
 
       <div className="mb-4">
-        <label className="block text-sm mb-2" htmlFor="name">
+        <label className="block text-xs   md:text-sm mb-2" htmlFor="name">
           House Name
         </label>
         <input
-          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+          className="shadow text-xs md:text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="name"
           type="text"
           name="name"
@@ -164,11 +164,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block  text-sm mb-2" htmlFor="region">
+          <label className="block text-xs md:text-sm  mb-2" htmlFor="region">
             Region
           </label>
           <input
-            className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+            className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
             id="region"
             type="text"
             name="region"
@@ -200,7 +200,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           Purpose
         </label>
         <select
-          className="shadow appearance-none border outline-0 border-gray-300 rounded w-full py-2 px-3"
+          className="shadow appearance-none text-xs md:text-sm border outline-0 border-gray-300 rounded w-full py-2 px-3"
           id="purpose"
           name="purpose"
           value={formData.purpose}
@@ -221,7 +221,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               House Price
             </label>
             <input
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="houseprice"
               type="number"
               name="houseprice"
@@ -236,7 +236,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               BedRooms
             </label>
             <input
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="bedrooms"
               type="number"
               name="bedrooms"
@@ -251,7 +251,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               BathRooms
             </label>
             <input
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="bathrooms"
               type="number"
               name="bathrooms"
@@ -266,7 +266,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               House Type
             </label>
             <select
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="type"
               name="type"
               value={formData.type}
@@ -285,7 +285,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               House Description
             </label>
             <textarea
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="description"
               name="description"
               value={formData.description}
@@ -303,7 +303,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
               House Type
             </label>
             <select
-              className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+              className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
               id="type"
               name="type"
               value={formData.type}
@@ -336,7 +336,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       <div className="flex justify-end gap-2">
         <motion.button
           type="button"
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -348,7 +348,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           type="submit"
           whileTap={{ scale: 0.8 }}
           transition={{ type: "spring", ease: "easeOut" }}
-          className={`flex   justify-center rounded-md ${
+          className={`flex text-xs md:text-sm  justify-center rounded-md ${
             loading
               ? "bg-gray-200 cursor-not-allowed "
               : "bg-blue-600 hover:bg-blue-700"
@@ -447,22 +447,22 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
 
   return (
     <motion.form
-      className="bg-white p-6 rounded-lg  shadow-lg"
+      className="bg-white md:p-6 p-2 rounded-lg  shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       onSubmit={handleSubmit}
     >
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="md:text-xl text-sm font-bold mb-2 md:mb-4">
         {room ? <>Edit {room.room_name} room</> : "Add New Room"}
       </h2>
 
       <div className="mb-4">
-        <label className="block  text-sm mb-2" htmlFor="roomName">
+        <label className="block text-xs md:text-sm mb-2" htmlFor="roomName">
           Room Name/Number
         </label>
         <input
-          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+          className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="name"
           type="text"
           name="name"
@@ -474,11 +474,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block  text-sm mb-2" htmlFor="roomType">
+        <label className="block text-xs md:text-sm mb-2" htmlFor="roomType">
           Room Type
         </label>
         <select
-          className="shadow lowercase appearance-none border border-gray-300 outline-0 rounded w-full py-2 px-3"
+          className="shadow lowercase text-xs md:text-sm appearance-none border border-gray-300 outline-0 rounded w-full py-2 px-3"
           id="type"
           name="type"
           value={formData.type}
@@ -493,11 +493,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       </div>
 
       <div className="mb-6">
-        <label className="block  text-sm mb-2" htmlFor="roomRent">
+        <label className="block text-xs md:text-sm mb-2" htmlFor="roomRent">
           Monthly Rent (TZS)
         </label>
         <input
-          className="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
+          className="shadow appearance-none text-xs md:text-sm border border-gray-300 rounded w-full py-2 px-3  leading-tight outline-0"
           id="roomRent"
           type="number"
           name="rent"
@@ -519,16 +519,16 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
         />
         <label
           htmlFor="status"
-          className="ml-2 block text-sm font-medium text-gray-700"
+          className="ml-2 block text-xs md:text-sm  font-medium text-gray-700"
         >
           Room Occupied .?
         </label>
       </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 mt-2">
         <motion.button
           type="button"
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -539,7 +539,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           type="submit"
           whileTap={{ scale: 0.8 }}
           transition={{ type: "spring", ease: "easeOut" }}
-          className={`flex  justify-center rounded-md ${
+          className={`flex text-xs md:text-sm justify-center rounded-md ${
             loading
               ? "bg-gray-200 cursor-not-allowed "
               : "bg-blue-600 hover:bg-blue-700"
@@ -584,7 +584,7 @@ const RoomCard = ({
     <motion.div
       className={` ${
         isSelected && showRoomDetails ? "bg-green-200" : "bg-white"
-      } rounded-lg shadow md:p-4 border border-gray-200`}
+      } rounded-lg shadow p-2 md:p-4 border border-gray-200`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
@@ -595,8 +595,8 @@ const RoomCard = ({
           onClick={handleSelect}
           className="flex cursor-pointer flex-col gap-2"
         >
-          <h3 className="font-bold text-lg">{room.room_name}</h3>
-          <p className="text-sm ">{room.room_type} Room</p>
+          <h3 className="font-bold text-sm md:text-lg">{room.room_name}</h3>
+          <p className="md:text-sm text-xs ">{room.room_type} Room</p>
         </div>
 
         <div className="flex gap-1">
@@ -619,11 +619,11 @@ const RoomCard = ({
 
       <div
         onClick={handleSelect}
-        className="mt-3 cursor-pointer flex items-center"
+        className="mt-3 cursor-pointer flex  text-xs md:text-sm items-center"
       >
         <DollarSign size={16} className="text-green-600 mr-1" />
         <span className="font-medium">
-          TZS {room.rent_price.toLocaleString()}/month
+          TZS {room.rent_price?.toLocaleString()}/month
         </span>
       </div>
 
@@ -673,7 +673,7 @@ const HouseItem = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="bg-gray-50 p-4 flex justify-between items-center">
+      <div className="bg-gray-50 md:p-4 p-2 flex justify-between items-center">
         <div className="flex items-center">
           <Home
             onClick={() => setExpanded(!expanded)}
@@ -683,11 +683,11 @@ const HouseItem = ({
           <div>
             <h3
               onClick={() => setExpanded(!expanded)}
-              className="font-bold text-gray-500 cursor-pointer font-roboto text-lg"
+              className="font-bold text-gray-500 cursor-pointer font-roboto text-sm md:text-lg"
             >
               {house.name}
             </h3>
-            <p className="text-sm  font-raleway">
+            <p className="md:text-sm text-xs  font-raleway">
               {house.region}, {house.street} • {house.type}
             </p>
           </div>
@@ -740,11 +740,13 @@ const HouseItem = ({
               </>
             ) : (
               <>
-                <div className="p-4 border-t">
+                <div className="p-2 md:p-4  border-t">
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-medium">Rooms ({rooms?.length})</h4>
+                    <h4 className="font-medium text-xs md:text-sm">
+                      Rooms ({rooms?.length})
+                    </h4>
                     <motion.button
-                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm"
+                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs rounded-md md:text-sm"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => onAddRoom(house.id)}
@@ -888,12 +890,12 @@ const House = () => {
       <div className="">
         <HouseWidget />
       </div>
-      <h1 className="text-2xl text-end justify-end text-gray-500 font-raleway font-bold mb-4">
+      <h1 className="md:text-2xl text-base text-end justify-end text-gray-500 font-raleway font-bold mb-4">
         House Management
       </h1>
       <div className="w-full flex flex-col justify-end items-end">
         <motion.button
-          className="bg-green-600 flex items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
+          className="bg-green-600 flex text-sm items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
           whileTap={{ scale: 0.95 }}
           onClick={handleAddHouse}
         >
