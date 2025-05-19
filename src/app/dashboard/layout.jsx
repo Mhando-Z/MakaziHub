@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }) {
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-lvh">
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 w-64 bg-slate-100  h-full transform ${
@@ -132,7 +132,7 @@ export default function DashboardLayout({ children }) {
                             onClick={scrollToTop}
                             className={`${
                               pathname === dt.path
-                                ? "bg-green-600 items-center gap-x-5 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
+                                ? "bg-green-600 items-center gap-x-2 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
                                 : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-gray-200 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
                             }`}
                           >
@@ -163,6 +163,7 @@ export default function DashboardLayout({ children }) {
           onClick={toggleSidebar}
         ></div>
       )}
+
       {/* Main content */}
       <div className="flex-1 ml-0 overflow-y-auto   md:ml-64">
         <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3  shadow bg-slate-100 ">
