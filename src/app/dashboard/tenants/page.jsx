@@ -80,7 +80,7 @@ function Tenants() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 md:p-6">
+    <div className="min-h-screen mt-20 md:mt-0 bg-gray-50 md:p-6">
       {/* Dashboard Header */}
       <div className="mb-6">
         <h1 className="text-base  md:text-xl font-bold text-gray-800 mb-2">

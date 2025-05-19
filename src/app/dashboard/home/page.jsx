@@ -908,7 +908,7 @@ const House = () => {
   }, []);
 
   return (
-    <div className="relative md:p-6 bg-gray-50">
+    <div className="relative md:p-6 mt-20 md:mt-0 bg-gray-50">
       {/* house widgets */}
       <div className="">
         <HouseWidget />
