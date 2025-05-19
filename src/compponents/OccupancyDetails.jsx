@@ -13,20 +13,6 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-// Sample occupancy data based on the provided JSON
-const defaultOccupancyData = {
-  id: "6f43db8c-3324-45e6-8af3-f3c0a8ae90ac",
-  room_id: null,
-  tenant_id: "a5b5dda9-e37e-4ae8-931a-b4476e66e25f",
-  start_date: "2025-05-13",
-  duration_in_months: 6,
-  end_date: "2025-05-13",
-  rent_due_date: "2025-05-24",
-  is_active: true,
-  created_at: "2025-05-13T07:51:58.180301+00:00",
-  house_id: "9c5ba1ac-24ac-4cb8-b517-58e10eebdd11",
-};
-
 export default function OccupancyDetails({
   occupancyData,
   setShowEdit,
@@ -101,7 +87,7 @@ export default function OccupancyDetails({
               Rent Ending This Month
             </p>
             <p className="text-amber-700 text-xs md:text-sm">
-              This tenancy agreement will end on{" "}
+              This contract agreement will end on{" "}
               {formatDate(occupancyData.end_date)}. Please arrange for Rent
               renewal or move-out procedures.
             </p>
@@ -119,7 +105,7 @@ export default function OccupancyDetails({
           <div className="flex items-center mb-2">
             <Calendar className="h-5 w-5 text-blue-500 mr-2" />
             <h3 className="font-semibold text-sm text-gray-700">
-              Tenancy Period
+              Contract Period
             </h3>
           </div>
           <div className="ml-7 text-xs md:text-sm">
