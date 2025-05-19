@@ -885,18 +885,15 @@ const House = () => {
 
     if (error) {
       console.error("Error deleting House:", error.message);
+      toast.error("Error deleting House:");
     } else {
       gethHouse(); // Refresh the house data after deletion
+      toast.success("deleted successfully!!");
     }
   };
   //
 
   const handleSaveHouse = (house) => {
-    if (selectedHouse) {
-      setHouses((prev) => prev.map((h) => (h.id === house.id ? house : h)));
-    } else {
-      setHouses((prev) => [...prev, house]);
-    }
     setShowHouseForm(false);
   };
 
@@ -921,8 +918,10 @@ const House = () => {
 
     if (error) {
       console.error("Error deleting room:", error.message);
+      toast.error("Error deleting Room:");
     } else {
       fetchRoom(); // Refresh the house data after deletion
+      toast.success("deleted successfully!!");
     }
   };
 
