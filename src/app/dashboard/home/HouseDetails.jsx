@@ -8,6 +8,8 @@ import DataContext from "@/context/DataContext";
 import OccupancyDetails from "@/compponents/OccupancyDetails";
 import UserContext from "@/context/UserContext";
 import TenantDetails from "@/compponents/TenantDetails";
+// icons import
+import { LuHouse } from "react-icons/lu";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-US", {
@@ -71,33 +73,33 @@ export default function HouseDetailsCard({ house }) {
             : Occupancy
             ? "from-green-600 to-green-900"
             : "from-blue-600 to-blue-900"
-        }  flex flex-col md:flex-row  to-blue-800 py-4 px-3 md:p-6 text-white`}
+        }  flex flex-col md:flex-row gap-3 to-blue-800 py-4 px-3 md:p-6 text-white`}
       >
         <div>
           <div className="flex items-center mb-2 ">
-            <Home className="mr-2" />
+            <LuHouse className="mr-2 text-lg md:text-xl" />
             <h2 className="md:text-xl text-base font-bold">
               {formatPrice(house.house_price)} / month
             </h2>
           </div>
-          <div className="flex items-center text-blue-100 text-sm mb-2">
+          <div className="flex items-center text-blue-100 text-xs md:text-sm mb-2">
             <MapPin size={16} className="mr-1" />
             <span>
               {house.street}, {house.region}
             </span>
           </div>
-          <div className="text-blue-200 text-sm">
+          <div className="text-blue-200 text-xs md:text-sm">
             <span>{house.purpose}</span>
           </div>
         </div>
-        {/* id section */}
 
+        {/* id section */}
         <div className="">
           <div className="flex items-center gap-2">
             <Key size={16} className="text-white" />
-            <h2 className="font-medium text-white">House key</h2>
+            <h2 className="font-medium text-sm text-white">House key</h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm">
             <code className="  px-3 py-1 rounded text-white font-mono">
               {house?.id || "No ID available"}
             </code>
@@ -117,8 +119,8 @@ export default function HouseDetailsCard({ house }) {
       </div>
 
       {/* Property details */}
-      <div className="p-6">
-        <div className="flex justify-between mb-6">
+      <div className="md:p-6 p-2 mt-4 md:mt-0">
+        <div className="grid grid-cols-2 text-xs md:text-sm md:grid-cols-3 gap-7 mb-6">
           <div className="flex items-center">
             <Tag size={25} className="text-blue-600 mr-2" />
             <div>
@@ -153,7 +155,7 @@ export default function HouseDetailsCard({ house }) {
 
         {/* description section */}
         <div className="py-2">
-          <h1 className="font-bold">House Description</h1>
+          <h1 className="font-bold text-sm md:text-base">House Description</h1>
           <p className="text-xs md:text-sm">{house?.description}</p>
         </div>
 

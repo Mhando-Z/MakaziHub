@@ -43,8 +43,10 @@ export default function TenantDetails({ tenant }) {
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mb-3">
-        <h2 className=" font-bold text-gray-800">Tenant Details</h2>
-        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium capitalize">
+        <h2 className=" font-bold text-sm md:text-base text-gray-800">
+          Tenant Details
+        </h2>
+        <span className="px-3 text-xs py-1 bg-blue-100 text-blue-800 rounded-full md:text-sm font-medium capitalize">
           {tenant?.role}
         </span>
       </div>
@@ -52,7 +54,7 @@ export default function TenantDetails({ tenant }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Personal Information */}
         <div className="space-y-4">
-          <h3 className="  font-semibold text-gray-700 border-b pb-2">
+          <h3 className=" text-sm md:text-base font-semibold text-gray-700 border-b pb-2">
             Personal Information
           </h3>
 
@@ -60,7 +62,9 @@ export default function TenantDetails({ tenant }) {
             <User className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Full Name</p>
-              <p className="font-medium">{tenant?.full_name}</p>
+              <p className="font-medium text-xs md:text-sm">
+                {tenant?.full_name}
+              </p>
             </div>
           </div>
 
@@ -68,7 +72,9 @@ export default function TenantDetails({ tenant }) {
             <Users className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Gender</p>
-              <p className="font-medium capitalize">{tenant?.gender}</p>
+              <p className="font-medium text-xs md:text-sm capitalize">
+                {tenant?.gender}
+              </p>
             </div>
           </div>
 
@@ -76,7 +82,9 @@ export default function TenantDetails({ tenant }) {
             <Phone className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Phone Number</p>
-              <p className="font-medium">{tenant?.phone_number}</p>
+              <p className="font-medium text-xs md:text-sm">
+                {tenant?.phone_number}
+              </p>
             </div>
           </div>
 
@@ -84,7 +92,7 @@ export default function TenantDetails({ tenant }) {
             <MailIcon className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Email</p>
-              <p className="font-medium">{tenant?.email}</p>
+              <p className="font-medium text-xs md:text-sm">{tenant?.email}</p>
             </div>
           </div>
 
@@ -92,14 +100,16 @@ export default function TenantDetails({ tenant }) {
             <CreditCard className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">National ID</p>
-              <p className="font-medium">{displayValue(tenant?.national_id)}</p>
+              <p className="font-medium text-xs md:text-sm">
+                {displayValue(tenant?.national_id)}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Property Information */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 border-b pb-2">
+          <h3 className="font-semibold text-sm md:text-base text-gray-700 border-b pb-2">
             Property Information
           </h3>
 
@@ -107,7 +117,7 @@ export default function TenantDetails({ tenant }) {
             <Home className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">House ID</p>
-              <p className="font-medium truncate max-w-xs">
+              <p className="font-medium text-xs md:text-sm truncate max-w-xs">
                 {tenant?.house_id}
               </p>
             </div>
@@ -117,7 +127,9 @@ export default function TenantDetails({ tenant }) {
             <Mail className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Room Number</p>
-              <p className="font-medium">{displayValue(tenant?.room_id)}</p>
+              <p className="font-medium text-xs md:text-sm">
+                {displayValue(tenant?.room_id)}
+              </p>
             </div>
           </div>
 
@@ -125,7 +137,7 @@ export default function TenantDetails({ tenant }) {
             <Users className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Landlord ID</p>
-              <p className="font-medium truncate max-w-xs">
+              <p className="font-medium text-xs md:text-sm truncate max-w-xs">
                 {tenant?.lords_id}
               </p>
             </div>
@@ -135,7 +147,9 @@ export default function TenantDetails({ tenant }) {
             <Calendar className="text-gray-500 w-5 h-5" />
             <div>
               <p className="text-sm text-gray-500">Tenant Since</p>
-              <p className="font-medium">{formatDate(tenant?.created_at)}</p>
+              <p className="font-medium text-xs md:text-sm">
+                {formatDate(tenant?.created_at)}
+              </p>
             </div>
           </div>
         </div>

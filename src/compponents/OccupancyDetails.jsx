@@ -78,9 +78,11 @@ export default function OccupancyDetails({
   return (
     <div className="bg-white">
       <div className="flex justify-between items-center mb-3">
-        <h2 className=" font-bold text-gray-800">Occupancy Details</h2>
+        <h2 className=" font-bold text-sm md:text-base text-gray-800">
+          Occupancy Details
+        </h2>
         <div
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
+          className={`px-3 py-1 rounded-full text-xs md:text-sm font-medium ${
             occupancyData.is_active
               ? "bg-green-300 text-green-800"
               : "bg-red-200 text-red-800"
@@ -95,8 +97,10 @@ export default function OccupancyDetails({
         <div className="mb-4 bg-amber-50 border border-amber-200 p-3 rounded-lg flex items-start">
           <AlertTriangle className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-medium text-amber-800">Rent Ending This Month</p>
-            <p className="text-amber-700 text-sm">
+            <p className="font-medium text-sm text-amber-800">
+              Rent Ending This Month
+            </p>
+            <p className="text-amber-700 text-xs md:text-sm">
               This tenancy agreement will end on{" "}
               {formatDate(occupancyData.end_date)}. Please arrange for Rent
               renewal or move-out procedures.
@@ -114,9 +118,11 @@ export default function OccupancyDetails({
         >
           <div className="flex items-center mb-2">
             <Calendar className="h-5 w-5 text-blue-500 mr-2" />
-            <h3 className="  font-semibold text-gray-700">Tenancy Period</h3>
+            <h3 className="font-semibold text-sm text-gray-700">
+              Tenancy Period
+            </h3>
           </div>
-          <div className="ml-7">
+          <div className="ml-7 text-xs md:text-sm">
             <p className="text-gray-700">
               <span className="font-medium">Start Date:</span>{" "}
               {formatDate(occupancyData.start_date)}
@@ -140,9 +146,11 @@ export default function OccupancyDetails({
         >
           <div className="flex items-center mb-2">
             <DollarSign className="h-5 w-5 text-green-500 mr-2" />
-            <h3 className="  font-semibold text-gray-700">Payment Details</h3>
+            <h3 className="text-sm  font-semibold text-gray-700">
+              Payment Details
+            </h3>
           </div>
-          <div className="ml-7">
+          <div className="ml-7 text-xs md:text-sm">
             <p className="text-gray-700">
               <span className="font-medium">Next Rent Due:</span>{" "}
               {formatDate(occupancyData.rent_due_date)}
@@ -164,7 +172,7 @@ export default function OccupancyDetails({
       </div>
 
       {/* Toggle for additional details */}
-      <div className="w-full  mt-6 flex flex-row items-center justify-between">
+      <div className="w-full text-xs md:text-sm  mt-6 flex flex-row items-center justify-between">
         <button
           className=" text-blue-600 font-medium flex cursor-pointer items-center"
           onClick={() => setIsExpanded(!isExpanded)}
@@ -190,7 +198,7 @@ export default function OccupancyDetails({
         {/* show edit button */}
         <button
           onClick={handleShowEdit}
-          className="cursor-pointer text-sm text-blue-600 hover:text-red-600 "
+          className="cursor-pointer text-blue-600 hover:text-red-600 "
         >
           Edit Occupancy form
         </button>
