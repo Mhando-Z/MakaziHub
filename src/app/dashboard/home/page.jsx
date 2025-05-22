@@ -148,10 +148,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       </h2>
 
       <div className="mb-4">
-        <label
-          className="block text-xs   md text-xs md:text-sm mb-2"
-          htmlFor="name"
-        >
+        <label className="block text-xs md:text-sm mb-2" htmlFor="name">
           House Name
         </label>
         <input
