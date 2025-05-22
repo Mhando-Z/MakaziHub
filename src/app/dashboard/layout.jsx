@@ -219,7 +219,7 @@ export default function DashboardLayout({ children }) {
 
       {/* Main content */}
       <div className="flex-1 ml-0 overflow-y-auto   md:ml-64">
-        <header className="md:sticky w-full fixed top-0 z-30 flex items-center justify-between px-4 py-2    shadow bg-slate-100 ">
+        <header className="md:sticky w-full fixed top-0 z-30 flex items-center justify-between px-4 py-2 shadow bg-slate-100 ">
           {/* Button to toggle sidebar on mobile */}
           <button
             className="p-2 text-gray-600 md:invisible rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
@@ -229,7 +229,7 @@ export default function DashboardLayout({ children }) {
             <IoMdMenu className="text-2xl " />
           </button>
 
-          <div className="relative">
+          <div className="relative ">
             <div
               className="flex items-center gap-x-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer transition-colors"
               onClick={handleShow}

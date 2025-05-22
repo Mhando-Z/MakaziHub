@@ -580,6 +580,7 @@ const RoomCard = ({
   setShowRoomDetails,
   showRoomDetails,
   selectedRoom,
+  Rloading,
 }) => {
   const { room_status } = useContext(DataContext);
   const roomStatus = room_status.find((status) => status.room_id === room?.id);
@@ -590,7 +591,6 @@ const RoomCard = ({
 
   const handleDelete = (roomId) => {
     onDelete(roomId);
-    setDelNotification(false);
   };
 
   const handleNotification = (roomId) => {
@@ -711,7 +711,7 @@ const RoomCard = ({
             <div className="flex  justify-end gap-2 mt-1 md:mt-0">
               <motion.button
                 type="button"
-                className="bg-gray-500 cursor-pointer text-xs   hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+                className="bg-gray-500 cursor-pointer text-xs  hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleCancel}
@@ -719,13 +719,23 @@ const RoomCard = ({
                 Cancel
               </motion.button>
               <motion.button
-                type="button"
-                className="bg-red-600 cursor-pointer text-xs  hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                type="submit"
+                whileTap={{ scale: 0.8 }}
+                transition={{ type: "spring", ease: "easeOut" }}
                 onClick={() => handleDelete(deleteData.id)}
+                className={`flex text-xs justify-center rounded-md ${
+                  Rloading && deleteData?.id
+                    ? "bg-gray-200 cursor-not-allowed "
+                    : "bg-red-600 hover:bg-red-700"
+                }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
               >
-                Delete
+                {Rloading && deleteData?.id ? (
+                  <div className="flex items-center justify-center cursor-not-allowed">
+                    <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+                  </div>
+                ) : (
+                  <span className="relative z-10">Delete</span>
+                )}
               </motion.button>
             </div>
           </div>
@@ -747,6 +757,8 @@ const HouseItem = ({
   selectedRoom,
   handleSaveRoom,
   handleCancelRoomForm,
+  Rloading,
+  Hloading,
   roomId,
   Id,
 }) => {
@@ -873,13 +885,23 @@ const HouseItem = ({
                   Cancel
                 </motion.button>
                 <motion.button
-                  type="button"
-                  className="bg-red-600 cursor-pointer text-xs  hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  type="submit"
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ type: "spring", ease: "easeOut" }}
                   onClick={() => handleDelete(deleteData.id)}
+                  className={`flex text-xs justify-center rounded-md ${
+                    Hloading && deleteData?.id
+                      ? "bg-gray-200 cursor-not-allowed "
+                      : "bg-red-600 hover:bg-red-700"
+                  }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
                 >
-                  Delete
+                  {Hloading && deleteData?.id ? (
+                    <div className="flex items-center justify-center cursor-not-allowed">
+                      <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+                    </div>
+                  ) : (
+                    <span className="relative z-10">Delete</span>
+                  )}
                 </motion.button>
               </div>
             </div>
@@ -930,6 +952,7 @@ const HouseItem = ({
                           setShowRoomDetails={setShowRoomDetails}
                           showRoomDetails={showRoomDetails}
                           selectedRoom={room?.id}
+                          Rloading={Rloading}
                         />
                         {/* for small devices */}
                         <div className="md:hidden">
@@ -1003,6 +1026,8 @@ const House = () => {
   const [showRoomForm, setShowRoomForm] = useState(false);
   const [ID, setID] = useState(null);
   const [roomId, setRoomId] = useState(null);
+  const [Rloading, setLoading] = useState(false);
+  const [Hloading, setHloading] = useState(false);
 
   // fuctios related to house
   const handleAddHouse = () => {
@@ -1016,16 +1041,19 @@ const House = () => {
   };
 
   const handleDeleteHouse = async (id) => {
+    setHloading(true);
     const { error } = await supabase2
       .from("house") // Specify your table name
       .delete() // Perform the delete operation
       .eq("id", id);
 
     if (error) {
-      console.error("Error deleting House:", error.message);
+      setHloading(false);
       toast.error("Error deleting House:");
+      console.error("Error deleting House:", error.message);
     } else {
       gethHouse(); // Refresh the house data after deletion
+      setHloading(false);
       toast.success("deleted successfully!!");
     }
   };
@@ -1049,16 +1077,19 @@ const House = () => {
   };
 
   const handleDeleteRoom = async (roomId) => {
+    setLoading(true);
     const { error } = await supabase2
       .from("room") // Specify your table name
       .delete() // Perform the delete operation
       .eq("id", roomId);
 
     if (error) {
-      console.error("Error deleting room:", error.message);
+      setLoading(false);
       toast.error("Error deleting Room:");
+      console.error("Error deleting room:", error.message);
     } else {
       fetchRoom(); // Refresh the house data after deletion
+      setLoading(false);
       toast.success("deleted successfully!!");
     }
   };
@@ -1120,6 +1151,8 @@ const House = () => {
           handleSaveRoom={handleSaveRoom}
           handleCancelRoomForm={handleCancelRoomForm}
           roomId={roomId}
+          Rloading={Rloading}
+          Hloading={Hloading}
           Id={ID}
         />
       ))}
