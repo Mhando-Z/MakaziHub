@@ -584,6 +584,25 @@ const RoomCard = ({
   const { room_status } = useContext(DataContext);
   const roomStatus = room_status.find((status) => status.room_id === room?.id);
   const [roomSelect, setRoomId] = useState("");
+  const [roomDelete, setRoomDelete] = useState(false);
+  const [delNotification, setDelNotification] = useState(false);
+  const [deleteData, setDeleteData] = useState([]);
+
+  const handleDelete = (roomId) => {
+    onDelete(roomId);
+    setDelNotification(false);
+  };
+
+  const handleNotification = (roomId) => {
+    setDelNotification(true);
+    if (roomId === room.id) {
+      setDeleteData(room);
+    }
+  };
+
+  const handleCancel = () => {
+    setDelNotification(false);
+  };
 
   // select room
   const handleSelect = () => {
@@ -603,7 +622,7 @@ const RoomCard = ({
 
   return (
     <motion.div
-      className={` ${
+      className={` relative ${
         isSelected && showRoomDetails ? "bg-green-200" : "bg-white"
       } rounded-lg shadow p-2 md:p-4 border border-gray-200`}
       initial={{ opacity: 0, scale: 0.9 }}
@@ -631,13 +650,12 @@ const RoomCard = ({
           <motion.button
             className="p-1 text-red-600 cursor-pointer hover:text-red-800"
             whileHover={{ scale: 1.1 }}
-            onClick={() => onDelete(room.id)}
+            onClick={() => handleNotification(room.id)}
           >
             <Trash size={16} />
           </motion.button>
         </div>
       </div>
-
       <div
         onClick={handleSelect}
         className="mt-3 cursor-pointer flex  text-xs md:text-sm items-center"
@@ -647,7 +665,6 @@ const RoomCard = ({
           TZS {formatPrice(room.rent_price)}/month
         </span>
       </div>
-
       <div
         onClick={handleSelect}
         className="mt-3 w-full flex flex-col justify-end items-end"
@@ -662,6 +679,58 @@ const RoomCard = ({
           {room?.is_occupied ? "Occupied" : "Vacant"}
         </div>
       </div>
+      {/* delete notification and logic */}
+      {delNotification && deleteData && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "100%" }}
+          exit={{
+            opacity: 0,
+            height: 0,
+            transition: { duration: 1 },
+          }}
+          transition={{ duration: 0.1 }}
+          className="absolute top-0 bottom-0 flex flex-col left-0 right-0 bg-red-100 "
+        >
+          <div className="h-full p-4 flex gap-2 md:gap-4 flex-col items-center justify-center">
+            <div className="flex flex-col items-center gap-2 ">
+              {/* warning icon */}
+              <div className="bg-red-50 rounded-full border border-red-600 p-1 md:p-2">
+                <IoWarningOutline className=" text-xl md:text-2xl  text-red-600 " />
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <h1 className="text-xs md:text-sm  font-bold">
+                  Are you sure you want to delete this room{" "}
+                  {deleteData?.room_name} ?
+                </h1>
+                <p className=" text-xs md:text-xs  ">
+                  This action cannot be undone.
+                </p>
+              </div>
+            </div>
+            <div className="flex  justify-end gap-2 mt-1 md:mt-0">
+              <motion.button
+                type="button"
+                className="bg-gray-500 cursor-pointer text-xs   hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </motion.button>
+              <motion.button
+                type="button"
+                className="bg-red-600 cursor-pointer text-xs  hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleDelete(deleteData.id)}
+              >
+                Delete
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
@@ -698,7 +767,6 @@ const HouseItem = ({
   const handleNotification = (houseid) => {
     setDelNotification(true);
     if (houseid === house.id) {
-      // handleDelete();
       setDeleteData(house);
     }
   };
@@ -773,7 +841,7 @@ const HouseItem = ({
             exit={{
               opacity: 0,
               width: 0,
-              transition: { duration: 1 },
+              transition: { duration: 0.1 },
             }}
             transition={{ duration: 1 }}
             className="absolute top-0 bottom-0 flex flex-col   left-0 right-0 bg-red-100 "
