@@ -792,7 +792,7 @@ const HouseItem = ({
                     Are you sure you want to delete this house{" "}
                     {deleteData?.name} ?
                   </h1>
-                  <p className=" text-xs md:text-xs ">
+                  <p className=" text-xs md:text-xs hidden md:block ">
                     This action cannot be undone.
                   </p>
                 </div>
