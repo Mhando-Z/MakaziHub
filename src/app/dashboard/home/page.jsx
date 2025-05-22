@@ -163,7 +163,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid capitalize grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <label className="block text-xs md:text-sm  mb-2" htmlFor="region">
             Region
@@ -796,7 +796,7 @@ const HouseItem = ({
             >
               {house.name}
             </h3>
-            <p className="md:text-sm text-xs  font-raleway">
+            <p className="md:text-sm text-xs capitalize  font-raleway">
               {house.region}, {house.street} • {house.type}
             </p>
           </div>

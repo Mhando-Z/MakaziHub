@@ -21,11 +21,26 @@ import { toast } from "react-toastify";
 import { IoMdMenu } from "react-icons/io";
 
 // what vano and other supervisors can see
-const userRoutes = [
+const LordsRoutes = [
   {
     sections: "Home",
     path: "/dashboard/home",
     links: "home",
+    icon: <FaHome />,
+  },
+  {
+    sections: "Tenants",
+    path: "/dashboard/tenants",
+    links: "tenants",
+    icon: <IoPeople />,
+  },
+];
+// what vano and other supervisors can see
+const TenantRoutes = [
+  {
+    sections: "Home",
+    path: "/dashboard/userhome",
+    links: "userhome",
     icon: <FaHome />,
   },
   {
@@ -122,36 +137,69 @@ export default function DashboardLayout({ children }) {
               {/* <h1>MakaziHub</h1> */}
             </div>
             <nav className="mt-10">
-              <div className="flex flex-col w-full">
-                {userRoutes?.map((dt, index) => {
-                  return (
-                    <div key={index + 234} className="flex flex-col gap-y-4">
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.8 }}
-                        transition={{ type: "spring", ease: "easeOut" }}
-                        className="w-full"
-                      >
-                        <Link href={dt.links}>
-                          <div
-                            onClick={scrollToTop}
-                            className={`${
-                              pathname === dt.path
-                                ? "bg-green-600 items-center gap-x-2 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
-                                : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-gray-200 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
-                            }`}
-                          >
-                            <p className="text-xl">{dt.icon}</p>
-                            <h1 className="text-sm xl:text-base line-clamp-1">
-                              {dt.sections}
-                            </h1>
-                          </div>
-                        </Link>
-                      </motion.div>
-                    </div>
-                  );
-                })}
-              </div>
+              {userData?.role === "landlord" ? (
+                <div className="flex flex-col w-full">
+                  {LordsRoutes?.map((dt, index) => {
+                    return (
+                      <div key={index + 234} className="flex flex-col gap-y-4">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.8 }}
+                          transition={{ type: "spring", ease: "easeOut" }}
+                          className="w-full"
+                        >
+                          <Link href={dt.links}>
+                            <div
+                              onClick={scrollToTop}
+                              className={`${
+                                pathname === dt.path
+                                  ? "bg-green-600 items-center gap-x-2 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
+                                  : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-gray-200 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
+                              }`}
+                            >
+                              <p className="text-xl">{dt.icon}</p>
+                              <h1 className="text-sm xl:text-base line-clamp-1">
+                                {dt.sections}
+                              </h1>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col w-full">
+                  {TenantRoutes?.map((dt, index) => {
+                    return (
+                      <div key={index + 234} className="flex flex-col gap-y-4">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.8 }}
+                          transition={{ type: "spring", ease: "easeOut" }}
+                          className="w-full"
+                        >
+                          <Link href={dt.links}>
+                            <div
+                              onClick={scrollToTop}
+                              className={`${
+                                pathname === dt.path
+                                  ? "bg-green-600 items-center gap-x-2 text-center font-medium  text-gray-50 w-full flex flex-row py-2 px-7 mt-2 rounded"
+                                  : "flex  flex-row py-2 w-full  gap-x-2 hover:transition-colors items-center hover:ease-out hover:duration-300 hover:bg-gray-200 hover:text-gray-900 hover:font-medium  px-7 mt-2 text-slate-800 rounded"
+                              }`}
+                            >
+                              <p className="text-xl">{dt.icon}</p>
+                              <h1 className="text-sm xl:text-base line-clamp-1">
+                                {dt.sections}
+                              </h1>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </nav>
           </div>
           <div>
