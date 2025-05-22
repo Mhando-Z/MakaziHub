@@ -77,13 +77,15 @@ export default function DashboardLayout({ children }) {
     }
     setshow(!show);
   };
+
   const handleLogout = () => {
     try {
+      // Perform logout logic here
       localStorage.removeItem("token");
       LogOutUser();
       setUser(null);
       setUserdata(null);
-      router.push("/");
+      router.push("/logout");
     } catch (error) {
       toast.error("Logout failed:", error);
     }

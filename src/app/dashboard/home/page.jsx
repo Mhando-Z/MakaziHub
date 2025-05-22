@@ -315,7 +315,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       ) : (
         <>
           <div className="mb-6">
-            <label className="block  text-xs md:text-sm mb-2" htmlFor="type">
+            <label className="block text-xs md:text-sm mb-2" htmlFor="type">
               House Type
             </label>
             <select
@@ -339,7 +339,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       {/* notification section */}
       {message.text && (
         <div
-          className={`mb-4 p-3 rounded ${
+          className={`mb-4 p-3 text-xs md:text-sm rounded ${
             message.type === "success"
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
