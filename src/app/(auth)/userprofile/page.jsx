@@ -18,6 +18,8 @@ import { IoPerson } from "react-icons/io5";
 function UserProfile() {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [errors, setErrors] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
   const route = useRouter();
   const [Userdata, setData] = useState({
@@ -48,7 +50,25 @@ function UserProfile() {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!Userdata.full_name) newErrors.full_name = "full name is required";
+    if (!Userdata.phone_number)
+      newErrors.phone_number = "phone number is required";
+    if (!Userdata.gender) {
+      newErrors.gender = "gender is required";
+    }
+    if (!Userdata.profession) {
+      newErrors.profession = "profession is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleProfile = async () => {
+    setMessage({ text: "", type: "" });
     if (selectedRole === "landlord") {
       const { data, error } = await supabase2
         .from("profiles")
@@ -67,40 +87,64 @@ function UserProfile() {
         ])
         .select();
       if (error) {
+        setMessage({
+          text:
+            error?.response?.data?.message ||
+            error?.message ||
+            "An error occurred",
+          type: "error",
+        });
         toast.error("Error inserting data:", error.message);
         setLoading(false);
       } else {
         setLoading(false);
+        setMessage({
+          text: "Data inserted successfully",
+          type: "success",
+        });
         route.replace("/loading/");
         toast.success("Data inserted successfully");
         getProfile();
       }
     } else if (selectedRole === "tenant") {
-      const { data, error } = await supabase2
-        .from("profiles")
-        .insert([
-          {
-            id: user?.id,
-            full_name: Userdata.full_name,
-            phone_number: Userdata.phone_number,
-            national_id: Userdata.national_id || null,
-            room_id: Userdata.room_id || null,
-            lords_id: Userdata.lords_id || null,
-            gender: Userdata.gender,
-            email: user?.email,
-            role: "tenant",
-            professional: Userdata.profession,
-          },
-        ])
-        .select();
-      if (error) {
-        toast.error("Error inserting data:", error.message);
-        setLoading(false);
-      } else {
-        setLoading(false);
-        route.replace("/loading/");
-        toast.success("Data inserted successfully");
-        getProfile();
+      if (validateForm()) {
+        const { data, error } = await supabase2
+          .from("profiles")
+          .insert([
+            {
+              id: user?.id,
+              full_name: Userdata.full_name,
+              phone_number: Userdata.phone_number,
+              national_id: Userdata.national_id || null,
+              room_id: Userdata.room_id || null,
+              lords_id: Userdata.lords_id || null,
+              gender: Userdata.gender,
+              email: user?.email,
+              role: "tenant",
+              professional: Userdata.profession,
+            },
+          ])
+          .select();
+        if (error) {
+          setMessage({
+            text:
+              error?.response?.data?.message ||
+              error?.message ||
+              "An error occurred",
+            type: "error",
+          });
+          toast.error("Error inserting data:", error.message);
+          setLoading(false);
+        } else {
+          setMessage({
+            text: "Data inserted successfully",
+            type: "success",
+          });
+          setLoading(false);
+          route.replace("/loading/");
+          toast.success("Data inserted successfully");
+          getProfile();
+        }
       }
     }
   };
@@ -330,6 +374,11 @@ function UserProfile() {
                             autoComplete="fullname"
                             className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
+                          {errors.full_name && (
+                            <p className="text-red-500 text-xs">
+                              {errors.full_name}
+                            </p>
+                          )}
                         </div>
                       </motion.div>
                       <motion.div
@@ -362,6 +411,11 @@ function UserProfile() {
                             autoComplete="phonenumber"
                             className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
+                          {errors.phone_number && (
+                            <p className="text-red-500 text-xs">
+                              {errors.phone_number}
+                            </p>
+                          )}
                         </div>
                       </motion.div>
                     </div>
@@ -484,6 +538,11 @@ function UserProfile() {
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                           </select>
+                          {errors.gender && (
+                            <p className="text-red-500 text-xs">
+                              {errors.gender}
+                            </p>
+                          )}
                         </div>
                       </motion.div>
                     </div>
@@ -574,11 +633,29 @@ function UserProfile() {
                             <option value="unemployed">Unemployed</option>
                             <option value="other">Other</option>
                           </select>
+                          {errors.profession && (
+                            <p className="text-red-500 text-xs">
+                              {errors.profession}
+                            </p>
+                          )}
                         </div>
                       </motion.div>
                     </div>
                   </div>
                 </>
+              )}
+
+              {/* notification section */}
+              {message.text && (
+                <div
+                  className={`mb-4 text-xs md:text-sm p-3 rounded ${
+                    message.type === "success"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {message.text}
+                </div>
               )}
 
               {/* Back button to change role */}
