@@ -19,7 +19,6 @@ export default function OccupancyDetails({
   showEdit,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
   // Format date to display in a more readable format
   const formatDate = (dateString) => {
     const date = new Date(dateString);

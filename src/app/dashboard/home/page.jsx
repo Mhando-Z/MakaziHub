@@ -21,6 +21,7 @@ import HouseDetailsCard from "./HouseDetails";
 import RoomDetailsCard from "./RoomDetails";
 import { toast } from "react-toastify";
 import HouseWidget from "./HouseWidget";
+import { IoWarningOutline } from "react-icons/io5";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -351,7 +352,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       <div className="flex justify-end gap-2">
         <motion.button
           type="button"
-          className="bg-gray-500 text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 text-xs cursor-pointer md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -530,7 +531,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           name="status"
           checked={formData.status}
           onChange={handleChange}
-          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          className="h-4 w-4 text-blue-600 cursor-pointer border-gray-300 rounded focus:ring-blue-500"
         />
         <label
           htmlFor="status"
@@ -543,7 +544,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       <div className="flex justify-end gap-2 mt-2">
         <motion.button
           type="button"
-          className="bg-gray-500 text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 cursor-pointer text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -687,8 +688,27 @@ const HouseItem = ({
   const { roomData } = useContext(DataContext);
   const [showRoomDetails, setShowRoomDetails] = useState(false);
   const [room, setRoom] = useState([]);
+  const [delNotification, setDelNotification] = useState(false);
+  const [deleteData, setDeleteData] = useState([]);
 
   const rooms = roomData.filter((room) => room.house_id === house.id);
+
+  const handleDelete = (houseId) => {
+    onDelete(houseId);
+    setDelNotification(false);
+  };
+
+  const handleNotification = (houseid) => {
+    setDelNotification(true);
+    if (houseid === house.id) {
+      // handleDelete();
+      setDeleteData(house);
+    }
+  };
+
+  const handleCancel = () => {
+    setDelNotification(false);
+  };
 
   return (
     <motion.div
@@ -697,7 +717,7 @@ const HouseItem = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="bg-gray-50 md:p-4 p-2 flex justify-between items-center">
+      <div className="bg-gray-50 md:p-4 relative p-2 flex justify-between items-center">
         <div className="flex items-center">
           <Home
             onClick={() => setExpanded(!expanded)}
@@ -730,7 +750,7 @@ const HouseItem = ({
           <motion.button
             className="p-1 hover:bg-gray-200 cursor-pointer rounded-full"
             whileHover={{ scale: 1.1 }}
-            onClick={() => onDelete(house.id)}
+            onClick={() => handleNotification(house.id)}
           >
             <Trash size={18} className="text-red-600" />
           </motion.button>
@@ -747,6 +767,55 @@ const HouseItem = ({
             )}
           </motion.button>
         </div>
+
+        {/* delete logic */}
+        {delNotification && deleteData && (
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            animate={{ opacity: 1, width: "100%" }}
+            exit={{ opacity: 0, width: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute top-0 bottom-0 flex flex-col   left-0 right-0 bg-red-100 "
+          >
+            <div className="h-full justify-between px-4 xl:px-80">
+              <div className="flex flex-row items-center gap-5 mt-1 md:mt-2 ">
+                {/* warning icon */}
+                <div className="bg-red-50 rounded-full border border-red-600 p-1 md:p-2">
+                  <IoWarningOutline className=" text-xl md:text-2xl  text-red-600 " />
+                </div>
+                <div>
+                  <h1 className=" text-xs md:text-sm font-bold">
+                    Are you sure you want to delete this house{" "}
+                    {deleteData?.name} ?
+                  </h1>
+                  <p className=" text-xs md:text-xs ">
+                    This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+              <div className="flex  justify-end gap-2 mt-1 md:mt-0">
+                <motion.button
+                  type="button"
+                  className="bg-gray-500 cursor-pointer text-xs   hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  type="button"
+                  className="bg-red-600 cursor-pointer text-xs  hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleDelete(deleteData.id)}
+                >
+                  Delete
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       <AnimatePresence>
@@ -770,7 +839,7 @@ const HouseItem = ({
                       Rooms ({rooms?.length})
                     </h4>
                     <motion.button
-                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs rounded-md md:text-sm"
+                      className="flex items-center bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-3 py-1 text-xs rounded-md md:text-sm"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => onAddRoom(house.id)}
@@ -949,9 +1018,9 @@ const House = () => {
       <h1 className="md:text-2xl text-base text-end justify-end text-gray-500 font-raleway font-bold mb-4">
         House Management
       </h1>
-      <div className="w-full flex flex-col justify-end items-end">
+      <div className="w-full  flex flex-col justify-end items-end">
         <motion.button
-          className="bg-green-600 flex text-sm items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
+          className="bg-green-600 flex cursor-pointer text-sm items-center hover:bg-green-700 text-white px-4 py-1 rounded-md mb-4"
           whileTap={{ scale: 0.95 }}
           onClick={handleAddHouse}
         >
