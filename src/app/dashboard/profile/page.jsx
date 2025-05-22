@@ -143,6 +143,7 @@ const ProfilePage = () => {
         text: "Password updated successfully!",
         type: "success",
       });
+      toast.success("Password updated successfully!");
 
       // Clear form fields after successful update
       setPasswordData({
@@ -156,6 +157,9 @@ const ProfilePage = () => {
           error?.message || "An error occurred while updating your password",
         type: "error",
       });
+      toast.error(
+        error?.message || "An error occurred while updating your password"
+      );
     } finally {
       setPasswordLoading(false);
     }
