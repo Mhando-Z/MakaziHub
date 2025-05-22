@@ -4,6 +4,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import UserContext from "@/context/UserContext";
 import { supabase2 } from "@/Config/Supabase";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
   const { userData, setUserData } = useContext(UserContext);
@@ -61,6 +62,7 @@ const ProfilePage = () => {
         text: "User ID not found. Please log in again.",
         type: "error",
       });
+      toast.error("User ID not found. Please log in again.");
       setLoading(false);
       return;
     }
@@ -91,11 +93,15 @@ const ProfilePage = () => {
         text: "Profile updated successfully!",
         type: "success",
       });
+      toast.success("Profile updated successfully!");
     } catch (error) {
       setMessage({
         text: error?.message || "An error occurred while updating your profile",
         type: "error",
       });
+      toast.error(
+        error?.message || "An error occurred while updating your profile"
+      );
     } finally {
       setLoading(false);
     }
@@ -603,10 +609,9 @@ const ProfilePage = () => {
                     onChange={handleInputChange}
                     className="block w-full text-xs md:text-sm px-4 py-2 outline-0 text-gray-900 border border-gray-300 rounded-lg"
                   >
-                    <option value="">Select gender</option>
+                    <option value="null">Select gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
-                    <option value="other">Other</option>
                   </select>
                 </div>
 
