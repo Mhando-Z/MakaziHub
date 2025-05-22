@@ -22,6 +22,7 @@ import RoomDetailsCard from "./RoomDetails";
 import { toast } from "react-toastify";
 import HouseWidget from "./HouseWidget";
 import { IoWarningOutline } from "react-icons/io5";
+import { redirect } from "next/navigation";
 
 // House Form Component
 const HouseForm = ({ house = null, onSave, onCancel }) => {
@@ -1018,7 +1019,7 @@ const HouseItem = ({
 
 // Main House Component
 const House = () => {
-  const { houses, gethHouse } = useContext(UserContext);
+  const { houses, gethHouse, userData } = useContext(UserContext);
   const { fetchRoom } = useContext(DataContext);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -1103,6 +1104,12 @@ const House = () => {
   const handleCancelRoomForm = () => {
     setShowRoomForm(false);
   };
+
+  useEffect(() => {
+    if (userData?.role !== "landlord") {
+      redirect("userhome");
+    }
+  }, []);
 
   useEffect(() => {
     gethHouse();
