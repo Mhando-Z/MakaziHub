@@ -28,6 +28,8 @@ function UserProfile() {
     room_id: "",
     role: "",
     national_id: "",
+    house_id: "",
+    profession: "",
   });
 
   const handleChange = (e) => {
@@ -87,6 +89,7 @@ function UserProfile() {
             gender: Userdata.gender,
             email: user?.email,
             role: "tenant",
+            professional: Userdata.profession,
           },
         ])
         .select();
@@ -480,6 +483,96 @@ function UserProfile() {
                             <option value="">Select gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
+                          </select>
+                        </div>
+                      </motion.div>
+                    </div>
+                    <div className="flex flex-col md:flex-row items-center justify-between md:gap-x-10 gap-5">
+                      <motion.div
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 1 }}
+                        transition={{ delay: 0.4, duration: 0.5 }}
+                        className="w-full"
+                      >
+                        <label
+                          htmlFor="house_id"
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                        >
+                          House ID <span>(optional)</span>
+                        </label>
+                        <div className="mt-2">
+                          <motion.input
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "100%" }}
+                            whileFocus={{ width: [0, "100%"] }}
+                            transition={{
+                              duration: 0.5,
+                              ease: "easeInOut",
+                            }}
+                            id="house_id"
+                            name="house_id"
+                            onChange={handleChange}
+                            type="text"
+                            autoComplete="house_id"
+                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                          />
+                        </div>
+                      </motion.div>
+                      {/* tenant gender selection */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6, duration: 0.5 }}
+                        className="w-full"
+                      >
+                        <label
+                          htmlFor="profession"
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
+                        >
+                          Profession
+                        </label>
+                        <div className="mt-2">
+                          <select
+                            id="profession"
+                            name="profession"
+                            onChange={handleChange}
+                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            required
+                          >
+                            <option value="" disabled selected>
+                              Select your profession
+                            </option>
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher / Lecturer</option>
+                            <option value="researcher">
+                              Academic Researcher
+                            </option>
+                            <option value="government">
+                              Government Employee
+                            </option>
+                            <option value="ngo">NGO / Non-profit Worker</option>
+                            <option value="private">
+                              Private Sector Employee
+                            </option>
+                            <option value="entrepreneur">
+                              Self-Employed / Entrepreneur
+                            </option>
+                            <option value="healthcare">
+                              Healthcare Professional
+                            </option>
+                            <option value="engineer">
+                              Engineer / Technician
+                            </option>
+                            <option value="legal">Legal Professional</option>
+                            <option value="farmer">
+                              Farmer / Agricultural Worker
+                            </option>
+                            <option value="artisan">
+                              Artisan / Skilled Laborer
+                            </option>
+                            <option value="retired">Retired</option>
+                            <option value="unemployed">Unemployed</option>
+                            <option value="other">Other</option>
                           </select>
                         </div>
                       </motion.div>
