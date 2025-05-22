@@ -773,7 +773,11 @@ const HouseItem = ({
           <motion.div
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: "100%" }}
-            exit={{ opacity: 0, width: 0 }}
+            exit={{
+              opacity: 0,
+              width: 0,
+              transition: { duration: 1 },
+            }}
             transition={{ duration: 1 }}
             className="absolute top-0 bottom-0 flex flex-col   left-0 right-0 bg-red-100 "
           >
