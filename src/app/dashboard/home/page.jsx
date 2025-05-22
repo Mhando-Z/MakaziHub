@@ -836,14 +836,14 @@ const HouseItem = ({
         {/* delete logic */}
         {delNotification && deleteData && (
           <motion.div
-            initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "100%" }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100%" }}
             exit={{
               opacity: 0,
-              width: 0,
+              height: 0,
               transition: { duration: 0.1 },
             }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.1 }}
             className="absolute top-0 bottom-0 flex flex-col   left-0 right-0 bg-red-100 "
           >
             <div className="h-full justify-between px-4 xl:px-80">
