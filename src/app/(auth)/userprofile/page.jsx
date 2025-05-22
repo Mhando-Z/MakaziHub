@@ -144,7 +144,7 @@ function UserProfile() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mt-10 w-full max-w-md mx-auto"
           >
-            <h3 className="text-lg md:text-xl  font-raleway font-medium text-center mb-10 text-gray-700">
+            <h3 className="text-lg md:text-xl font-raleway font-medium text-center mb-10 text-gray-700">
               Please select your role
             </h3>
             <div className="flex flex-col md:flex-row gap-5 justify-center">
@@ -152,7 +152,7 @@ function UserProfile() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleRoleSelection("landlord")}
-                className="flex flex-row gap-5 py-2 px-5 items-center justify-center bg-white  rounded-xs  transition-all border-2 border-transparent hover:border-green-500"
+                className="flex flex-row gap-5 py-1 md:py-2 px-5 items-center justify-center bg-white  rounded-xs  transition-all border-2 border-transparent hover:border-green-500"
               >
                 <UserCog size={38} className="text-green-600 mb-2" />
                 <span className="text-xs md:text-sm md:text-md font-medium">
@@ -164,7 +164,7 @@ function UserProfile() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleRoleSelection("tenant")}
-                className="flex flex-row gap-5 py-2 px-5 items-center justify-center bg-white  rounded-xs  transition-all border-2 border-transparent hover:border-green-500"
+                className="flex flex-row gap-5 py-1 md:py-2 px-5 items-center justify-center bg-white  rounded-xs  transition-all border-2 border-transparent hover:border-green-500"
               >
                 <CircleUserRound size={38} className="text-blue-600 mb-2" />
                 <span className="text-xs md:text-sm md:text-md font-medium">
@@ -220,7 +220,7 @@ function UserProfile() {
                           type="text"
                           required
                           autoComplete="full_name"
-                          className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                          className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                         />
                       </div>
                     </motion.div>
@@ -252,7 +252,7 @@ function UserProfile() {
                           type="text"
                           required
                           autoComplete="phonenumber"
-                          className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                          className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                         />
                       </div>
                     </motion.div>
@@ -274,7 +274,7 @@ function UserProfile() {
                           id="gender"
                           name="gender"
                           onChange={handleChange}
-                          className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                          className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           required
                         >
                           <option value="">Select gender</option>
@@ -328,7 +328,7 @@ function UserProfile() {
                             type="text"
                             required
                             autoComplete="fullname"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -344,7 +344,7 @@ function UserProfile() {
                         >
                           Phone Number
                         </label>
-                        <div className=" ">
+                        <div className="">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -360,7 +360,7 @@ function UserProfile() {
                             type="text"
                             required
                             autoComplete="phonenumber"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -393,7 +393,7 @@ function UserProfile() {
                             onChange={handleChange}
                             type="text"
                             autoComplete="lords_id"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -423,7 +423,7 @@ function UserProfile() {
                             onChange={handleChange}
                             type="text"
                             autoComplete="national_id"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -455,7 +455,7 @@ function UserProfile() {
                             onChange={handleChange}
                             type="text"
                             autoComplete="room_id"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -477,7 +477,7 @@ function UserProfile() {
                             id="gender"
                             name="gender"
                             onChange={handleChange}
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                             required
                           >
                             <option value="">Select gender</option>
@@ -514,7 +514,7 @@ function UserProfile() {
                             onChange={handleChange}
                             type="text"
                             autoComplete="house_id"
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                         </div>
                       </motion.div>
@@ -536,7 +536,7 @@ function UserProfile() {
                             id="profession"
                             name="profession"
                             onChange={handleChange}
-                            className="block px-1 w-full py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                             required
                           >
                             <option value="" disabled selected>
