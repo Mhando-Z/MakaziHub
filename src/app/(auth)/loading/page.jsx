@@ -26,8 +26,11 @@ export default function Loading() {
 
   // 🚀 Watch for when userData becomes available and navigate
   useEffect(() => {
-    if (userData) {
+    if (userData?.role === "landlord") {
       redirect("dashboard/home");
+    }
+    if (userData?.role === "tenant") {
+      redirect("dashboard/userhome");
     }
   }, [userData]);
 
