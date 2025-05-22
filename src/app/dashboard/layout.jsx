@@ -108,7 +108,10 @@ export default function DashboardLayout({ children }) {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out z-50`}
       >
-        <div className="flex flex-col justify-between min-h-screen p-6">
+        <div
+          onClick={() => setshow(false)}
+          className="flex flex-col justify-between min-h-screen p-6"
+        >
           <div>
             <div className="flex flex-col  items-center gap-x-3 justify-center">
               <Image
@@ -277,7 +280,10 @@ export default function DashboardLayout({ children }) {
         </header>
 
         {/* other pages router rendered here */}
-        <main className="flex flex-col min-h-screen p-4 md:p-6">
+        <main
+          onClick={() => setshow(false)}
+          className="flex flex-col min-h-screen p-4 md:p-6"
+        >
           <main>{children}</main>
         </main>
       </div>
