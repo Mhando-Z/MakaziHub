@@ -266,7 +266,7 @@ export default function DashboardLayout({ children }) {
                     className="w-full flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-left"
                   >
                     <FaPowerOff className="w-4 h-4 text-red-500" />
-                    <span className="ml-3 text-sm font-medium text-gray-700">
+                    <span className="ml-3 cursor-pointer text-sm font-medium text-gray-700">
                       Log Out
                     </span>
                   </button>
