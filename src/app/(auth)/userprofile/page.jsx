@@ -186,7 +186,7 @@ function UserProfile() {
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="w-full mb-6 mt-2"
+                    className="w-full mb-6  "
                   >
                     <h1 className="font-bold text-sm md:text-base">
                       {selectedRole}
@@ -201,11 +201,11 @@ function UserProfile() {
                     >
                       <label
                         htmlFor="fullname"
-                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                       >
                         Full Name
                       </label>
-                      <div className="mt-2">
+                      <div className="">
                         <motion.input
                           initial={{ opacity: 0, width: 0 }}
                           animate={{ opacity: 1, width: "100%" }}
@@ -232,11 +232,11 @@ function UserProfile() {
                     >
                       <label
                         htmlFor="phonenumber"
-                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                       >
                         Phone Number
                       </label>
-                      <div className="mt-2">
+                      <div className="">
                         <motion.input
                           initial={{ opacity: 0, width: 0 }}
                           animate={{ opacity: 1, width: "100%" }}
@@ -265,11 +265,11 @@ function UserProfile() {
                     >
                       <label
                         htmlFor="gender"
-                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                        className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                       >
                         Gender
                       </label>
-                      <div className="mt-2">
+                      <div className=" ">
                         <select
                           id="gender"
                           name="gender"
@@ -294,7 +294,7 @@ function UserProfile() {
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="w-full mb-6 mt-2"
+                    className="w-full mb-6  "
                   >
                     <h1 className="font-bold">{selectedRole}</h1>
                   </motion.div>
@@ -313,7 +313,7 @@ function UserProfile() {
                         >
                           Full Name
                         </label>
-                        <div className="mt-2">
+                        <div className=" ">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -344,7 +344,7 @@ function UserProfile() {
                         >
                           Phone Number
                         </label>
-                        <div className="mt-2">
+                        <div className=" ">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -375,11 +375,11 @@ function UserProfile() {
                       >
                         <label
                           htmlFor="lords_id"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                         >
                           LandLord ID <span>(optional)</span>
                         </label>
-                        <div className="mt-2">
+                        <div className="">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -405,11 +405,11 @@ function UserProfile() {
                       >
                         <label
                           htmlFor="national_id"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                         >
                           National ID
                         </label>
-                        <div className="mt-2">
+                        <div className=" ">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -441,7 +441,7 @@ function UserProfile() {
                         >
                           Room ID <span>(optional)</span>
                         </label>
-                        <div className="mt-2">
+                        <div className=" ">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -468,11 +468,11 @@ function UserProfile() {
                       >
                         <label
                           htmlFor="gender"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                         >
                           Gender
                         </label>
-                        <div className="mt-2">
+                        <div className="">
                           <select
                             id="gender"
                             name="gender"
@@ -496,11 +496,11 @@ function UserProfile() {
                       >
                         <label
                           htmlFor="house_id"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                         >
                           House ID <span>(optional)</span>
                         </label>
-                        <div className="mt-2">
+                        <div className="">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -531,7 +531,7 @@ function UserProfile() {
                         >
                           Profession
                         </label>
-                        <div className="mt-2">
+                        <div className="">
                           <select
                             id="profession"
                             name="profession"
@@ -614,7 +614,7 @@ function UserProfile() {
                   ) : (
                     <span className="relative flex flex-row items-center gap-2 z-10">
                       Save Profile
-                      <SendHorizonal size={20} className="text-xs" />
+                      <SendHorizonal size={16} className="text-xs" />
                     </span>
                   )}
                 </motion.button>
