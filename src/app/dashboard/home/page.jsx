@@ -850,7 +850,7 @@ const HouseItem = ({
               <div className="flex flex-row items-center gap-5 mt-1 md:mt-2 ">
                 {/* warning icon */}
                 <div className="bg-red-50 rounded-full border border-red-600 p-1 md:p-2">
-                  <IoWarningOutline className=" text-xl md:text-2xl  text-red-600 " />
+                  <IoWarningOutline className=" text-xl md:text-xl  text-red-600 " />
                 </div>
                 <div>
                   <h1 className=" text-xs md:text-sm font-bold">
