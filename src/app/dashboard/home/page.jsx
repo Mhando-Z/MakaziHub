@@ -466,7 +466,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       exit={{ opacity: 0, y: -20 }}
       onSubmit={handleSubmit}
     >
-      <h2 className="md:text-xl text-sm font-bold mb-2 md:mb-4">
+      <h2 className="md:text-lg text-sm font-bold mb-2 md:mb-4">
         {room ? <>Edit {room.room_name} room</> : "Add New Room"}
       </h2>
 
