@@ -216,7 +216,7 @@ function Allocation() {
         {selectedOption && (
           <div className="bg-white rounded-2xl  p-6 md:p-8">
             <h2 className="md:text-lg text-sm font-semibold text-gray-800 mb-6">
-              {selectedOption} Details
+              {selectedOption}
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -287,13 +287,13 @@ function Allocation() {
               {/* Message Display */}
               {message.text && (
                 <div
-                  className={`p-4 rounded-lg ${
+                  className={`px-4 py-2 rounded-lg ${
                     message.type === "success"
                       ? "bg-green-50 border border-green-200 text-green-800"
                       : "bg-red-50 border border-red-200 text-red-800"
                   }`}
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center text-xs md:text-sm">
                     {message.type === "success" ? (
                       <svg
                         className="w-5 h-5 mr-2"
