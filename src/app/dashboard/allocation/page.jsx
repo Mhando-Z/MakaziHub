@@ -38,17 +38,17 @@ function Allocation() {
 
   const validateForm = () => {
     if (!formData.lords_id.trim()) {
-      setMessage({ text: "Lords ID is required", type: "error" });
+      setMessage({ text: "Landlords key is required", type: "error" });
       return false;
     }
 
     if (selectedOption === "Rent House" && !formData.house_id.trim()) {
-      setMessage({ text: "House ID is required", type: "error" });
+      setMessage({ text: "House key is required", type: "error" });
       return false;
     }
 
     if (selectedOption === "Rent Room" && !formData.room_id.trim()) {
-      setMessage({ text: "Room ID is required", type: "error" });
+      setMessage({ text: "Room key is required", type: "error" });
       return false;
     }
 
@@ -111,10 +111,10 @@ function Allocation() {
   };
 
   return (
-    <div className=" mt-10 md:mt-0">
+    <div className=" mt-14 md:mt-0">
       <div className="">
         {/* Header Section */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 mb-6">
+        <div className="bg-white rounded-2xl p-2 md:p-8 mb-6">
           <div className=" mb-8">
             <h1 className="md:text-xl text-md font-bold text-gray-800 mb-2">
               Property Allocation
@@ -125,10 +125,10 @@ function Allocation() {
           </div>
 
           {/* Option Selection Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mb-8">
+          <div className="grid grid-cols-2 gap-4 max-w-2xl mb-8">
             <button
               onClick={() => handleOptionSelect("Rent House")}
-              className={`group relative p-6 rounded-xl border-2 transition-all duration-300 ${
+              className={`group relative p-4 rounded-xl border-2 transition-all duration-300 ${
                 selectedOption === "Rent House"
                   ? "border-emerald-500 bg-emerald-50 "
                   : "border-gray-200 hover:border-emerald-300 hover:bg-emerald-50"
@@ -156,8 +156,10 @@ function Allocation() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-1">Rent House</h3>
-                <p className="text-sm text-gray-600 text-center">
+                <h3 className="text-xs md:text-base font-semibold text-gray-800 mb-1">
+                  Rent House
+                </h3>
+                <p className="text-xs md:text-sm text-gray-600 text-center">
                   Full house rental with complete privacy
                 </p>
               </div>
@@ -170,7 +172,7 @@ function Allocation() {
 
             <button
               onClick={() => handleOptionSelect("Rent Room")}
-              className={`group relative p-6 rounded-xl border-2 transition-all duration-300 ${
+              className={`group relative p-4 rounded-xl border-2 transition-all duration-300 ${
                 selectedOption === "Rent Room"
                   ? "border-emerald-500 bg-emerald-50 "
                   : "border-gray-200 hover:border-emerald-300 hover:bg-emerald-50"
@@ -198,8 +200,10 @@ function Allocation() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-1">Rent Room</h3>
-                <p className="text-sm text-gray-600 text-center">
+                <h3 className="text-xs md:text-base font-semibold text-gray-800 mb-1">
+                  Rent Room
+                </h3>
+                <p className="text-xs md:text-sm text-gray-600 text-center">
                   Individual room in shared accommodation
                 </p>
               </div>
