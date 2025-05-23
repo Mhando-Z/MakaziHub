@@ -15,6 +15,7 @@ function Allocation() {
   const [formData, setFormData] = useState({
     house_id: "",
     room_id: "",
+    lords_id: "",
   });
 
   const handleChange = (e) => {
@@ -31,10 +32,15 @@ function Allocation() {
     setFormData({
       house_id: "",
       room_id: "",
+      lords_id: "",
     });
   };
 
   const validateForm = () => {
+    if (!formData.lords_id.trim()) {
+      setMessage({ text: "landlords key is required", type: "error" });
+      return false;
+    }
     if (selectedOption === "Rent House" && !formData.house_id.trim()) {
       setMessage({ text: "House key is required", type: "error" });
       return false;
@@ -70,6 +76,8 @@ function Allocation() {
           throw error;
         }
 
+        handleNotification("house");
+
         setMessage({
           text: `${selectedOption} allocation successful!`,
           type: "success",
@@ -89,6 +97,8 @@ function Allocation() {
         if (error) {
           throw error;
         }
+
+        handleNotification("room");
 
         setMessage({
           text: `${selectedOption} allocation successful!`,
@@ -110,6 +120,23 @@ function Allocation() {
       toast.error(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleNotification = async (name) => {
+    const { data, error } = await supabase2
+      .from("notification")
+      .insert({
+        title: ` ${name} veification`,
+        message: `please proceed with ${name} verification!`,
+        tenant_id: user?.id,
+        lords_id: formData.lords_id,
+      })
+      .select();
+    if (error) {
+      toast.error("Error sending notification");
+    } else {
+      toast.success("Notification sent successfully");
     }
   };
 
@@ -234,6 +261,24 @@ function Allocation() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Lords ID Field */}
+              <div>
+                <label
+                  htmlFor="lords_id"
+                  className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
+                >
+                  landlords key
+                </label>
+                <input
+                  type="text"
+                  id="lords_id"
+                  name="lords_id"
+                  value={formData.lords_id}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 text-xs md:text-sm border border-gray-300 rounded-lg outline-0"
+                  placeholder="Enter House ID"
+                  disabled={loading}
+                />
+              </div>
 
               {/* House ID Field - Only for Rent House */}
               {selectedOption === "Rent House" && (
