@@ -1106,12 +1106,6 @@ const House = () => {
   };
 
   useEffect(() => {
-    if (userData?.role !== "landlord") {
-      redirect("userhome");
-    }
-  }, []);
-
-  useEffect(() => {
     gethHouse();
     fetchRoom();
   }, []);
