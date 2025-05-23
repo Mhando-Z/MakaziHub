@@ -325,7 +325,7 @@ export default function OccupancyForm({
           {showEdit ? (
             <button
               type="button"
-              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs md:text-sm"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs  "
               onClick={() => setShowEdit(!showEdit)}
             >
               Cancel
@@ -333,7 +333,7 @@ export default function OccupancyForm({
           ) : (
             <button
               type="button"
-              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs md:text-sm"
+              className="px-4 py-1 cursor-pointer hover:bg-red-600 hover:text-white bg-gray-100 text-gray-700 rounded-md text-xs  "
               onClick={() =>
                 setFormData({
                   room_id: "",
@@ -354,11 +354,11 @@ export default function OccupancyForm({
             type="submit"
             whileTap={{ scale: 0.8 }}
             transition={{ type: "spring", ease: "easeOut" }}
-            className={`flex text-xs md:text-sm  justify-center rounded-md ${
+            className={`flex justify-center rounded-md ${
               loading
                 ? "bg-gray-200 cursor-not-allowed "
                 : "bg-blue-600 hover:bg-blue-700"
-            }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
+            }  px-4 py-1 text-xs cursor-pointer font-semibold   text-white focus-visible:outline-offset-2 `}
           >
             {loading ? (
               <div className="flex items-center justify-center cursor-not-allowed">

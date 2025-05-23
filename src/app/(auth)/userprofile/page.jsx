@@ -624,18 +624,18 @@ function UserProfile() {
                   type="submit"
                   whileTap={{ scale: 0.8 }}
                   transition={{ type: "spring", ease: "easeOut" }}
-                  className={`flex justify-center text-xs rounded-md px-7 ${
+                  className={`flex justify-center   rounded-md px-7 ${
                     loading
                       ? "bg-gray-200 cursor-not-allowed "
                       : "bg-green-600 hover:bg-green-700"
-                  }  px-3 py-1 text-xs md:text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  }  px-3 py-1  cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
                   {loading ? (
                     <div className="flex items-center justify-center cursor-not-allowed">
                       <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
                     </div>
                   ) : (
-                    <span className="relative flex flex-row items-center gap-2 z-10">
+                    <span className="relative flex text-xs flex-row items-center gap-2 z-10">
                       Save Profile
                       <SendHorizonal size={16} className="text-xs" />
                     </span>

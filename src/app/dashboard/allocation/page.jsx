@@ -4,6 +4,8 @@ import React, { useContext, useState } from "react";
 import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
+import { Loader, SendHorizonal } from "lucide-react";
+import { motion } from "framer-motion";
 
 function Allocation() {
   const { user } = useContext(UserContext);
@@ -100,6 +102,12 @@ function Allocation() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    setSelectedOption("");
+    setFormData({ lords_id: "", house_id: "", room_id: "" });
+    setMessage({ text: "", type: "" });
   };
 
   return (
@@ -216,7 +224,7 @@ function Allocation() {
               <div>
                 <label
                   htmlFor="lords_id"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
                 >
                   Landlord Key
                 </label>
@@ -226,7 +234,7 @@ function Allocation() {
                   name="lords_id"
                   value={formData.lords_id}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="w-full px-4 py-2 text-xs md:text-sm border border-gray-300 rounded-lg outline-0"
                   placeholder="Enter Lords ID"
                   disabled={loading}
                 />
@@ -237,7 +245,7 @@ function Allocation() {
                 <div>
                   <label
                     htmlFor="house_id"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
                   >
                     House key
                   </label>
@@ -247,7 +255,7 @@ function Allocation() {
                     name="house_id"
                     value={formData.house_id}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-2 text-xs md:text-sm border border-gray-300 rounded-lg outline-0"
                     placeholder="Enter House ID"
                     disabled={loading}
                   />
@@ -259,7 +267,7 @@ function Allocation() {
                 <div>
                   <label
                     htmlFor="room_id"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
                   >
                     Room Key
                   </label>
@@ -269,7 +277,7 @@ function Allocation() {
                     name="room_id"
                     value={formData.room_id}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-2 text-xs md:text-sm border border-gray-300 rounded-lg outline-0"
                     placeholder="Enter Room ID"
                     disabled={loading}
                   />
@@ -317,41 +325,35 @@ function Allocation() {
               )}
 
               {/* Submit Button */}
-              <div className="flex items-end w-full gap-5 justify-end ">
-                <button>cancel</button>
-
+              <div className="flex items-end w-full gap-3 justify-end ">
                 <button
+                  onClick={handleCancel}
+                  className="py-1 px-4 bg-gray-100 rounded text-xs hover:text-white hover:bg-red-600 cursor-pointer"
+                >
+                  cancel
+                </button>
+
+                <motion.button
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 text-white font-semibold py-1  px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ type: "spring", ease: "easeOut" }}
+                  className={`flex justify-center rounded-md px-7 ${
+                    loading
+                      ? "bg-gray-200 cursor-not-allowed "
+                      : "bg-green-600 hover:bg-green-700"
+                  }  px-3 py-1 cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
                   {loading ? (
-                    <>
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
-                      Processing...
-                    </>
+                    <div className="flex items-center justify-center cursor-not-allowed">
+                      <Loader className="animate-spin text-2xl text-green-600 [animation-duration:0.6s]" />
+                    </div>
                   ) : (
-                    `Confirm ${selectedOption}`
+                    <span className="relative flex text-xs flex-row items-center gap-2 z-10">
+                      confirm
+                      <SendHorizonal size={13} className="text-xs" />
+                    </span>
                   )}
-                </button>
+                </motion.button>
               </div>
             </form>
           </div>

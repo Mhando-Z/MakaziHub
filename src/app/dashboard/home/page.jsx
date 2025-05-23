@@ -350,7 +350,7 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
       <div className="flex justify-end gap-2">
         <motion.button
           type="button"
-          className="bg-gray-500 text-xs cursor-pointer md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 text-xs cursor-pointer   hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -362,11 +362,11 @@ const HouseForm = ({ house = null, onSave, onCancel }) => {
           type="submit"
           whileTap={{ scale: 0.8 }}
           transition={{ type: "spring", ease: "easeOut" }}
-          className={`flex text-xs md:text-sm  justify-center rounded-md ${
+          className={`flex justify-center rounded-md ${
             loading
               ? "bg-gray-200 cursor-not-allowed "
               : "bg-blue-600 hover:bg-blue-700"
-          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
+          }  px-5 py-1 text-xs cursor-pointer font-semibold text-white focus-visible:outline-offset-2 `}
         >
           {loading ? (
             <div className="flex items-center justify-center cursor-not-allowed">
@@ -542,7 +542,7 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
       <div className="flex justify-end gap-2 mt-2">
         <motion.button
           type="button"
-          className="bg-gray-500 cursor-pointer text-xs md:text-sm hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
+          className="bg-gray-500 cursor-pointer text-xs hover:bg-gray-600 text-white font-bold py-1 px-4 rounded"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onCancel}
@@ -553,11 +553,11 @@ const RoomForm = ({ room = null, houseId, onSave, onCancel }) => {
           type="submit"
           whileTap={{ scale: 0.8 }}
           transition={{ type: "spring", ease: "easeOut" }}
-          className={`flex text-xs md:text-sm justify-center rounded-md ${
+          className={`flex justify-center rounded-md ${
             loading
               ? "bg-gray-200 cursor-not-allowed "
               : "bg-blue-600 hover:bg-blue-700"
-          }  px-3 py-1 text-sm cursor-pointer font-semibold leading-6 text-white focus-visible:outline-offset-2 `}
+          }  px-5 py-1 text-xs cursor-pointer font-semibold  text-white focus-visible:outline-offset-2 `}
         >
           {loading ? (
             <div className="flex items-center justify-center cursor-not-allowed">
