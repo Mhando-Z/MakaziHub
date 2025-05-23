@@ -79,8 +79,9 @@ function UserProfile() {
             phone_number: Userdata.phone_number,
             gender: Userdata.gender,
             national_id: Userdata.national_id || null,
-            room_id: Userdata.room_id || null,
-            lords_id: Userdata.lords_id || null,
+            room_id: null,
+            house_id: null,
+            lords_id: null,
             email: user?.email,
             role: "landlord",
           },
@@ -99,11 +100,11 @@ function UserProfile() {
       } else {
         setLoading(false);
         setMessage({
-          text: "Data inserted successfully",
+          text: "Profile created successfully",
           type: "success",
         });
         route.replace("/loading/");
-        toast.success("Data inserted successfully");
+        toast.success("Profile created successfully");
         getProfile();
       }
     } else if (selectedRole === "tenant") {
@@ -116,8 +117,9 @@ function UserProfile() {
               full_name: Userdata.full_name,
               phone_number: Userdata.phone_number,
               national_id: Userdata.national_id || null,
-              room_id: Userdata.room_id || null,
-              lords_id: Userdata.lords_id || null,
+              room_id: null,
+              lords_id: null,
+              house_id: null,
               gender: Userdata.gender,
               email: user?.email,
               role: "tenant",
@@ -137,14 +139,17 @@ function UserProfile() {
           setLoading(false);
         } else {
           setMessage({
-            text: "Data inserted successfully",
+            text: "Profile created successfully",
             type: "success",
           });
           setLoading(false);
           route.replace("/loading/");
-          toast.success("Data inserted successfully");
+          toast.success("Profile created successfully");
           getProfile();
         }
+      } else {
+        setLoading(false);
+        toast.error("Please fill all required fields");
       }
     }
   };
@@ -357,7 +362,7 @@ function UserProfile() {
                         >
                           Full Name
                         </label>
-                        <div className=" ">
+                        <div className="">
                           <motion.input
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
@@ -367,15 +372,15 @@ function UserProfile() {
                               ease: "easeInOut",
                             }}
                             id="fullname"
-                            name="fullname"
+                            name="full_name"
                             onChange={handleChange}
                             type="text"
                             required
-                            autoComplete="fullname"
+                            autoComplete="full_name"
                             className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                           {errors.full_name && (
-                            <p className="text-red-500 text-xs">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.full_name}
                             </p>
                           )}
@@ -412,7 +417,7 @@ function UserProfile() {
                             className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
                           />
                           {errors.phone_number && (
-                            <p className="text-red-500 text-xs">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.phone_number}
                             </p>
                           )}
@@ -421,36 +426,39 @@ function UserProfile() {
                     </div>
 
                     <div className="flex flex-col md:flex-row items-center justify-between md:gap-x-10 gap-5">
+                      {/* tenant gender selection */}
                       <motion.div
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 1 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
+                        transition={{ delay: 0.6, duration: 0.5 }}
                         className="w-full"
                       >
                         <label
-                          htmlFor="lords_id"
+                          htmlFor="gender"
                           className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
                         >
-                          LandLord ID <span>(optional)</span>
+                          Gender
                         </label>
                         <div className="">
-                          <motion.input
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: "100%" }}
-                            whileFocus={{ width: [0, "100%"] }}
-                            transition={{
-                              duration: 0.5,
-                              ease: "easeInOut",
-                            }}
-                            id="lords_id"
-                            name="lords_id"
+                          <select
+                            id="gender"
+                            name="gender"
                             onChange={handleChange}
-                            type="text"
-                            autoComplete="lords_id"
                             className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
-                          />
+                            required
+                          >
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                          </select>
+                          {errors.gender && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.gender}
+                            </p>
+                          )}
                         </div>
                       </motion.div>
+
                       <motion.div
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 1 }}
@@ -483,101 +491,7 @@ function UserProfile() {
                       </motion.div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center justify-between md:gap-x-10 gap-5">
-                      <motion.div
-                        initial={{ opacity: 0, y: 100 }}
-                        animate={{ opacity: 1, y: 1 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="w-full"
-                      >
-                        <label
-                          htmlFor="room_id"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md  "
-                        >
-                          Room ID <span>(optional)</span>
-                        </label>
-                        <div className=" ">
-                          <motion.input
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: "100%" }}
-                            whileFocus={{ width: [0, "100%"] }}
-                            transition={{
-                              duration: 0.5,
-                              ease: "easeInOut",
-                            }}
-                            id="room_id"
-                            name="room_id"
-                            onChange={handleChange}
-                            type="text"
-                            autoComplete="room_id"
-                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
-                          />
-                        </div>
-                      </motion.div>
-                      {/* tenant gender selection */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 100 }}
-                        animate={{ opacity: 1, y: 1 }}
-                        transition={{ delay: 0.6, duration: 0.5 }}
-                        className="w-full"
-                      >
-                        <label
-                          htmlFor="gender"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
-                        >
-                          Gender
-                        </label>
-                        <div className="">
-                          <select
-                            id="gender"
-                            name="gender"
-                            onChange={handleChange}
-                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
-                            required
-                          >
-                            <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                          </select>
-                          {errors.gender && (
-                            <p className="text-red-500 text-xs">
-                              {errors.gender}
-                            </p>
-                          )}
-                        </div>
-                      </motion.div>
-                    </div>
-                    <div className="flex flex-col md:flex-row items-center justify-between md:gap-x-10 gap-5">
-                      <motion.div
-                        initial={{ opacity: 0, y: 100 }}
-                        animate={{ opacity: 1, y: 1 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="w-full"
-                      >
-                        <label
-                          htmlFor="house_id"
-                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
-                        >
-                          House ID <span>(optional)</span>
-                        </label>
-                        <div className="">
-                          <motion.input
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: "100%" }}
-                            whileFocus={{ width: [0, "100%"] }}
-                            transition={{
-                              duration: 0.5,
-                              ease: "easeInOut",
-                            }}
-                            id="house_id"
-                            name="house_id"
-                            onChange={handleChange}
-                            type="text"
-                            autoComplete="house_id"
-                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
-                          />
-                        </div>
-                      </motion.div>
-                      {/* tenant gender selection */}
+                      {/* tenant profession selection */}
                       <motion.div
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -634,13 +548,45 @@ function UserProfile() {
                             <option value="other">Other</option>
                           </select>
                           {errors.profession && (
-                            <p className="text-red-500 text-xs">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.profession}
                             </p>
                           )}
                         </div>
                       </motion.div>
                     </div>
+                    {/* <div className="flex flex-col md:flex-row items-center justify-between md:gap-x-10 gap-5">
+                      <motion.div
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 1 }}
+                        transition={{ delay: 0.4, duration: 0.5 }}
+                        className="w-full"
+                      >
+                        <label
+                          htmlFor="house_id"
+                          className="block text-xs md:text-sm font-medium leading-6 text-gray-900 md:text-md"
+                        >
+                          House ID <span>(optional)</span>
+                        </label>
+                        <div className="">
+                          <motion.input
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "100%" }}
+                            whileFocus={{ width: [0, "100%"] }}
+                            transition={{
+                              duration: 0.5,
+                              ease: "easeInOut",
+                            }}
+                            id="house_id"
+                            name="house_id"
+                            onChange={handleChange}
+                            type="text"
+                            autoComplete="house_id"
+                            className="block px-1 w-full py-1 md:py-2 text-gray-900 border-b-2 border-green-600 outline-none bg-inherit placeholder:text-gray-400 sm:text-xs md:text-sm sm:leading-6"
+                          />
+                        </div>
+                      </motion.div>
+                    </div> */}
                   </div>
                 </>
               )}
