@@ -29,6 +29,7 @@ export function UserProvider({ children }) {
     }
   };
 
+  // get user profile data
   const getProfile = async () => {
     const { data, error } = await supabase2.from("profiles").select("*");
     if (data) setProfile(data);

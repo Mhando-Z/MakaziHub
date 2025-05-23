@@ -10,6 +10,7 @@ export function DataProvider({ children }) {
   const [roomData, setRoom] = useState([]);
   const [room_status, setRoomStatus] = useState([]);
   const [occupancy, setOccupancy] = useState([]);
+  const [notification, setNotification] = useState([]);
 
   // fetch quotes
   const fetchQts = async () => {
@@ -18,6 +19,15 @@ export function DataProvider({ children }) {
       setQuotes(data);
     }
   };
+
+  const fetchNotification = async () => {
+    const { data, error } = await supabase2.from("notification").select("*");
+    if (!error) {
+      setNotification(data);
+    }
+  };
+
+  // fetch occupancy
   const fetchOccupancy = async () => {
     const { data, error } = await supabase2.from("occupancy").select("*");
     if (!error) {
@@ -25,12 +35,15 @@ export function DataProvider({ children }) {
     }
   };
 
+  // fetch room
   const fetchRoom = async () => {
     const { data: room, error } = await supabase2.from("room").select("*");
     if (!error) {
       setRoom(room);
     }
   };
+
+  // fetch room status
   const fetchRoomStatus = async () => {
     const { data: room_occupancy, error } = await supabase2
       .from("room_occupancy")
@@ -41,6 +54,7 @@ export function DataProvider({ children }) {
   };
 
   useEffect(() => {
+    fetchNotification();
     fetchRoom();
     fetchQts();
     fetchRoomStatus();
@@ -54,6 +68,7 @@ export function DataProvider({ children }) {
         roomData,
         occupancy,
         room_status,
+        notification,
         fetchRoom,
         fetchOccupancy,
       }}

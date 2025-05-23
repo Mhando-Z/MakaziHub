@@ -20,6 +20,11 @@ import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { IoMdMenu } from "react-icons/io";
 import { BiSolidDirections } from "react-icons/bi";
+import DataContext from "@/context/DataContext";
+//
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoMdNotifications } from "react-icons/io";
+import { MdNotificationsActive } from "react-icons/md";
 
 // what vano and other supervisors can see
 const LordsRoutes = [
@@ -55,8 +60,10 @@ const TenantRoutes = [
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [show, setshow] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const { user, userData, setUser } = useContext(UserContext);
   const { setUserdata } = useContext(UserContext);
+  const { notification } = useContext(DataContext);
 
   //pagge navigation
   const pathname = usePathname();
@@ -84,6 +91,7 @@ export default function DashboardLayout({ children }) {
   // Function to toggle the sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+    handleDismiss();
   };
 
   // button functons
@@ -92,6 +100,7 @@ export default function DashboardLayout({ children }) {
       setshow(!show);
     }
     setshow(!show);
+    setShowNotification(false);
   };
 
   const handleLogout = () => {
@@ -116,6 +125,17 @@ export default function DashboardLayout({ children }) {
     }
   }, []);
 
+  // notification functions
+  const handleNotification = () => {
+    setShowNotification(!showNotification);
+    setshow(false);
+  };
+
+  const handleDismiss = () => {
+    setShowNotification(false);
+    setshow(false);
+  };
+
   return (
     <div className="flex min-h-screen appearance-none md:h-screen">
       {/* Sidebar */}
@@ -125,7 +145,7 @@ export default function DashboardLayout({ children }) {
         } md:translate-x-0 transition-transform duration-300 ease-in-out z-50`}
       >
         <div
-          onClick={() => setshow(false)}
+          onClick={handleDismiss}
           className="flex flex-col justify-between min-h-screen p-6"
         >
           <div>
@@ -230,13 +250,23 @@ export default function DashboardLayout({ children }) {
             <IoMdMenu className="text-2xl " />
           </button>
 
-          <div className="relative ">
+          {/* drop down menu for user profile */}
+          <div className="relative flex items-center gap-1 ">
+            <div onClick={handleNotification} className="">
+              {showNotification ? (
+                <IoMdNotifications className="text-2xl md:text-3xl text-green-600 cursor-pointer" />
+              ) : (
+                <IoIosNotificationsOutline className="text-2xl md:text-3xl cursor-pointer" />
+              )}
+            </div>
+
+            {/* user profile icon */}
             <div
               className="flex items-center gap-x-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer transition-colors"
               onClick={handleShow}
             >
               <motion.img
-                className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border-2 border-green-400 shadow-sm"
+                className="h-6 w-6 md:h-8 md:w-8 rounded-full object-cover border-2 border-green-400 shadow-sm"
                 src={`https://ui-avatars.com/api/?name=${user?.email}&background=EEF2FF&color=6366F1`}
                 alt="User Avatar"
                 initial={{ scale: 0 }}
@@ -261,23 +291,24 @@ export default function DashboardLayout({ children }) {
               </svg>
             </div>
 
+            {/* user profile drop down menue */}
             {show && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-16 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
+                className="absolute top-12 md:top-14 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
               >
                 <div className="p-4 border-b border-gray-100">
                   <div className="flex items-center gap-x-3">
                     <motion.img
-                      className="h-12 w-12 rounded-full object-cover border-2 border-green-400"
+                      className="h-12 w-12   rounded-full object-cover border-2 border-green-400"
                       src={`https://ui-avatars.com/api/?name=${user?.email}&background=EEF2FF&color=6366F1`}
                       alt="User Avatar"
                     />
                     <div>
-                      <h3 className="text-sm font-semibold text-gray-800 truncate">
+                      <h3 className="md:text-sm text-xs font-semibold text-gray-800 truncate">
                         {userData?.full_name}
                       </h3>
                       <p className="text-xs text-gray-500 truncate">
@@ -303,11 +334,11 @@ export default function DashboardLayout({ children }) {
                 <div className="py-2">
                   <Link href="profile">
                     <div
-                      onClick={() => setshow(false)}
+                      onClick={handleDismiss}
                       className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                     >
-                      <FaRegUser className="w-4 h-4 text-gray-500" />
-                      <span className="ml-3 text-sm font-medium text-gray-700">
+                      <FaRegUser className="md:w-4 md:h-4 w-3 h-3 text-gray-500" />
+                      <span className="ml-3 text-xs md:text-sm font-medium text-gray-700">
                         View Profile
                       </span>
                     </div>
@@ -317,11 +348,49 @@ export default function DashboardLayout({ children }) {
                     onClick={handleLogout}
                     className="w-full flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-left"
                   >
-                    <FaPowerOff className="w-4 h-4 text-red-500" />
-                    <span className="ml-3 cursor-pointer text-sm font-medium text-gray-700">
+                    <FaPowerOff className="md:w-4 md:h-4 w-3 h-3 text-red-500" />
+                    <span className="ml-3 cursor-pointer text-xs md:text-sm font-medium text-gray-700">
                       Log Out
                     </span>
                   </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* notification dropdown menue */}
+            {showNotification && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute md:top-14 top-12 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
+              >
+                <div className="p-4 border-b border-gray-100">
+                  {notification?.length > 0 ? (
+                    notification?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-x-3 mb-2"
+                      >
+                        <div className="rounded-full p-2 ">
+                          <MdNotificationsActive className="" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-gray-800 truncate">
+                            {item?.title}
+                          </h3>
+                          <p className="text-xs text-gray-500 truncate">
+                            {item?.message}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-xs  md:text-sm text-gray-500">
+                      No notifications
+                    </p>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -330,7 +399,7 @@ export default function DashboardLayout({ children }) {
 
         {/* other pages router rendered here */}
         <main
-          onClick={() => setshow(false)}
+          onClick={handleDismiss}
           className="flex flex-col min-h-screen p-4 md:p-6"
         >
           <main>{children}</main>
