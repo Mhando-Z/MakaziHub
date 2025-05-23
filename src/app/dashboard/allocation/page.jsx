@@ -13,7 +13,6 @@ function Allocation() {
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    lords_id: "",
     house_id: "",
     room_id: "",
   });
@@ -30,18 +29,12 @@ function Allocation() {
     setSelectedOption(option);
     setMessage({ text: "", type: "" });
     setFormData({
-      lords_id: "",
       house_id: "",
       room_id: "",
     });
   };
 
   const validateForm = () => {
-    if (!formData.lords_id.trim()) {
-      setMessage({ text: "Landlords key is required", type: "error" });
-      return false;
-    }
-
     if (selectedOption === "Rent House" && !formData.house_id.trim()) {
       setMessage({ text: "House key is required", type: "error" });
       return false;
@@ -64,29 +57,45 @@ function Allocation() {
     setMessage({ text: "", type: "" });
 
     try {
-      let updateData = { lords_id: formData.lords_id };
-
       if (selectedOption === "Rent House") {
-        updateData.house_id = formData.house_id;
+        const { data, error } = await supabase2
+          .from("house")
+          .update({
+            tenant_id: user?.id,
+          })
+          .eq("id", formData.house_id)
+          .select();
+
+        if (error) {
+          throw error;
+        }
+
+        setMessage({
+          text: `${selectedOption} allocation successful!`,
+          type: "success",
+        });
+        toast.success(`${selectedOption} allocation successful!`);
+
+        // Update the room table to set the tenant_id to null for all rooms in the house
       } else if (selectedOption === "Rent Room") {
-        updateData.room_id = formData.room_id;
+        const { data, error } = await supabase2
+          .from("room")
+          .update({
+            tenant_id: user?.id,
+          })
+          .eq("id", formData.room_id)
+          .select();
+
+        if (error) {
+          throw error;
+        }
+
+        setMessage({
+          text: `${selectedOption} allocation successful!`,
+          type: "success",
+        });
+        toast.success(`${selectedOption} allocation successful!`);
       }
-
-      const { data, error } = await supabase2
-        .from("profiles")
-        .update(updateData)
-        .eq("id", user?.id)
-        .select();
-
-      if (error) {
-        throw error;
-      }
-
-      setMessage({
-        text: `${selectedOption} allocation successful!`,
-        type: "success",
-      });
-      toast.success(`${selectedOption} allocation successful!`);
 
       // Reset form
       setFormData({ lords_id: "", house_id: "", room_id: "" });
@@ -218,31 +227,13 @@ function Allocation() {
 
         {/* Form Section */}
         {selectedOption && (
-          <div className="bg-white rounded-2xl  p-6 md:p-8">
+          <div className="bg-white rounded-2xl p-2 py-3 md:p-8">
             <h2 className="md:text-lg text-sm font-semibold text-gray-800 mb-6">
               {selectedOption}
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Lords ID Field */}
-              <div>
-                <label
-                  htmlFor="lords_id"
-                  className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
-                >
-                  Landlord Key
-                </label>
-                <input
-                  type="text"
-                  id="lords_id"
-                  name="lords_id"
-                  value={formData.lords_id}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 text-xs md:text-sm border border-gray-300 rounded-lg outline-0"
-                  placeholder="Enter Lords ID"
-                  disabled={loading}
-                />
-              </div>
 
               {/* House ID Field - Only for Rent House */}
               {selectedOption === "Rent House" && (
