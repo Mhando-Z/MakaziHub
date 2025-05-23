@@ -19,6 +19,7 @@ import { supabase2 } from "@/Config/Supabase";
 import UserContext from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { IoMdMenu } from "react-icons/io";
+import { BiSolidDirections } from "react-icons/bi";
 
 // what vano and other supervisors can see
 const LordsRoutes = [
@@ -44,10 +45,10 @@ const TenantRoutes = [
     icon: <FaHome />,
   },
   {
-    sections: "Tenants",
-    path: "/dashboard/tenants",
-    links: "tenants",
-    icon: <IoPeople />,
+    sections: "Allocation",
+    path: "/dashboard/allocation",
+    links: "allocation",
+    icon: <BiSolidDirections />,
   },
 ];
 
