@@ -24,7 +24,7 @@ import DataContext from "@/context/DataContext";
 //
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoMdNotifications } from "react-icons/io";
-import { MdNotificationsActive } from "react-icons/md";
+import { MdNotificationsActive, MdDelete, MdCheck } from "react-icons/md";
 
 // what vano and other supervisors can see
 const LordsRoutes = [
@@ -72,6 +72,58 @@ export default function DashboardLayout({ children }) {
 
   // checks for unread notifications
   const unread = notifications?.filter((notification) => !notification.is_read);
+
+  // time formatting function
+  const formatTimestamp = (created_at) => {
+    if (!created_at) return "";
+
+    const now = new Date();
+    const notificationDate = new Date(created_at);
+    const diffInMs = now - notificationDate;
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInMinutes < 1) {
+      return "Just now";
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes}m ago`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours}h ago`;
+    } else if (diffInDays < 7) {
+      return `${diffInDays}d ago`;
+    } else {
+      // For older notifications, show the actual date
+      return notificationDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year:
+          notificationDate.getFullYear() !== now.getFullYear()
+            ? "numeric"
+            : undefined,
+      });
+    }
+  };
+
+  const handleMarkAsRead = (notificationId, index) => {
+    // Update notification as read
+    console.log("Mark as read:", notificationId);
+  };
+
+  const handleDeleteNotification = (notificationId, index) => {
+    // Delete specific notification
+    console.log("Delete notification:", notificationId);
+  };
+
+  const handleMarkAllAsRead = () => {
+    // Mark all notifications as read
+    console.log("Mark all as read");
+  };
+
+  const handleClearAll = () => {
+    // Clear all notifications
+    console.log("Clear all notifications");
+  };
 
   //pagge navigation
   const pathname = usePathname();
@@ -259,7 +311,7 @@ export default function DashboardLayout({ children }) {
           </button>
 
           {/* drop down menu for user profile */}
-          <div className="relative flex items-center gap-1 ">
+          <div className="relative flex items-center gap-1">
             <div
               onClick={handleNotification}
               className="relative cursor-pointer group"
@@ -397,33 +449,121 @@ export default function DashboardLayout({ children }) {
                 transition={{ duration: 0.2 }}
                 className="absolute md:top-14 top-12 right-0 mt-2 w-80 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
               >
-                <div className="p-4 border-b border-gray-100">
+                <div className="max-h-96  overflow-y-auto">
                   {notifications?.length > 0 ? (
-                    notifications?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-x-3 mb-2"
-                      >
-                        <div className="rounded-full p-2 ">
-                          <MdNotificationsActive className="" />
+                    <div className=" divide-y-4 divide-gray-200">
+                      {notifications?.map((item, index) => (
+                        <div
+                          key={index}
+                          className={`p-4 hover:bg-gray-50 transition-colors duration-150 ${
+                            item.is_Read ? "bg-white" : "bg-blue-50"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3 group">
+                            {/* Notification Icon */}
+                            <div
+                              className={`flex-shrink-0 rounded-full p-2 ${
+                                item.is_Read
+                                  ? "bg-gray-100 text-gray-500"
+                                  : "bg-blue-100 text-blue-600"
+                              }`}
+                            >
+                              <MdNotificationsActive className="text-xl md:text-xl" />
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <h3
+                                    className={`text-sm font-semibold truncate ${
+                                      item.is_Read
+                                        ? "text-gray-700"
+                                        : "text-gray-900"
+                                    }`}
+                                  >
+                                    {item?.title}
+                                  </h3>
+                                  <p className="text-xs text-gray-600 mt-1">
+                                    from{" "}
+                                    <span className="font-medium">
+                                      {item?.sender_name}
+                                    </span>
+                                  </p>
+                                  <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                                    {item?.message}
+                                  </p>
+
+                                  {/* Timestamp */}
+                                  <p className="text-xs text-gray-400 mt-2">
+                                    {formatTimestamp(item?.created_at)}
+                                  </p>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                  {!item.is_Read && (
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleMarkAsRead(item.id, index);
+                                      }}
+                                      className="p-1.5 rounded-full hover:bg-green-100 text-green-600 hover:text-green-700 transition-colors duration-150"
+                                      title="Mark as read"
+                                    >
+                                      <MdCheck className="text-sm" />
+                                    </button>
+                                  )}
+
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteNotification(item.id, index);
+                                    }}
+                                    className="p-1.5 rounded-full hover:bg-red-100 text-red-500 hover:text-red-600 transition-colors duration-150"
+                                    title="Delete notification"
+                                  >
+                                    <MdDelete className="text-sm" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-sm font-semibold text-gray-800 truncate">
-                            {item?.title}
-                          </h3>
-                          <h5 className="text-xs font-medium text-gray-700 truncate">
-                            from {item?.sender_name}
-                          </h5>
-                          <p className="text-xs text-gray-600 truncate">
-                            {item?.message}
-                          </p>
-                        </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   ) : (
-                    <p className="text-center text-xs  md:text-sm text-gray-500">
-                      No notifications
-                    </p>
+                    <div className="p-8 text-center">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                        <MdNotificationsActive className="text-2xl text-gray-400" />
+                      </div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        No notifications
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        You're all caught up!
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Footer Actions */}
+                  {notifications?.length > 0 && (
+                    <div className="border-t border-gray-100 p-3 bg-gray-50">
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={handleMarkAllAsRead}
+                          className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors duration-150"
+                        >
+                          Mark all as read
+                        </button>
+                        <button
+                          onClick={handleClearAll}
+                          className="text-xs font-medium text-red-600 hover:text-red-700 transition-colors duration-150"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               </motion.div>
