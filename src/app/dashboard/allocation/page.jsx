@@ -8,7 +8,7 @@ import { Loader, SendHorizonal } from "lucide-react";
 import { motion } from "framer-motion";
 
 function Allocation() {
-  const { user } = useContext(UserContext);
+  const { user, userData } = useContext(UserContext);
   const [selectedOption, setSelectedOption] = useState("");
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
@@ -129,8 +129,9 @@ function Allocation() {
       .insert({
         title: ` ${name} veification`,
         message: `please proceed with ${name} verification!`,
-        tenant_id: user?.id,
-        lords_id: formData.lords_id,
+        sender_name: userData?.full_name,
+        sender_id: user?.id,
+        receiver_id: formData.lords_id,
       })
       .select();
     if (error) {
