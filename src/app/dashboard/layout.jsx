@@ -606,13 +606,13 @@ export default function DashboardLayout({ children }) {
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => handleMarkAllAsRead(unread)}
-                          className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors duration-150"
+                          className="text-xs font-medium cursor-pointer text-blue-600 hover:text-blue-700 transition-colors duration-150"
                         >
                           Mark all as read
                         </button>
                         <button
                           onClick={() => handleClearAll(notifications)}
-                          className="text-xs font-medium text-red-600 hover:text-red-700 transition-colors duration-150"
+                          className="text-xs font-medium cursor-pointer text-red-600 hover:text-red-700 transition-colors duration-150"
                         >
                           Clear all
                         </button>
