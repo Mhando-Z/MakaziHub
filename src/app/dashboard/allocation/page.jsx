@@ -164,7 +164,7 @@ function Allocation() {
           <div className="grid grid-cols-2 gap-4 max-w-2xl mb-8">
             <button
               onClick={() => handleOptionSelect("Rent House")}
-              className={`group relative p-4 rounded-xl border-2 transition-all duration-300 ${
+              className={`group relative p-4 cursor-pointer rounded-xl border-2 transition-all duration-300 ${
                 selectedOption === "Rent House"
                   ? "border-emerald-500 bg-emerald-50 "
                   : "border-gray-200 hover:border-emerald-300 hover:bg-emerald-50"
@@ -208,7 +208,7 @@ function Allocation() {
 
             <button
               onClick={() => handleOptionSelect("Rent Room")}
-              className={`group relative p-4 rounded-xl border-2 transition-all duration-300 ${
+              className={`group relative p-4 cursor-pointer rounded-xl border-2 transition-all duration-300 ${
                 selectedOption === "Rent Room"
                   ? "border-emerald-500 bg-emerald-50 "
                   : "border-gray-200 hover:border-emerald-300 hover:bg-emerald-50"

@@ -65,6 +65,11 @@ export default function DashboardLayout({ children }) {
   const { setUserdata } = useContext(UserContext);
   const { notification } = useContext(DataContext);
 
+  // handle notification assignments
+  const notifications = notification?.filter(
+    (item) => item?.receiver_id === user?.id
+  );
+
   //pagge navigation
   const pathname = usePathname();
   const router = useRouter();
@@ -367,8 +372,8 @@ export default function DashboardLayout({ children }) {
                 className="absolute md:top-14 top-12 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
               >
                 <div className="p-4 border-b border-gray-100">
-                  {notification?.length > 0 ? (
-                    notification?.map((item, index) => (
+                  {notifications?.length > 0 ? (
+                    notifications?.map((item, index) => (
                       <div
                         key={index}
                         className="flex items-center gap-x-3 mb-2"
