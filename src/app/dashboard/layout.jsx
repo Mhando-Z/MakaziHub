@@ -63,7 +63,8 @@ export default function DashboardLayout({ children }) {
   const [showNotification, setShowNotification] = useState(false);
   const { user, userData, setUser } = useContext(UserContext);
   const { setUserdata } = useContext(UserContext);
-  const { notification } = useContext(DataContext);
+  const { notification, fetchNotification } = useContext(DataContext);
+  const [loading, setLoading] = useState(false);
 
   // handle notification assignments
   const notifications = notification?.filter(
@@ -105,24 +106,80 @@ export default function DashboardLayout({ children }) {
     }
   };
 
-  const handleMarkAsRead = (notificationId, index) => {
-    // Update notification as read
-    console.log("Mark as read:", notificationId);
+  const handleMarkAsRead = async (notificationId) => {
+    // Update specific notification as read
+    const { data, error } = await supabase2
+      .from("notification")
+      .update({ is_read: true })
+      .eq("id", notificationId);
+    if (error) {
+      toast.error("Failed to mark notification as read");
+      return;
+    } else {
+      // toast.success("Notification marked as read");
+      fetchNotification();
+    }
   };
 
-  const handleDeleteNotification = (notificationId, index) => {
-    // Delete specific notification
-    console.log("Delete notification:", notificationId);
+  const handleDeleteNotification = async (notificationId) => {
+    setLoading(true);
+    // Delete specific notification from the database
+    const { data, error } = await supabase2
+      .from("notification")
+      .delete()
+      .eq("id", notificationId);
+    if (error) {
+      setLoading(false);
+      toast.error("Failed to delete notification");
+      return;
+    } else {
+      setLoading(false);
+      // toast.success("Notification deleted successfully");
+      fetchNotification();
+    }
   };
 
-  const handleMarkAllAsRead = () => {
-    // Mark all notifications as read
-    console.log("Mark all as read");
+  const handleMarkAllAsRead = async (unread) => {
+    const idsToUpdate = unread?.map((dt) => dt?.id);
+    try {
+      const { error } = await supabase2
+        .from("notification")
+        .update({ is_read: true })
+        .in("id", idsToUpdate);
+
+      if (error) {
+        toast.error("Failed to mark notifications as read.");
+      } else {
+        toast.success("All notifications marked as read.");
+        fetchNotification(); // Refresh the notification list
+      }
+    } catch (err) {
+      // toast.error("Something went wrong while marking notifications as read.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleClearAll = () => {
-    // Clear all notifications
-    console.log("Clear all notifications");
+  const handleClearAll = async (notifications) => {
+    const idsToDelete = notifications.map((noti) => noti.id);
+
+    try {
+      const { error } = await supabase2
+        .from("notification")
+        .delete()
+        .in("id", idsToDelete);
+
+      if (error) {
+        toast.error("Failed to clear notifications.");
+      } else {
+        toast.success("All notifications cleared successfully.");
+        fetchNotification(); // Refresh the list
+      }
+    } catch (err) {
+      // toast.error("An unexpected error occurred while clearing notifications.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   //pagge navigation
@@ -454,16 +511,16 @@ export default function DashboardLayout({ children }) {
                     <div className=" divide-y-4 divide-gray-200">
                       {notifications?.map((item, index) => (
                         <div
-                          key={index}
+                          key={index + item?.id}
                           className={`p-4 hover:bg-gray-50 transition-colors duration-150 ${
-                            item.is_Read ? "bg-white" : "bg-blue-50"
+                            item.is_read ? "bg-white" : "bg-blue-50"
                           }`}
                         >
                           <div className="flex items-start gap-3 group">
                             {/* Notification Icon */}
                             <div
                               className={`flex-shrink-0 rounded-full p-2 ${
-                                item.is_Read
+                                item.is_read
                                   ? "bg-gray-100 text-gray-500"
                                   : "bg-blue-100 text-blue-600"
                               }`}
@@ -477,7 +534,7 @@ export default function DashboardLayout({ children }) {
                                 <div className="flex-1 min-w-0">
                                   <h3
                                     className={`text-sm font-semibold truncate ${
-                                      item.is_Read
+                                      item.is_read
                                         ? "text-gray-700"
                                         : "text-gray-900"
                                     }`}
@@ -502,13 +559,13 @@ export default function DashboardLayout({ children }) {
 
                                 {/* Action Buttons */}
                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                  {!item.is_Read && (
+                                  {!item.is_read && (
                                     <button
                                       onClick={(e) => {
                                         e.stopPropagation();
-                                        handleMarkAsRead(item.id, index);
+                                        handleMarkAsRead(item.id);
                                       }}
-                                      className="p-1.5 rounded-full hover:bg-green-100 text-green-600 hover:text-green-700 transition-colors duration-150"
+                                      className="p-1.5 cursor-pointer rounded-full hover:bg-green-100 text-green-600 hover:text-green-700 transition-colors duration-150"
                                       title="Mark as read"
                                     >
                                       <MdCheck className="text-sm" />
@@ -518,9 +575,9 @@ export default function DashboardLayout({ children }) {
                                   <button
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      handleDeleteNotification(item.id, index);
+                                      handleDeleteNotification(item.id);
                                     }}
-                                    className="p-1.5 rounded-full hover:bg-red-100 text-red-500 hover:text-red-600 transition-colors duration-150"
+                                    className="p-1.5 cursor-pointer rounded-full hover:bg-red-100 text-red-500 hover:text-red-600 transition-colors duration-150"
                                     title="Delete notification"
                                   >
                                     <MdDelete className="text-sm" />
@@ -537,11 +594,8 @@ export default function DashboardLayout({ children }) {
                       <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
                         <MdNotificationsActive className="text-2xl text-gray-400" />
                       </div>
-                      <p className="text-sm text-gray-500 font-medium">
+                      <p className="text-xs text-gray-500 font-medium">
                         No notifications
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        You're all caught up!
                       </p>
                     </div>
                   )}
@@ -551,13 +605,13 @@ export default function DashboardLayout({ children }) {
                     <div className="border-t border-gray-100 p-3 bg-gray-50">
                       <div className="flex items-center justify-between">
                         <button
-                          onClick={handleMarkAllAsRead}
+                          onClick={() => handleMarkAllAsRead(unread)}
                           className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors duration-150"
                         >
                           Mark all as read
                         </button>
                         <button
-                          onClick={handleClearAll}
+                          onClick={() => handleClearAll(notifications)}
                           className="text-xs font-medium text-red-600 hover:text-red-700 transition-colors duration-150"
                         >
                           Clear all

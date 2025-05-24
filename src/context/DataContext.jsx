@@ -71,6 +71,7 @@ export function DataProvider({ children }) {
         notification,
         fetchRoom,
         fetchOccupancy,
+        fetchNotification,
       }}
     >
       {children}
