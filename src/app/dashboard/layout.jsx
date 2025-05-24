@@ -606,7 +606,7 @@ export default function DashboardLayout({ children }) {
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => handleMarkAllAsRead(unread)}
-                          className="text-xs font-medium cursor-pointer text-blue-600 hover:text-blue-700 transition-colors duration-150"
+                          className={`text-xs font-medium cursor-pointer text-blue-600 hover:text-blue-700 transition-colors duration-150 ${unread?.length === 0 ? "invisible" : ""}`}
                         >
                           Mark all as read
                         </button>
