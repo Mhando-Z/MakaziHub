@@ -70,6 +70,9 @@ export default function DashboardLayout({ children }) {
     (item) => item?.receiver_id === user?.id
   );
 
+  // checks for unread notifications
+  const unread = notifications?.filter((notification) => !notification.is_read);
+
   //pagge navigation
   const pathname = usePathname();
   const router = useRouter();
@@ -257,11 +260,34 @@ export default function DashboardLayout({ children }) {
 
           {/* drop down menu for user profile */}
           <div className="relative flex items-center gap-1 ">
-            <div onClick={handleNotification} className="">
+            <div
+              onClick={handleNotification}
+              className="relative cursor-pointer group"
+            >
               {showNotification ? (
-                <IoMdNotifications className="text-2xl md:text-3xl text-green-600 cursor-pointer" />
+                <IoMdNotifications
+                  className={`text-3xl md:text-3xl transition-colors duration-200 ${
+                    unread.length > 0
+                      ? "text-blue-600 hover:text-blue-700"
+                      : "text-gray-600 hover:text-gray-700"
+                  }`}
+                />
               ) : (
-                <IoIosNotificationsOutline className="text-2xl md:text-3xl cursor-pointer" />
+                <IoIosNotificationsOutline
+                  className={`text-3xl md:text-3xl text-gray-600 hover:text-gray-700 transition-colors duration-200`}
+                />
+              )}
+
+              {/* Notification Badge */}
+              {unread.length > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-sm border-2 border-white">
+                  {unread.length > 99 ? "99+" : unread.length}
+                </div>
+              )}
+
+              {/* Pulse animation for new notifications */}
+              {unread.length > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 rounded-full min-w-[18px] h-[18px] animate-ping opacity-25"></div>
               )}
             </div>
 
@@ -369,7 +395,7 @@ export default function DashboardLayout({ children }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="absolute md:top-14 top-12 right-0 mt-2 w-64 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
+                className="absolute md:top-14 top-12 right-0 mt-2 w-80 rounded-lg shadow-lg bg-white overflow-hidden border border-gray-100"
               >
                 <div className="p-4 border-b border-gray-100">
                   {notifications?.length > 0 ? (
@@ -385,7 +411,10 @@ export default function DashboardLayout({ children }) {
                           <h3 className="text-sm font-semibold text-gray-800 truncate">
                             {item?.title}
                           </h3>
-                          <p className="text-xs text-gray-500 truncate">
+                          <h5 className="text-xs font-medium text-gray-700 truncate">
+                            from {item?.sender_name}
+                          </h5>
+                          <p className="text-xs text-gray-600 truncate">
                             {item?.message}
                           </p>
                         </div>
