@@ -150,7 +150,7 @@ export default function DashboardLayout({ children }) {
       if (error) {
         toast.error("Failed to mark notifications as read.");
       } else {
-        toast.success("All notifications marked as read.");
+        // toast.success("All notifications marked as read.");
         fetchNotification(); // Refresh the notification list
       }
     } catch (err) {
@@ -172,7 +172,7 @@ export default function DashboardLayout({ children }) {
       if (error) {
         toast.error("Failed to clear notifications.");
       } else {
-        toast.success("All notifications cleared successfully.");
+        // toast.success("All notifications cleared successfully.");
         fetchNotification(); // Refresh the list
       }
     } catch (err) {
